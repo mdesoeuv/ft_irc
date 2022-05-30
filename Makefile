@@ -1,5 +1,5 @@
 
-NAME			:= ft_irc
+NAME			:= ircserv
 
 CXXFLAGS		:= -Wall -Werror -Wextra -g3 -std=c++98
 
