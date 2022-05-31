@@ -35,4 +35,22 @@ const std::string&	Client::getPassword() {
 	return _password ;
 }
 
+const std::string&	Client::getFullId(const std::string& host) const {
+	return (getNickname() + "!" + getUsername() + "@" + host);
+}
 
+void				Client::setNickname(const std::string& new_nickname) {
+	_nickname = new_nickname;
+}
+
+void				Client::setUsername(const std::string& new_username) {
+	_username = new_username;
+}
+
+void				Client::setPassword(const std::string& new_password) {
+	_password = new_password;
+}
+
+void				Client::setSocketfd(int new_socketfd) {
+	_socketfd = new_socketfd;
+}

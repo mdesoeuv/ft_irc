@@ -13,10 +13,16 @@ class Client
 
 		~Client(void);
 
-		const std::string&	getNickname();
-		const std::string&	getUsername();
-		const std::string&	getPassword();
-		int					getSocketfd();
+		const std::string&	getNickname() const;
+		const std::string&	getUsername() const;
+		const std::string&	getPassword() const;
+		int					getSocketfd() const;
+		const std::string&	getFullId(const std::string& host) const;
+
+		void				setNickname(const std::string& new_nickname);
+		void				setUsername(const std::string& new_username);
+		void				setPassword(const std::string& new_password);
+		void				setSocketfd(int new_socketfd);
 
 	private:
 
