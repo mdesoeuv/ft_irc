@@ -1,6 +1,4 @@
-#include "../inc/ft_irc.hpp"
-
-
+#include "../inc/server.hpp"
 
 int	main(int ac, char** av)
 {
@@ -9,7 +7,8 @@ int	main(int ac, char** av)
 		std::cout << "usage: ft_irc <port> <password>" << std::endl;
 		return 1;
 	}
-	(void)av;
+	Server server(av[1], av[2]);
+	server.start();
 	return 0;
 
 }
