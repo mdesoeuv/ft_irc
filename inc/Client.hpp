@@ -16,6 +16,7 @@ class Client
 	private:
 
 		Client(void);
+		Client(const Client& other);
 		Client&	operator=(const Client& other);
 		
 		std::string _nickname;
