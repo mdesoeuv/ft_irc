@@ -4,6 +4,8 @@ class Server;
 
 #include <iostream>
 #include <string>
+#include <map>
+#incude <vector>
 
 #define MAX_CONNECTIONS 100
 
