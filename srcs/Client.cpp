@@ -1,12 +1,14 @@
 #include "../inc/Client.hpp"
 
-Client::Client(const std::string& nick, 
+Client::Client( int fd, 
+				const std::string& nick, 
 				const std::string& user = "unregistered", 
-				std::string& pass = "unregistered") : 
-				_nickname(nick), _username(user), _password(pass) {
+				std::string& pass = "unregistered" ) : 
+				_socketfd(fd), _nickname(nick), _username(user), _password(pass) {
 }
 
-Client::Client(const Client& other) :	_nickname(other.getNickname()),
+Client::Client(const Client& other) :	_socketfd(fd), 
+										_nickname(other.getNickname()),
 										_username(other.getUsername()),
 										_password(other.getPassword()) {
 }
@@ -15,6 +17,7 @@ Client::~Client() {
 }
 
 Client&	Client::operator=(const Client& rhs) {
+	_socketfd = other.getSocketfd();
 	_nickname = other.getNickname();
 	_username = other.getUsername();
 	_password = other.getPassword();
