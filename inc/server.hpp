@@ -1,11 +1,13 @@
 #pragma once
 
 class Server;
+class Client;
 
 #include <iostream>
 #include <string>
 #include <map>
-#incude <vector>
+#include <vector>
+#include <poll.h>
 
 #define MAX_CONNECTIONS 100
 
@@ -21,7 +23,7 @@ class Server
 	const std::string			_port;
 	const std::string			_password;
 	std::vector<pollfd>			_pollfds;
-	std::map<int, Client *>		_clients;
+	std::map<int, Client>		_clients;
 
 public:
 	Server(const std::string &port, const std::string &password);
