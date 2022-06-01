@@ -115,6 +115,7 @@ void Server::onClientDisconnect(int fd) {
 
 	// removing fd of leaving client from poll 
 	try {
+		//TO DO : Delete Client and remove it in Clients map
 		pollfds_iterator it = _pollfds.begin();
 		while (it++ != _pollfds.end()) {
 			if (it->fd != fd)
