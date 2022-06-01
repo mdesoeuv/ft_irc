@@ -95,16 +95,43 @@ int Server::newSocket() {
 }
 
 void Server::onClientConnect() {
-//ajouter le fd du nouveau client dans le poll
+
+	// adding new fd to poll
+	int fd;
+	sockaddr_in s_address = {};
+	socklen_t s_size = sizeof(s_address);
+
+	fd = accept(_sock, (sockaddr *) &s_address, &s_size);
+	if (fd < 0)
+		throw std::runtime_error("Error while accepting new client.");
+
+	pollfd pollfd = {fd, POLLIN, 0};
+	_pollfds.push_back(pollfd);
+
+	//TO DO : Create new Client and store it in Clients map
 }
 
 void Server::onClientDisconnect(int fd) {
-//retirer le fd du poll
+
+	// removing fd of leaving client from poll 
+	try {
+		pollfds_iterator it = _pollfds.begin();
+		while (it++ != _pollfds.end()) {
+			if (it->fd != fd)
+				continue;
+			_pollfds.erase(it);
+			close(fd);
+			break;
+		}
+	}
+	catch (const std::out_of_range &ex) {
+	}
+	
 }
 
 void Server::onClientMessage(int fd) {
 	try {
-		// getting which client has sent the msg by finding the fd with de client list 
+		// getting which client has sent the msg by finding the fd in de client list 
 		Client *client = _clients.at(fd);
 		//TO DO : we have client and message (readMessage(fd)), what do we do next ?
 	}
