@@ -16,7 +16,7 @@ void Server::start() {
 // Le server écoute désormais les POLL IN
 	while (_running) {
 
-		// poll est une focntion qui boucle jusqu'à l'arrivée de nouvelles data
+		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
 			//error
 
@@ -47,8 +47,50 @@ void Server::start() {
 
 int Server::newSocket() {
 
-	int sockfd = socket();
-	//creation du socket puis régalge du socket en non bloquant avec fcntl puis bind du socket sur l'addresse et le port précisé puis listen
+	/* creating socket :
+	 * domain : AF_INET -> Socket using IPV4
+	 * type : SOCK_STREAM : Dialogue support guaranteeing integrity, providing a binary data stream, and integrating a mechanism for out-of-band data transmissions.
+	 * protocol : 0 indicates that the caller does not want to specify the protocol and will leave it up to the service provider.
+	*/
+	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd < 0)
+		throw std::runtime_error("Error while opening socket.");
+
+	/*Adding option to socket :
+	 * Socket Layer : SOL_SOCKET : Means we modify the socket itslef
+	 * option : SO_REUSEADDR : Forcefully attaching socket to the port
+	 * value : 1 for forcing socket to use port given
+	 */
+	int val = 1;
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)))
+		throw std::runtime_error("Error while setting socket options.");
+
+	/* Setting the socket to NON-BLOCKING mode allowing it to return any data that the system has in it's read buffer
+	 * for that socket even if the fd is still in use. It won't wait for that data to be terminated and will send an error.
+	 * command : F_SETFL : setting for state attribute of fd
+	 * arg : O_NONBLOCK meaning described previously 
+	 */
+	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) {
+		throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
+	}
+
+	// Creating serv_address, giving the parameters to the struct then biding it to the socket
+	struct sockaddr_in serv_address = {};
+
+	// Clear address structure, should prevent some segmentation fault and artifacts
+	bzero((char *) &serv_address, sizeof(serv_address));
+
+	serv_address.sin_family = AF_INET; // Socket using IPV4
+	serv_address.sin_addr.s_addr = INADDR_ANY; // means can attached socket to any address
+	serv_address.sin_port = htons(std::stoi(_port)); // TCP protocol does not read a port int so we use htons() to convert unsigned short int to big-endian network byte order as expected from TCP protocol standards
+
+	// Bind the socket to the IP address and port
+	if (bind(sockfd, (struct sockaddr *) &serv_address, sizeof(serv_address)) < 0)
+		throw std::runtime_error("Error while setting socket IP address and port.");
+
+	// Define max connexions and let socket be able to listen for requests
+	if (listen(sockfd, MAX_CONNECTIONS) < 0)
+		throw std::runtime_error("Error while listening on socket.");
 	return sockfd;
 }
 
