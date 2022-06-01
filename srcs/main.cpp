@@ -4,11 +4,11 @@ int main(int ac, char **av)
 {
 	try
 	{
-		if (argc != 3)
+		if (ac != 3)
 		{
 			throw std::runtime_error("Usage: ./ircserv <port> <password>");
 		}
-		Server server(argv[1], argv[2]);
+		Server server(av[1], av[2]);
 		server.start();
 		return 0;
 	}

@@ -13,12 +13,12 @@ void Server::start() {
 	pollfd server_fd = {_sock, POLLIN, 0};
 	_pollfds.push_back(server_fd);
 
-// Le server écoute désormais les POLL IN
+	// Le server écoute désormais les POLL IN
 	while (_running) {
 
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
-			//error
+			throw std::runtime_error("Error while polling from fd.");
 
 		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
 		pollfds_iterator it = _pollfds.begin();
@@ -103,12 +103,34 @@ void Server::onClientDisconnect(int fd) {
 }
 
 void Server::onClientMessage(int fd) {
-//readMsg
+	try {
+		// getting which client has sent the msg by finding the fd with de client list 
+		Client *client = _clients.at(fd);
+		//TO DO : we have client and message (readMessage(fd)), what do we do next ?
+	}
+	catch (const std::out_of_range &ex) {
+	}
 }
 
 std::string Server::readMessage(int fd) {
 
-	// lire le message du fd avec la fonction recv
+	std::string message;
+
+	char buffer[100];
+	bzero(buffer, 100);
+
+	while (!std::strstr(buffer, "\r\n")) {
+		bzero(buffer, 100);
+
+		if (recv(fd, buffer, 100, 0) < 0) {
+			if (errno != EWOULDBLOCK)
+				throw std::runtime_error("Error while reading buffer from client.");
+		}
+
+		message.append(buffer);
+	}
+
+	return message;
 }
 
 Client *Server::getClient(const std::string &nickname) {
