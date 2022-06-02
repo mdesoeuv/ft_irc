@@ -22,8 +22,17 @@ public:
 class UserCommand : public Command
 {
 public:
-	UserCommand(Server *server, bool authRequired);
+	UserCommand(Server *server);
 	~UserCommand();
+
+	void execute(Client *client, std::vector<std::string> arguments);
+};
+
+class JoinCommand : public Command
+{
+public:
+	JoinCommand(Server *server);
+	~JoinCommand();
 
 	void execute(Client *client, std::vector<std::string> arguments);
 };
