@@ -21,7 +21,7 @@ void Server::start() {
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
 			throw std::runtime_error("Error while polling from fd.");
-
+std::cout << "helloooo !" << std::endl;
 		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
 		for (pollfds_iterator it = _pollfds.begin() ;it != _pollfds.end(); ++it) {
 
@@ -111,6 +111,7 @@ void Server::onClientConnect() {
 
 	// Creates a new Client and store it in Clients map
 	addClient(fd); // on peut check le bool retourné pour verifier l'ajout
+	std::cout << "Client connnected" << std::endl;
 }
 
 void Server::onClientDisconnect(int fd) {
@@ -129,6 +130,7 @@ void Server::onClientDisconnect(int fd) {
 }
 
 void Server::onClientMessage(int fd) {
+	std::cout << "Client message !" << std::endl;
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
 		Client myclient = _clients.at(fd);
