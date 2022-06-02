@@ -1,8 +1,10 @@
 #include "../inc/Server.hpp"
+#include "../inc/CommandHandler.hpp"
 
 Server::Server(const std::string &port, const std::string &password)
 		: _running(1), _host("127.0.0.1"), _port(port), _password(password) {
 
+	_commandHandler = CommandHandler();
 	_sock = newSocket();
 }
 
@@ -131,6 +133,7 @@ void Server::onClientMessage(int fd) {
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
 		Client myclient = _clients.at(fd);
+		_CommandHandler->msgWrite(myclient,readMessage(fd));
 		//TO DO : we have client and message (readMessage(fd)), what do we do next ?
 	}
 	catch (const std::out_of_range &ex) {

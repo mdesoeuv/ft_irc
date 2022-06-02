@@ -4,22 +4,14 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <poll.h>
-#include <sys/socket.h> // socket()
-#include <fcntl.h> //fcnt parameters
-#include <netinet/in.h> // sockaddr_in
-#include <utility> // std::make_pair
-#include <unistd.h> // close
-#include "Client.hpp"
-#include <arpa/inet.h> /* htons et inet_aton */
-#include "CommandHandler.hpp"
 
 #define MAX_CONNECTIONS 100
 
 class Server;
 class Client;
+class CommandHandler;
 
-class Server
+class CommandHandler
 {
 
 	typedef std::vector<pollfd>::iterator pollfds_iterator;
@@ -32,7 +24,6 @@ class Server
 	const std::string			_password;
 	std::vector<pollfd>			_pollfds;
 	std::map<int, Client>		_clients;
-	CommandHandler				_commandHandler;
 
 public:
 	Server(const std::string &port, const std::string &password);
