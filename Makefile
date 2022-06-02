@@ -8,7 +8,8 @@ DEBUG			:= -fsanitize=address
 OPTI			:= -O3
 
 INC				:= Client.hpp \
-					Server.hpp
+					Server.hpp \
+					CommandHandler.hpp
 
 INC_DIR			:= inc/
 
@@ -16,7 +17,9 @@ INC_FILES		:= $(addprefix $(INC_DIR), $(INC))
 
 SRCS			:=	main.cpp \
 					Client.cpp \
-					Server.cpp
+					Server.cpp \
+					CommandHandler.cpp
+
 
 SRCS_DIR		:= srcs/
 

@@ -133,8 +133,7 @@ void Server::onClientMessage(int fd) {
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
 		Client myclient = _clients.at(fd);
-		_CommandHandler->msgWrite(myclient,readMessage(fd));
-		//TO DO : we have client and message (readMessage(fd)), what do we do next ?
+		_commandHandler.writeClientMsg(myclient, readMessage(fd));
 	}
 	catch (const std::out_of_range &ex) {
 	}

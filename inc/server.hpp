@@ -18,6 +18,7 @@
 
 class Server;
 class Client;
+class CommandHandler;
 
 class Server
 {
