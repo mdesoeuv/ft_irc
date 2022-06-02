@@ -162,6 +162,13 @@ std::string Server::readMessage(int fd) {
 	return message;
 }
 
-Client *Server::getClient(const std::string &nickname) {
-	// parcourir l'iterator client pour récuperer le bon s'il existe 
+Client& Server::getClient(const std::string &nickname) {
+	// parcourir l'iterator client pour récuperer le bon s'il existe
+	clients_iterator iter = _clients.begin();
+	for (; iter != _clients.end(); ++iter)
+	{
+		if (iter->second.nick == nickname)
+			return (iter->second);
+	}
+	throw std::out_of_range("Client not found.");
 }

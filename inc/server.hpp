@@ -15,7 +15,7 @@ class Server
 {
 
 	typedef std::vector<pollfd>::iterator pollfds_iterator;
-	typedef std::map<int, Client *>::iterator clients_iterator;
+	typedef std::map<int, Client >::iterator clients_iterator;
 
 	int							_running;
 	int							_sock;
@@ -32,7 +32,7 @@ public:
 	void start();
 
 	std::string getPassword() const { return _password; };
-	Client *getClient(const std::string &nickname);
+	Client& getClient(const std::string &nickname);
 
 	int newSocket();
 	void onClientConnect();
