@@ -2,12 +2,12 @@
 
 Client::Client( int fd, 
 				const std::string& nick, 
-				std::string user = "unregistered", 
-				std::string pass = "unregistered" ) : 
+				std::string user, 
+				std::string pass) : 
 				_socketfd(fd), _nickname(nick), _username(user), _password(pass) {
 }
 
-Client::Client(const Client& other) :	_socketfd(fd), 
+Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
 										_nickname(other.getNickname()),
 										_username(other.getUsername()),
 										_password(other.getPassword()) {
@@ -17,25 +17,27 @@ Client::~Client() {
 }
 
 Client&	Client::operator=(const Client& rhs) {
-	_socketfd = other.getSocketfd();
-	_nickname = other.getNickname();
-	_username = other.getUsername();
-	_password = other.getPassword();
+	_socketfd = rhs.getSocketfd();
+	_nickname = rhs.getNickname();
+	_username = rhs.getUsername();
+	_password = rhs.getPassword();
+
+	return *this ;
 }
 
-const std::string&	Client::getNickname() {
+const std::string&	Client::getNickname() const {
 	return _nickname ;
 }
 
-const std::string&	Client::getUsername() {
+const std::string&	Client::getUsername() const {
 	return _username ;
 }
 
-const std::string&	Client::getPassword() {
+const std::string&	Client::getPassword() const {
 	return _password ;
 }
 
-const std::string&	Client::getFullId(const std::string& host) const {
+std::string	Client::getFullId(const std::string& host) const {
 	return (getNickname() + "!" + getUsername() + "@" + host);
 }
 

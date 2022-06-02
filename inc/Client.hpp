@@ -17,7 +17,7 @@ class Client
 		const std::string&	getUsername() const;
 		const std::string&	getPassword() const;
 		int					getSocketfd() const;
-		const std::string&	getFullId(const std::string& host) const;
+		std::string			getFullId(const std::string& host) const;
 
 		void				setNickname(const std::string& new_nickname);
 		void				setUsername(const std::string& new_username);
