@@ -36,7 +36,7 @@ class Server
 	CommandHandler*				_commandHandler;
 
 public:
-	Server(const std::string host, const std::string password, const std::string port = "6697");
+	Server(const std::string port, const std::string password);
 	~Server();
 
 	void start();

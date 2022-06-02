@@ -1,8 +1,8 @@
 #include "../inc/Server.hpp"
 #include "../inc/CommandHandler.hpp"
 
-Server::Server(const std::string host, const std::string password, const std::string port)
-		: _running(1), _host(host), _port(port), _password(password) {
+Server::Server(const std::string port, const std::string password)
+		: _running(1), _host("127.0.0.1"), _port(port), _password(password) {
 
 	_commandHandler = new CommandHandler(this);
 	_sock = newSocket();
