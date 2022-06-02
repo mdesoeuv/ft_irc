@@ -118,11 +118,12 @@ void Server::onClientDisconnect(int fd) {
 		//TO DO : Delete Client and remove it in Clients map
 		pollfds_iterator it = _pollfds.begin();
 		while (it++ != _pollfds.end()) {
-			if (it->fd != fd)
-				continue;
-			_pollfds.erase(it);
-			close(fd);
-			break;
+			if (it->fd == fd)
+			{
+				_pollfds.erase(it);
+				close(fd);
+				break;
+			}			
 		}
 	}
 	catch (const std::out_of_range &ex) {
