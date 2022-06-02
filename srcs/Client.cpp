@@ -43,7 +43,7 @@ void Client::reply(const std::string &reply) {
 
 void Client::welcome() {
 	reply(RPL_WELCOME(_nickname));
-	std::cout << "welcome messsage sent to "  _nickname << std::endl;
+	std::cout << "welcome messsage sent to "  << _nickname << std::endl;
 }
 
 

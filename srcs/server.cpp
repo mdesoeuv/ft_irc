@@ -37,7 +37,6 @@ void Server::start() {
 
 				if (it->fd == _sock) {
 					onClientConnect();
-					reply("Welcome");
 					break;
 				}
 
@@ -111,8 +110,8 @@ void Server::onClientConnect() {
 	_pollfds.push_back(pollfd);
 
 	// Creates a new Client and store it in Clients map
-	addClient(fd); // on peut check le bool retourné pour verifier l'ajout
-	client.welcome();
+	 // on peut check le bool retourné pour verifier l'ajout
+	addClient(fd).welcome();
 	std::cout << "Client connnected" << std::endl;
 }
 
@@ -175,8 +174,8 @@ Client& Server::getClient(const std::string &nickname) {
 	throw std::out_of_range("Client not found.");
 }
 
-bool	Server::addClient(int fd) {
-	return _clients.insert(std::make_pair(fd, Client(fd, "default_nickname"))).second;
+Client&	Server::addClient(int fd) { // checker la bonne insertion => try/catch
+	return _clients.insert(std::make_pair(fd, Client(fd, "default_nickname"))).first->second; // retourne une pair dont le first est une paire si on la deference
 }
 
 void	Server::deleteClient(int fd) {

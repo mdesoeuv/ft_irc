@@ -48,7 +48,7 @@ public:
 	void		onClientConnect();
 	void		onClientMessage(int fd);
 	void		onClientDisconnect(int fd);
-	bool		addClient(int fd);
+	Client&		addClient(int fd);
 	void		deleteClient(int fd);
 	std::string readMessage(int fd);
 };

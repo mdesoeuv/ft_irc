@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 #include <sys/socket.h> // socket()
 
 class Client
@@ -41,5 +42,7 @@ class Client
 		std::string _nickname;
 		std::string _username;
 		std::string _password;
+		std::string	_hostname;
+		std::string _port;
 
 };
