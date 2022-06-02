@@ -19,7 +19,7 @@ void	CommandHandler::parsing(Client *client, const std::string &message)
 {
 	// split de message: arguments
 	std::vector<std::string>	arguments;
-	split(arguments, message);
+	splitCommand(arguments, message);
 
 	//display du split pour debug parsing
 	for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
@@ -38,7 +38,7 @@ void	CommandHandler::parsing(Client *client, const std::string &message)
 	}
 }
 
-void	CommandHandler::split(std::vector<std::string> &arguments, const std::string& message)
+void	CommandHandler::splitCommand(std::vector<std::string> &arguments, const std::string& message)
 {
 
 	size_t				pos = 0;

@@ -27,5 +27,5 @@ public:
 	~CommandHandler();
 
 	void parsing(Client *client, const std::string &message);
-	void split(std::vector<std::string> &arguments, const std::string& message);
+	void splitCommand(std::vector<std::string> &arguments, const std::string& message);
 };
