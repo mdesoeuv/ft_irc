@@ -21,7 +21,7 @@ void Server::start() {
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
 			throw std::runtime_error("Error while polling from fd.");
-std::cout << "helloooo !" << std::endl;
+		std::cout << "helloooo !" << std::endl;
 		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
 		for (pollfds_iterator it = _pollfds.begin() ;it != _pollfds.end(); ++it) {
 
@@ -37,6 +37,7 @@ std::cout << "helloooo !" << std::endl;
 
 				if (it->fd == _sock) {
 					onClientConnect();
+					reply("Welcome");
 					break;
 				}
 
@@ -111,6 +112,7 @@ void Server::onClientConnect() {
 
 	// Creates a new Client and store it in Clients map
 	addClient(fd); // on peut check le bool retourné pour verifier l'ajout
+	client.welcome();
 	std::cout << "Client connnected" << std::endl;
 }
 

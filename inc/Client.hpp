@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <sys/socket.h> // socket()
 
 class Client
 {
@@ -21,7 +22,11 @@ class Client
 		const std::string&	getUsername() const;
 		const std::string&	getPassword() const;
 		int					getSocketfd() const;
+		std::string 		getPrefix() const;
 		std::string			getFullId(const std::string& host) const;
+		void 				write(const std::string &message) const;
+		void 				welcome();
+		void				reply(const std::string &reply);
 
 		void				setNickname(const std::string& new_nickname);
 		void				setUsername(const std::string& new_username);
