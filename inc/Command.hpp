@@ -1,11 +1,11 @@
 #pragma once
 
-class Command;
 
 #include <string>
 #include "Server.hpp"
 
 class Server;
+
 class Command
 {
 

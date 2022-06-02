@@ -20,7 +20,8 @@ SRCS			:=	main.cpp \
 					Client.cpp \
 					Server.cpp \
 					CommandHandler.cpp \
-					UserCommand.cpp
+					UserCommand.cpp \
+					JoinCommand.cpp
 
 
 SRCS_DIR		:= srcs/
