@@ -47,7 +47,7 @@ void	CommandHandler::split(std::vector<std::string> &arguments, const std::strin
 		if (pos < message.size())
 		{
 			arguments.push_back(iter->first);
-			arguments.push_back(message.substr(pos + iter->first.size()));
+			arguments.push_back(message.substr(pos + 1 + iter->first.size()));
 			break ;
 		}
 		++iter;
