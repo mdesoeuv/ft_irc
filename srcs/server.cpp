@@ -163,8 +163,9 @@ std::string Server::readMessage(int fd) {
 }
 
 Client& Server::getClient(const std::string &nickname) {
-	// parcourir l'iterator client pour récuperer le bon s'il existe
+	
 	clients_iterator iter = _clients.begin();
+
 	for (; iter != _clients.end(); ++iter)
 	{
 		if (iter->second.nick == nickname)
