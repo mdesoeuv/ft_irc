@@ -108,14 +108,15 @@ void Server::onClientConnect() {
 	pollfd pollfd = {fd, POLLIN, 0};
 	_pollfds.push_back(pollfd);
 
-	//TO DO : Create new Client and store it in Clients map
+	// Creates a new Client and store it in Clients map
+	addClient(fd); // on peut check le bool retourné pour verifier l'ajout
 }
 
 void Server::onClientDisconnect(int fd) {
 
 	// removing fd of leaving client from poll 
+	deleteClient(fd);
 	try {
-		//TO DO : Delete Client and remove it in Clients map
 		pollfds_iterator it = _pollfds.begin();
 		while (it++ != _pollfds.end()) {
 			if (it->fd == fd)
@@ -126,8 +127,9 @@ void Server::onClientDisconnect(int fd) {
 			}			
 		}
 	}
-	catch (const std::out_of_range &ex) {
+	catch (const std::out_of_range &ex) { // je ne pense pas que le code du dessus throw
 	}
+	
 	
 }
 
@@ -169,7 +171,15 @@ Client& Server::getClient(const std::string &nickname) {
 	for (; iter != _clients.end(); ++iter)
 	{
 		if (iter->second.nick == nickname)
-			return (iter->second);
+			return iter->second;
 	}
 	throw std::out_of_range("Client not found.");
+}
+
+bool	Server::addClient(int fd) {
+	return _clients.insert(std::make_pair(fd, Client(fd, "default_nickname")))->second;
+}
+
+void	Server::deleteClient(int fd) {
+	_clients.erase(fd);
 }

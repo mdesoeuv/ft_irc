@@ -8,6 +8,7 @@ class Client;
 #include <map>
 #include <vector>
 #include <poll.h>
+#include <utility>
 
 #define MAX_CONNECTIONS 100
 
@@ -34,9 +35,11 @@ public:
 	std::string getPassword() const { return _password; };
 	Client& getClient(const std::string &nickname);
 
-	int newSocket();
-	void onClientConnect();
-	void onClientMessage(int fd);
-	void onClientDisconnect(int fd);
+	int		newSocket();
+	void	onClientConnect();
+	void	onClientMessage(int fd);
+	void	onClientDisconnect(int fd);
+	bool	addClient(int fd);
+	void	deleteClient(int fd);
 };
 
