@@ -33,7 +33,7 @@ class Server
 	const std::string			_password;
 	std::vector<pollfd>			_pollfds;
 	std::map<int, Client>		_clients;
-	CommandHandler				_commandHandler;
+	CommandHandler*				_commandHandler;
 
 public:
 	Server(const std::string host, const std::string password, const std::string port = "6697");

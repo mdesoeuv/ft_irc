@@ -9,7 +9,8 @@ OPTI			:= -O3
 
 INC				:= Client.hpp \
 					Server.hpp \
-					CommandHandler.hpp
+					CommandHandler.hpp \
+					Command.hpp
 
 INC_DIR			:= inc/
 
@@ -18,7 +19,8 @@ INC_FILES		:= $(addprefix $(INC_DIR), $(INC))
 SRCS			:=	main.cpp \
 					Client.cpp \
 					Server.cpp \
-					CommandHandler.cpp
+					CommandHandler.cpp \
+					UserCommand.cpp
 
 
 SRCS_DIR		:= srcs/

@@ -4,11 +4,12 @@
 Server::Server(const std::string host, const std::string password, const std::string port)
 		: _running(1), _host(host), _port(port), _password(password) {
 
-	_commandHandler = CommandHandler();
+	_commandHandler = new CommandHandler(this);
 	_sock = newSocket();
 }
 
 Server::~Server() {
+	delete _commandHandler;
 }
 
 void Server::start() {
@@ -111,7 +112,7 @@ void Server::onClientConnect() {
 
 	// Creates a new Client and store it in Clients map
 	 // on peut check le bool retourné pour verifier l'ajout
-	addClient(fd).welcome();
+	addClient(fd);
 	std::cout << "Client connnected" << std::endl;
 }
 
@@ -135,7 +136,7 @@ void Server::onClientMessage(int fd) {
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
 		Client myclient = _clients.at(fd);
-		_commandHandler.writeClientMsg(myclient, readMessage(fd));
+		_commandHandler->parsing(&myclient, readMessage(fd));
 	}
 	catch (const std::out_of_range &ex) {
 	}

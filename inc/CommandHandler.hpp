@@ -1,26 +1,27 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <map>
-#include <vector>
-
-#define MAX_CONNECTIONS 100
-
-class Server;
-class Client;
 class CommandHandler;
 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+
+#include "Command.hpp"
+#include "Server.hpp"
+
+class Server;
 class CommandHandler
 {
 
+private:
+	Server *_server;
+	std::map<std::string, Command *> _commands;
+
 public:
-	CommandHandler();
+	CommandHandler(Server *server);
+
 	~CommandHandler();
 
-	void		writeClientMsg(Client client, std::string msg);
-	//void		join(Client client);
-	//void		quit(Client client);
-	//commands list
+	void parsing(Client *client, const std::string &message);
 };
-
