@@ -7,8 +7,7 @@ DEBUG			:= -fsanitize=address
 
 OPTI			:= -O3
 
-INC				:=	ft_irc.hpp \
-					Client.hpp \
+INC				:= Client.hpp \
 					Server.hpp
 
 INC_DIR			:= inc/
