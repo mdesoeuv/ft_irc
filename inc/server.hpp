@@ -1,16 +1,21 @@
 #pragma once
 
-class Server;
-class Client;
-
 #include <iostream>
 #include <string>
 #include <map>
 #include <vector>
 #include <poll.h>
-#include <utility>
+#include <sys/socket.h> // socket()
+#include <fcntl.h> //fcnt parameters
+#include <netinet/in.h> // sockaddr_in
+#include <utility> // std::make_pair
+#include <unistd.h> // close
+#include "Client.hpp"
 
 #define MAX_CONNECTIONS 100
+
+class Server;
+class Client;
 
 class Server
 {
@@ -35,11 +40,12 @@ public:
 	std::string getPassword() const { return _password; };
 	Client& getClient(const std::string &nickname);
 
-	int		newSocket();
-	void	onClientConnect();
-	void	onClientMessage(int fd);
-	void	onClientDisconnect(int fd);
-	bool	addClient(int fd);
-	void	deleteClient(int fd);
+	int			newSocket();
+	void		onClientConnect();
+	void		onClientMessage(int fd);
+	void		onClientDisconnect(int fd);
+	bool		addClient(int fd);
+	void		deleteClient(int fd);
+	std::string readMessage(int fd);
 };
 

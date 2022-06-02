@@ -11,7 +11,11 @@ class Client
 				std::string user = "unregistered", 
 				std::string pass = "unregistered" );
 
+		Client(const Client& other);
+		
 		~Client(void);
+
+		Client&	operator=(const Client& other);
 
 		const std::string&	getNickname() const;
 		const std::string&	getUsername() const;
@@ -27,8 +31,6 @@ class Client
 	private:
 
 		Client(void);
-		Client(const Client& other);
-		Client&	operator=(const Client& other);
 		
 		int			_socketfd;
 		std::string _nickname;

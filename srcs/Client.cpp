@@ -37,6 +37,10 @@ const std::string&	Client::getPassword() const {
 	return _password ;
 }
 
+int					Client::getSocketfd() const {
+	return _socketfd ;
+}
+
 std::string	Client::getFullId(const std::string& host) const {
 	return (getNickname() + "!" + getUsername() + "@" + host);
 }

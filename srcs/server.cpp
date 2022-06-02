@@ -136,7 +136,7 @@ void Server::onClientDisconnect(int fd) {
 void Server::onClientMessage(int fd) {
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
-		Client client = _clients.at(fd);
+		Client myclient = _clients.at(fd);
 		//TO DO : we have client and message (readMessage(fd)), what do we do next ?
 	}
 	catch (const std::out_of_range &ex) {
@@ -170,14 +170,14 @@ Client& Server::getClient(const std::string &nickname) {
 
 	for (; iter != _clients.end(); ++iter)
 	{
-		if (iter->second.nick == nickname)
+		if (iter->second.getNickname() == nickname)
 			return iter->second;
 	}
 	throw std::out_of_range("Client not found.");
 }
 
 bool	Server::addClient(int fd) {
-	return _clients.insert(std::make_pair(fd, Client(fd, "default_nickname")))->second;
+	return _clients.insert(std::make_pair(fd, Client(fd, "default_nickname"))).second;
 }
 
 void	Server::deleteClient(int fd) {
