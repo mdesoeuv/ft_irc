@@ -116,21 +116,15 @@ void Server::onClientDisconnect(int fd) {
 
 	// removing fd of leaving client from poll 
 	deleteClient(fd);
-	try {
-		pollfds_iterator it = _pollfds.begin();
-		while (it++ != _pollfds.end()) {
-			if (it->fd == fd)
-			{
-				_pollfds.erase(it);
-				close(fd);
-				break;
-			}			
-		}
-	}
-	catch (const std::out_of_range &ex) { // je ne pense pas que le code du dessus throw
-	}
 	
-	
+	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it) {
+		if (it->fd == fd)
+		{
+			_pollfds.erase(it);
+			close(fd);
+			break;
+		}			
+	}
 }
 
 void Server::onClientMessage(int fd) {
