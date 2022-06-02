@@ -7,13 +7,17 @@ DEBUG			:= -fsanitize=address
 
 OPTI			:= -O3
 
-INC				:= ft_irc.hpp
+INC				:=	ft_irc.hpp \
+					Client.hpp \
+					Server.hpp
 
 INC_DIR			:= inc/
 
 INC_FILES		:= $(addprefix $(INC_DIR), $(INC))
 
-SRCS			:= main.cpp
+SRCS			:=	main.cpp \
+					Client.cpp \
+					Server.cpp
 
 SRCS_DIR		:= srcs/
 

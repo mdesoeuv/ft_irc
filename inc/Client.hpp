@@ -6,10 +6,10 @@ class Client
 {
 	public:
 
-		Client( int fd
+		Client( int fd,
 				const std::string& nick, 
-				const std::string& user = "unregistered", 
-				const std::string& pass = "unregistered" );
+				std::string user = "unregistered", 
+				std::string pass = "unregistered" );
 
 		~Client(void);
 

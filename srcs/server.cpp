@@ -1,4 +1,4 @@
-#include "../inc/server.hpp"
+#include "../inc/Server.hpp"
 
 Server::Server(const std::string &port, const std::string &password)
 		: _running(1), _host("127.0.0.1"), _port(port), _password(password) {

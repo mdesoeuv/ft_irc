@@ -2,8 +2,8 @@
 
 Client::Client( int fd, 
 				const std::string& nick, 
-				const std::string& user = "unregistered", 
-				std::string& pass = "unregistered" ) : 
+				std::string user = "unregistered", 
+				std::string pass = "unregistered" ) : 
 				_socketfd(fd), _nickname(nick), _username(user), _password(pass) {
 }
 
