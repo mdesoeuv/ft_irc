@@ -136,7 +136,7 @@ void Server::onClientDisconnect(int fd) {
 void Server::onClientMessage(int fd) {
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
-		Client *client = _clients.at(fd);
+		Client client = _clients.at(fd);
 		//TO DO : we have client and message (readMessage(fd)), what do we do next ?
 	}
 	catch (const std::out_of_range &ex) {
