@@ -18,14 +18,15 @@ CommandHandler::~CommandHandler()
 
 void CommandHandler::parsing(Client *client, const std::string &message)
 {
+	// split de message: arguments
 		try
 		{
-			//parsing split : command_name puis arguments
-			Command *command = _commands.at(command_name);
+			Command *command = _commands.at(arguments[0]);
 			command->execute(client, arguments);
 		}
 		catch (const std::out_of_range &e)
 		{
 			client->reply("Command unknown");
 		}
+		// free arguments
 }
