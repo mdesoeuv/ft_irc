@@ -18,43 +18,37 @@ CommandHandler::~CommandHandler()
 void	CommandHandler::parsing(Client *client, const std::string &message)
 {
 	// split de message: arguments
-		std::vector<std::string>	arguments;
-		split(arguments, message);
+	std::vector<std::string>	arguments;
+	split(arguments, message);
 
-		//display du split pour debug parsing
-		for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
-			std::cout << *it << std::endl;
-		try
-		{
-			Command *command = _commands.at(arguments[0]);
-			command->execute(client, arguments);
-		}
-		catch (const std::out_of_range &e)
-		{
-			
-			std::cout <<"Command unknown :" << std::endl;
-			std::cout << message << std::endl;
-			client->reply("Command unknown");
-		}
-		// free arguments
+	//display du split pour debug parsing
+	for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
+		std::cout << *it << std::endl;
+	try
+	{
+		Command *command = _commands.at(arguments[0]);
+		command->execute(client, arguments);
+	}
+	catch (const std::out_of_range &e)
+	{
+		
+		std::cout <<"Command unknown :" << std::endl;
+		std::cout << message << std::endl;
+		client->reply("Command unknown");
+	}
 }
 
-void	CommandHandler::split(std::vector<std::string> &arguments, const std::string& message) {
+void	CommandHandler::split(std::vector<std::string> &arguments, const std::string& message)
+{
 
-	commands_iterator	iter = _commands.begin();
 	size_t				pos = 0;
 
-	while (iter != _commands.end())
+	pos = message.find(" ");
+	if (pos < message.size())
 	{
-		pos = message.find(iter->first);
-		if (pos < message.size())
-		{
-			arguments.push_back(iter->first);
-			arguments.push_back(message.substr(pos + 1 + iter->first.size()));
-			break ;
-		}
-		++iter;
+		arguments.push_back(message.substr(0, pos));
+		arguments.push_back(message.substr(pos + 1));
 	}
-	arguments.push_back("");
-
+	else
+		arguments.push_back(message);
 }
