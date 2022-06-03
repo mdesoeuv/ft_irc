@@ -115,9 +115,6 @@ void Server::onClientConnect() {
 
 	// Creates a new Client and store it in Clients map
 	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port))));
-		std::cout << _clients.begin()->second.getPort() << std::endl;
-		std::cout << _clients.begin()->second.getNickname() << std::endl;
-
 	std::cout << "Client connnected" << std::endl;
 }
 
@@ -175,7 +172,6 @@ Client *Server::getClient(const std::string nickname) {
 		if (!nickname.compare(it->second.getNickname()))
 			return &it->second;
 	}
-	std::cout <<"No client found" << std::endl;
 	return nullptr;
 }
 
