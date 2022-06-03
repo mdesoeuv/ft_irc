@@ -6,13 +6,15 @@ UserCommand::~UserCommand() {}
 
 void UserCommand::execute(Client& client, std::string arguments) {
 	//checker si user déjà registered ?
-	std::vector<std::string> splited_args = arguments;
+	std::cout << arguments << std::endl;
+	std::vector<std::string> splited_args;
+	split_args(arguments, " ", splited_args);
 	
 	std::cout <<"=====" << std::endl;
-	for (std::string::iterator it = arguments.begin(); it != arguments.end(); ++it)
+	for (std::vector<std::string>::iterator it = splited_args.begin(); it != splited_args.end(); ++it)
 		std::cout << *it << std::endl;
 	std::cout <<"=====" << std::endl;
-	
+
 	if (splited_args.size() < 4) {
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), std::string("USER")));
 		return;
