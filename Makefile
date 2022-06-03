@@ -7,7 +7,7 @@ DEBUG			:= -fsanitize=address
 
 OPTI			:= -O3
 
-INC				:= Client.hpp \
+INC				:=	Client.hpp \
 					Server.hpp \
 					CommandHandler.hpp \
 					Command.hpp \
