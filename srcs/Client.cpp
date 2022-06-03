@@ -33,7 +33,8 @@ std::string Client::getPrefix() const {
 }
 
 void Client::write(const std::string &message) const {
-
+	
+	// TO DO check la taille max du message
 	std::string buffer = message + "\r\n";
 	if (send(_socketfd, buffer.c_str(), buffer.length(), 0) < 0)
 		throw std::runtime_error("Error while sending message to client.");

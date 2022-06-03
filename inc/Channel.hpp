@@ -4,14 +4,16 @@
 #include <string>
 #include "Client.hpp"
 
+class Client;
+
 class Channel
 {
 	private:
 
-		std::vector<std::string>	_user_list;
-		std::vector<std::string>	_op_list;
-		std::string					_name;
-		std::string					_topic;
+		std::vector<Client>	_user_list;
+		std::vector<Client>	_op_list;
+		std::string			_name;
+		std::string			_topic;
 		
 	public:
 
@@ -28,10 +30,12 @@ class Channel
 		void		setTopic(const std::string new_topic);
 		bool		isUser(const std::string nick) const;
 		bool		isOp(const std::string nick) const;
-		void		addUser(const std::string user);
-		void		addOp(const std::string op);
-		void		delUser(const std::string user);
-		void		delOp(const std::string op);
+		void		addUser(Client user);
+		void		addOp(Client op);
+		void		delUser(Client user);
+		void		delOp(Client op);
+		std::string getUserList() const;
+		void		broadcastMessage(std::string message);
 
 
 };

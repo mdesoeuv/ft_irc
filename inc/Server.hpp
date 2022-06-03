@@ -15,12 +15,14 @@
 #include "CommandHandler.hpp"
 #include "utils.hpp"
 #include <netdb.h>
+#include "Channel.hpp"
 
 #define MAX_CONNECTIONS 100
 
 class Server;
 class Client;
 class CommandHandler;
+class Channel;
 
 class Server
 {
@@ -38,6 +40,8 @@ class Server
 	CommandHandler*				_commandHandler;
 
 public:
+	std::vector<Channel>		_channels; // a voir
+
 	Server(const std::string port, const std::string password);
 	~Server();
 
