@@ -31,7 +31,6 @@ void	CommandHandler::parsing(Client *client, const std::string &message)
 		}
 		catch (const std::out_of_range &e)
 		{
-			
 			std::cout <<"Command unknown :" << std::endl;
 			std::cout << message << std::endl;
 			client->reply("Command unknown");
