@@ -18,5 +18,6 @@
 #define ERR_UNKNOWNCOMMAND(myclient, command)			"421 " + myclient + " " + command + " :Unknown command"
 #define ERR_ALREADYAUTHENTIFIED(myclient)				"462 " + myclient + " :You may not reregister"
 #define ERR_WRONGPASSWORD(myclient)						"464 " + myclient + " :Password incorrect"
+#define ERR_ALREADYREGISTERED(myclient)					"462 " + myclient + " :You may not reregister"
 
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);

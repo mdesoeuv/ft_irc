@@ -1,7 +1,7 @@
 #include "../inc/Client.hpp"
 
 Client::Client(int fd,const std::string hostname, int port)
-		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _port(port){
+		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port){
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
@@ -11,6 +11,7 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_password(other.getPassword()),
 										_hostname(other._hostname),
 										_isAuthentified(other.isAuthentified()),
+										_isRegistered(other.isRegistered()),
 										_port(other.getPort()) {
 }
 
@@ -24,6 +25,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_realName = rhs.getRealName();
 	_password = rhs.getPassword();
 	_isAuthentified = rhs.isAuthentified();
+	_isRegistered = rhs.isRegistered();
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
 
@@ -46,12 +48,19 @@ void Client::reply(const std::string &reply) {
 }
 
 void Client::welcome() {
+	if (_isAuthentified == false || _username.empty() || _realName.empty() || _nickname.empty())
+		return;
+	setIsRegistered(true);
 	reply(RPL_WELCOME(_nickname));
 	std::cout << "welcome messsage sent to "  << _nickname << std::endl;
 }
 
 bool	Client::isAuthentified() const {
 	return _isAuthentified ;
+}
+
+bool	Client::isRegistered() const {
+	return _isRegistered ;
 }
 
 const std::string&	Client::getNickname() const {
@@ -104,5 +113,9 @@ void				Client::setPassword(const std::string& new_password) {
 
 void				Client::setIsAuthentified(bool is_Authentified) {
 	_isAuthentified = is_Authentified;
+}
+
+void				Client::setIsRegistered(bool is_Registered) {
+	_isRegistered = is_Registered;
 }
 

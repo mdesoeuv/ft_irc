@@ -7,6 +7,11 @@ UserCommand::~UserCommand() {}
 void UserCommand::execute(Client& client, std::string arguments) {
 	//checker si user déjà registered ?
 	
+	if (client.isRegistered() || !client.isAuthentified()) {
+		client.reply(ERR_ALREADYREGISTERED(client.getNickname()));
+		return;
+	}
+
 	std::vector<std::string> splited_args;
 	split_args(arguments, " ", splited_args);
 
