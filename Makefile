@@ -11,6 +11,7 @@ INC				:=	Client.hpp \
 					Server.hpp \
 					CommandHandler.hpp \
 					Command.hpp \
+					Channel.hpp \
 					utils.hpp
 
 INC_DIR			:= inc/
@@ -26,6 +27,7 @@ SRCS			:=	main.cpp \
 					Commands/NickCommand.cpp \
 					Commands/QuitCommand.cpp \
 					Commands/PingCommand.cpp \
+					Channel.cpp \
 					utils.cpp
 
 SRCS_DIR		:= srcs/

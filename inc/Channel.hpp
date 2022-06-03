@@ -8,10 +8,10 @@ class Channel
 {
 	private:
 
-		std::vector<Client *>	_user_list;
-		std::vector<Client *>	_op_list;
-		std::string				_name;
-		std::string				_topic;
+		std::vector<std::string>	_user_list;
+		std::vector<std::string>	_op_list;
+		std::string					_name;
+		std::string					_topic;
 		
 	public:
 
@@ -22,16 +22,16 @@ class Channel
 
 		Channel& operator=(const Channel& rhs);
 
-		void		getName() const;
-		void		getTopic() const;
-		std::string	setName(const std::string new_name);
-		std::string	setTopic(const std::string new_topic);
+		std::string	getName() const;
+		std::string	getTopic() const;
+		void		setName(const std::string new_name);
+		void		setTopic(const std::string new_topic);
 		bool		isUser(const std::string nick) const;
 		bool		isOp(const std::string nick) const;
-		void		addUser(Client* user);
-		void		addOp(Client* op);
-		void		delUser(Client* user);
-		void		delOp(Client* op);
+		void		addUser(const std::string user);
+		void		addOp(const std::string op);
+		void		delUser(const std::string user);
+		void		delOp(const std::string op);
 
 
 };

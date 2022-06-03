@@ -42,36 +42,36 @@ void	Channel::setTopic(const std::string new_topic) {
 }
 
 bool	Channel::isUser(const std::string nick) const {
-	for (std::vector<Client *>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	for (std::vector<std::string>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		if (it->_nickname == nick)
+		if (*it == nick)
 			return true;
 	}
 	return false;
 }
 
 bool	Channel::isOp(const std::string op) const {
-	for (std::vector<Client *>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+	for (std::vector<std::string>::const_iterator it = _op_list.begin(); it != _op_list.end(); ++it)
 	{
-		if (it->_nickname == op)
+		if (*it == op)
 			return true;
 	}
 	return false;
 }
 
-void	Channel::addUser(Client* user) {
+void	Channel::addUser(const std::string user) {
 	_user_list.push_back(user);
 }
 
-void	Channel::addOp(Client* op) {
+void	Channel::addOp(const std::string op) {
 	_op_list.push_back(op);
 }
 
 
-void	Channel::delUser(Client* user) {
-	for (std::vector<Client *>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+void	Channel::delUser(const std::string user) {
+	for (std::vector<std::string>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		if (it->_nickname == user)
+		if (*it == user)
 		{
 			_user_list.erase(it);
 			return ;
@@ -79,10 +79,10 @@ void	Channel::delUser(Client* user) {
 	}
 }
 
-void	Channel::delOp(Client* op) {
-	for (std::vector<Client *>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+void	Channel::delOp(const std::string op) {
+	for (std::vector<std::string>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
 	{
-		if (it->_nickname == op)
+		if (*it == op)
 			_op_list.erase(it);
 		return ;
 	}
