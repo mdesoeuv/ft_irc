@@ -109,9 +109,11 @@ void Server::onClientConnect() {
 	pollfd pollfd = {fd, POLLIN, 0};
 	_pollfds.push_back(pollfd);
 
+	char hostname[NI_MAXHOST];
+	if (getnameinfo((struct sockaddr *) &s_address, sizeof(s_address), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) != 0)
+		throw std::runtime_error("Error while getting hostname of new client.");
 	// Creates a new Client and store it in Clients map
-	 // on peut check le bool retourné pour verifier l'ajout
-	addClient(fd);
+	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port))));
 	std::cout << "Client connnected" << std::endl;
 }
 
@@ -172,10 +174,6 @@ Client *Server::getClient(const std::string &nickname) {
 			return &iter->second;
 	}
 	return nullptr;
-}
-
-Client&	Server::addClient(int fd) { // checker la bonne insertion => try/catch
-	return _clients.insert(std::make_pair(fd, Client(fd))).first->second; // retourne une pair dont le first est une paire si on la deference
 }
 
 void	Server::deleteClient(int fd) {
