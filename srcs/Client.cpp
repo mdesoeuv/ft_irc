@@ -74,6 +74,10 @@ int					Client::getPort() const {
 	return _port ;
 }
 
+const std::string&	Client::getHostname() const {
+	return _hostname ;
+}
+
 std::string	Client::getFullId(const std::string& host) const {
 	return (getNickname() + "!" + getUsername() + "@" + host);
 }
