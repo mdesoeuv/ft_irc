@@ -68,3 +68,12 @@ public:
 
 	void execute(Client& client, std::string arguments);
 };
+
+class PassCommand : public Command
+{
+public:
+	PassCommand(Server *server);
+	~PassCommand();
+
+	void execute(Client& client, std::string arguments);
+};

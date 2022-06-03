@@ -5,8 +5,12 @@ UserCommand::UserCommand(Server *server) : Command(server) {}
 UserCommand::~UserCommand() {}
 
 void UserCommand::execute(Client& client, std::string arguments) {
-	//checker si user déjà registered ?
 	
+	if (client.isRegistered() || !client.isAuthentified()) {
+		client.reply(ERR_ALREADYREGISTERED(client.getNickname()));
+		return;
+	}
+
 	std::vector<std::string> splited_args;
 	split_args(arguments, " ", splited_args);
 
@@ -15,7 +19,7 @@ void UserCommand::execute(Client& client, std::string arguments) {
 		return;
 	}
 	client.setUsername(splited_args[0]);
-	client.setRealName(splited_args[3]);
+	client.setRealName(splited_args[3].substr(splited_args[3][0] == ':' ? 1 : 0));
 	std::cout <<"Client Username set : " << client.getUsername() << std::endl;
-	std::cout <<"Client RealName set : " << client.getRealName() << std::endl; // todo delete ":" in front of splited_args[3]
+	std::cout <<"Client RealName set : " << client.getRealName() << std::endl; 
 }
