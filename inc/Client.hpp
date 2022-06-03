@@ -21,6 +21,7 @@ class Client
 		const std::string&	getUsername() const;
 		const std::string&	getRealName() const;
 		const std::string&	getPassword() const;
+		const std::string&	getHostname() const;
 		int					getSocketfd() const;
 		int					getPort() const;
 		std::string 		getPrefix() const;

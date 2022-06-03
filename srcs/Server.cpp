@@ -136,7 +136,7 @@ void Server::onClientMessage(int fd) {
 	std::cout << "Client message !" << std::endl;
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
-		Client myclient = _clients.at(fd);
+		Client& myclient = _clients.at(fd);
 		_commandHandler->parsing(myclient, readMessage(fd));
 	}
 	catch (const std::out_of_range &ex) {
