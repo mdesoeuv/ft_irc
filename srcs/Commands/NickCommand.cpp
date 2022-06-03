@@ -14,6 +14,6 @@ void NickCommand::execute(Client *client, std::vector<std::string> arguments) {
 		client->reply(ERR_NICKNAMEALREADYUSED(client->getNickname()));
 		return;
 	}
+	std::cout <<"Client Nickname set : " << arguments[1] << std::endl;
 	client->setNickname(arguments[1]);
-	client->welcome();
 }
