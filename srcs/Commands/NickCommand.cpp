@@ -1,13 +1,19 @@
-#include "../inc/Command.hpp"
+#include "../../inc/Command.hpp"
 
 NickCommand::NickCommand(Server *server) : Command(server) {}
 
 NickCommand::~NickCommand() {}
 
 void NickCommand::execute(Client *client, std::vector<std::string> arguments) {
-	(void)arguments;
-	(void)client;
-	//client->setUsername(arguments[1]);
-	//client->setRealName(arguments[2]);
-	//client->welcome();
+	if (arguments.empty() || arguments[1].empty()) {
+		client->reply(ERR_NONICKNAMEGIVEN(client->getNickname()));
+		return;
+	}
+
+	if (_server->getClient(arguments[1])) {
+		client->reply(ERR_NICKNAMEALREADYUSED(client->getNickname()));
+		return;
+	}
+	client->setNickname(arguments[1]);
+	client->welcome();
 }
