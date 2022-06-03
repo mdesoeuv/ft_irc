@@ -10,10 +10,12 @@ void	split_args(const std::string str, const std::string sep, std::vector<std::s
 
 	while (message.size() != 0)
 	{
-		// split in sub messages sep by \r\n
 		pos = message.find(sep);
 		if (pos > message.size())
+		{
+			result.push_back(message);
 			break;
+		}
 		result.push_back(message.substr(0, pos));
 		message.erase(0, pos + sep.size());
 	}
