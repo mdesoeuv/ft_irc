@@ -27,26 +27,41 @@ CommandHandler::~CommandHandler()
 		delete it->second;
 }
 
-void	CommandHandler::parsing(Client *client, const std::string &message)
+void	CommandHandler::parsing(Client *client, std::string message)
 {
-	// split de message: arguments
-	std::vector<std::string>	arguments;
-	splitCommand(arguments, message);
+	size_t		pos = 0;
+	std::string	sub_message;
 
-	//display du split pour debug parsing
-	for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
-		std::cout << *it << std::endl;
-	try
+	while (message.size() != 0)
 	{
-		Command *command = _commands.at(arguments[0]);
-		command->execute(client, arguments);
-	}
-	catch (const std::out_of_range &e)
-	{
-		
-		std::cout <<"Command unknown :" << std::endl;
-		std::cout << message << std::endl;
-		//client->reply("Command unknown");
+		// split in sub messages sep by \r\n
+		pos = message.find("\r\n");
+		std::cout << pos << std::endl;
+		if (pos > message.size())
+			break;
+		sub_message = message.substr(0, pos);
+		message.erase(0, pos + 2);
+
+		// split of the first word of sub message
+		std::vector<std::string>	arguments;
+		splitCommand(arguments, sub_message);
+
+		//display du split pour debug parsing
+		// for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
+		// 	std::cout << *it << std::endl;
+		try
+		{
+			Command *command = _commands.at(arguments[0]);
+			command->execute(client, arguments);
+		}
+		catch (const std::out_of_range &e)
+		{
+			
+			std::cout <<"Command unknown :" << std::endl;
+			std::cout << sub_message << std::endl;
+			//client->reply("Command unknown");
+		}
+		arguments.clear();
 	}
 }
 
