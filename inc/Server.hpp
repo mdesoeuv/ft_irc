@@ -14,6 +14,7 @@
 #include <arpa/inet.h> /* htons et inet_aton */
 #include "CommandHandler.hpp"
 #include "utils.hpp"
+#include <netdb.h>
 
 #define MAX_CONNECTIONS 100
 
@@ -49,7 +50,6 @@ public:
 	void		onClientConnect();
 	void		onClientMessage(int fd);
 	void		onClientDisconnect(int fd);
-	Client&		addClient(int fd);
 	void		deleteClient(int fd);
 	std::string readMessage(int fd);
 };

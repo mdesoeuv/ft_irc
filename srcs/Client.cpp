@@ -1,13 +1,15 @@
 #include "../inc/Client.hpp"
 
-Client::Client(int fd) : _socketfd(fd) {
+Client::Client(int fd,const std::string hostname, int port)
+		: _socketfd(fd), _hostname(hostname), _port(port){
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
 										_nickname(other.getNickname()),
 										_username(other.getUsername()),
 										_realName(other.getRealName()),
-										_password(other.getPassword()) {
+										_password(other.getPassword()),
+										_port(other.getPort()) {
 }
 
 Client::~Client() {
@@ -19,6 +21,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_username = rhs.getUsername();
 	_realName = rhs.getRealName();
 	_password = rhs.getPassword();
+	_port = rhs.getPort();
 
 	return *this ;
 }
@@ -65,6 +68,10 @@ int					Client::getSocketfd() const {
 	return _socketfd ;
 }
 
+int					Client::getPort() const {
+	return _port ;
+}
+
 std::string	Client::getFullId(const std::string& host) const {
 	return (getNickname() + "!" + getUsername() + "@" + host);
 }
@@ -87,4 +94,8 @@ void				Client::setPassword(const std::string& new_password) {
 
 void				Client::setSocketfd(int new_socketfd) {
 	_socketfd = new_socketfd;
+}
+
+void				Client::setPort(int new_port) {
+	_port = new_port;
 }
