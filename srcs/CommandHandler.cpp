@@ -34,9 +34,8 @@ void	CommandHandler::parsing(Client& client, std::string message)
 
 	while (message.size() != 0)
 	{
-		// split in sub messages sep by \r\n
+		// Divide in sub messages separated by \r\n
 		pos = message.find("\r\n");
-		std::cout << pos << std::endl;
 		if (pos > message.size())
 			break;
 		sub_message = message.substr(0, pos);
@@ -59,7 +58,7 @@ void	CommandHandler::parsing(Client& client, std::string message)
 			
 			std::cout <<"Command unknown :" << std::endl;
 			std::cout << sub_message << std::endl;
-			//client->reply("Command unknown");
+			client.reply(ERR_UNKNOWNCOMMAND(client.getNickname(), sub_message));
 		}
 		arguments.clear();
 	}

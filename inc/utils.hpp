@@ -14,5 +14,6 @@
 #define ERR_NONICKNAMEGIVEN(myclient)					"431 " + myclient + " :Nickname not given"
 #define ERR_NICKNAMEALREADYUSED(myclient)				"433 " + myclient + " " + myclient  + " :Nickname is already in use"
 #define ERR_CMDNEEDMOREPARAMS(myclient, command)		"461 " + myclient + " " + command + "  :Not enough parameters"
+#define ERR_UNKNOWNCOMMAND(myclient, command)				"421 " + myclient + " " + command + " :Unknown command"
 
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);
