@@ -7,11 +7,12 @@ DEBUG			:= -fsanitize=address
 
 OPTI			:= -O3
 
-INC				:= Client.hpp \
+INC				:=	Client.hpp \
 					Server.hpp \
 					CommandHandler.hpp \
 					Command.hpp \
-					utils.hpp
+					utils.hpp \
+					Channel.hpp
 
 INC_DIR			:= inc/
 
@@ -25,7 +26,8 @@ SRCS			:=	main.cpp \
 					Commands/JoinCommand.cpp \
 					Commands/NickCommand.cpp \
 					Commands/QuitCommand.cpp \
-					utils.cpp
+					utils.cpp \
+					Channel.cpp
 
 SRCS_DIR		:= srcs/
 

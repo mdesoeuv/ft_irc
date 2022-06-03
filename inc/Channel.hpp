@@ -22,16 +22,16 @@ class Channel
 
 		Channel& operator=(const Channel& rhs);
 
-		void	getName() const;
-		void	getTopic() const;
-		void	setName(const std::string new_name);
-		void	setTopic(const std::string new_topic);
-		bool	isUser(const std::string nick) const;
-		bool	isOp(const std::string nick) const;
-		void	addUser(Client* user);
-		void	addOp(Client* op);
-		void	delUser(Client* user);
-		void	delOp(Client* op);
+		void		getName() const;
+		void		getTopic() const;
+		std::string	setName(const std::string new_name);
+		std::string	setTopic(const std::string new_topic);
+		bool		isUser(const std::string nick) const;
+		bool		isOp(const std::string nick) const;
+		void		addUser(Client* user);
+		void		addOp(Client* op);
+		void		delUser(Client* user);
+		void		delOp(Client* op);
 
 
 };
