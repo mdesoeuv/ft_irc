@@ -73,3 +73,12 @@ public:
 
 	void execute(Client& client, std::string arguments);
 };
+
+class PongCommand : public Command
+{
+public:
+	PongCommand(Server *server);
+	~PongCommand();
+
+	void execute(Client& client, std::string arguments);
+};

@@ -10,7 +10,7 @@ CommandHandler::CommandHandler(Server *server) : _server(server)
 	_commands["QUIT"] = new QuitCommand(_server);
 
 	_commands["PING"] = new PingCommand(_server);
-
+	_commands["PONG"] = new PongCommand(_server);
 	//_commands["PASS"] = new PassCommand(_server);
 
 	// _commands["JOIN"] = new JoinCommand(_server);
@@ -20,7 +20,6 @@ CommandHandler::CommandHandler(Server *server) : _server(server)
 
 	// _commands["PRIVMSG"] = new PrivMsgCommand(_server);
 	// _commands["NOTICE"] = new NoticeCommand(_server);
-	// _commands["PONG"] = new PongCommand(_server);
 }
 
 CommandHandler::~CommandHandler()

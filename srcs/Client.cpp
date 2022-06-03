@@ -1,7 +1,7 @@
 #include "../inc/Client.hpp"
 
 Client::Client(int fd,const std::string hostname, int port)
-		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port){
+		: _socketfd(fd), _hostname(hostname), _isAuthentified(true), _isRegistered(false), _port(port){
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
@@ -48,6 +48,10 @@ void Client::reply(const std::string &reply) {
 }
 
 void Client::welcome() {
+	std::cout << "_isAuthentified"  << _isAuthentified << std::endl;
+	std::cout << "_username"  << _username << std::endl;
+	std::cout << "_realName"  << _realName << std::endl;
+	std::cout << "_nickname"  << _nickname << std::endl;
 	if (_isAuthentified == false || _username.empty() || _realName.empty() || _nickname.empty())
 		return;
 	setIsRegistered(true);
