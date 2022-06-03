@@ -22,4 +22,5 @@ void UserCommand::execute(Client& client, std::string arguments) {
 	client.setRealName(splited_args[3].substr(splited_args[3][0] == ':' ? 1 : 0));
 	std::cout <<"Client Username set : " << client.getUsername() << std::endl;
 	std::cout <<"Client RealName set : " << client.getRealName() << std::endl; 
+	client.welcome();
 }
