@@ -8,9 +8,11 @@ CommandHandler::CommandHandler(Server *server) : _server(server)
 	_commands["NICK"] = new NickCommand(_server);
 	_commands["USER"] = new UserCommand(_server);
 	_commands["QUIT"] = new QuitCommand(_server);
-	// _commands["PASS"] = new PassCommand(_server);
 
-	// _commands["PING"] = new PingCommand(_server);
+	_commands["PING"] = new PingCommand(_server);
+
+	//_commands["PASS"] = new PassCommand(_server);
+
 	// _commands["PONG"] = new PongCommand(_server);
 	// _commands["JOIN"] = new JoinCommand(_server);
 	// _commands["MODE"] = new ModeCommand(_server);
@@ -55,7 +57,6 @@ void	CommandHandler::parsing(Client& client, std::string message)
 		}
 		catch (const std::out_of_range &e)
 		{
-			
 			std::cout <<"Command unknown :" << std::endl;
 			std::cout << sub_message << std::endl;
 			client.reply(ERR_UNKNOWNCOMMAND(client.getNickname(), sub_message));

@@ -25,6 +25,7 @@ SRCS			:=	main.cpp \
 					Commands/JoinCommand.cpp \
 					Commands/NickCommand.cpp \
 					Commands/QuitCommand.cpp \
+					Commands/PingCommand.cpp \
 					utils.cpp
 
 SRCS_DIR		:= srcs/

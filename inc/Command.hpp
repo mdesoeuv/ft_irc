@@ -55,3 +55,12 @@ public:
 
 	void execute(Client& client, std::string arguments);
 };
+
+class PingCommand : public Command
+{
+public:
+	PingCommand(Server *server);
+	~PingCommand();
+
+	void execute(Client& client, std::string arguments);
+};

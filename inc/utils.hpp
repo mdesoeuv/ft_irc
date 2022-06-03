@@ -8,6 +8,7 @@
 
 #define RPL_WELCOME(source)							"001 " + source + " :Welcome " + source + " to the ft_irc network"
 #define RPL_QUIT(myclient, message)					":" + myclient + " QUIT :Quit: " + message
+#define RPL_PING(myclient, token)						":" + myclient + " PONG :" + token
 
 /* Error Messages */
 
