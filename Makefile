@@ -41,6 +41,7 @@ $(NAME):		$(OBJS_FILES)
 
 $(OBJS_DIR)%.o:	$(SRCS_DIR)%.cpp $(INC_FILES)
 				mkdir -p $(OBJS_DIR)
+				mkdir -p $(OBJS_DIR)/Commands
 				c++ $(CXXFLAGS) $(DEBUG) -c $< -o $@ -I$(INC_DIR)
 
 clean:
