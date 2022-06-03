@@ -5,10 +5,9 @@ UserCommand::UserCommand(Server *server) : Command(server) {}
 UserCommand::~UserCommand() {}
 
 void UserCommand::execute(Client *client, std::vector<std::string> arguments) {
-	//checker si déjà registered ?
-	std::cout <<"arguments.size() : " << std::endl;
+	//checker si user déjà registered ?
 
-	if (arguments.size() < 4) {
+	if (arguments.size() < 5) {
 		client->reply(ERR_CMDNEEDMOREPARAMS(client->getNickname(), "USER"));
 		return;
 	}

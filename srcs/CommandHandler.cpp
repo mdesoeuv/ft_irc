@@ -7,7 +7,7 @@ CommandHandler::CommandHandler(Server *server) : _server(server)
 {
 	_commands["NICK"] = new NickCommand(_server);
 	_commands["USER"] = new UserCommand(_server);
-	//_commands["QUIT"] = new QuitCommand(_server);
+	_commands["QUIT"] = new QuitCommand(_server);
 	// _commands["PASS"] = new PassCommand(_server);
 
 	// _commands["PING"] = new PingCommand(_server);
