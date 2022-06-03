@@ -10,6 +10,7 @@ class Command;
 
 #include "Command.hpp"
 #include "Server.hpp"
+#include "utils.hpp"
 
 class Server;
 class CommandHandler

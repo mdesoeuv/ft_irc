@@ -13,6 +13,7 @@
 #include "Client.hpp"
 #include <arpa/inet.h> /* htons et inet_aton */
 #include "CommandHandler.hpp"
+#include "utils.hpp"
 
 #define MAX_CONNECTIONS 100
 

@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <sys/socket.h> // socket()
+#include "utils.hpp"
 
 class Client
 {
