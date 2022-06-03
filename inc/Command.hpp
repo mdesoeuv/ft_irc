@@ -37,3 +37,12 @@ public:
 
 	void execute(Client *client, std::vector<std::string> arguments);
 };
+
+class NickCommand : public Command
+{
+public:
+	NickCommand(Server *server);
+	~NickCommand();
+
+	void execute(Client *client, std::vector<std::string> arguments);
+};
