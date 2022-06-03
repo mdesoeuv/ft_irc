@@ -22,6 +22,7 @@ class Client
 
 		const std::string&	getNickname() const;
 		const std::string&	getUsername() const;
+		const std::string&	getRealName() const;
 		const std::string&	getPassword() const;
 		int					getSocketfd() const;
 		std::string 		getPrefix() const;
@@ -31,6 +32,7 @@ class Client
 		void				reply(const std::string &reply);
 
 		void				setNickname(const std::string& new_nickname);
+		void				setRealName(const std::string& new_nickname);
 		void				setUsername(const std::string& new_username);
 		void				setPassword(const std::string& new_password);
 		void				setSocketfd(int new_socketfd);
@@ -42,6 +44,7 @@ class Client
 		int			_socketfd;
 		std::string _nickname;
 		std::string _username;
+		std::string _realName;
 		std::string _password;
 		std::string	_hostname;
 		std::string _port;

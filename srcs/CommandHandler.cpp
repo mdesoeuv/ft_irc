@@ -46,7 +46,7 @@ void	CommandHandler::parsing(Client *client, const std::string &message)
 		
 		std::cout <<"Command unknown :" << std::endl;
 		std::cout << message << std::endl;
-		client->reply("Command unknown");
+		//client->reply("Command unknown");
 	}
 }
 
