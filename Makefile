@@ -29,6 +29,7 @@ SRCS			:=	main.cpp \
 					Commands/PingCommand.cpp \
 					Commands/PongCommand.cpp \
 					Commands/PassCommand.cpp \
+					Commands/PartCommand.cpp \
 					Channel.cpp \
 					utils.cpp
 

@@ -23,7 +23,7 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	new_channel.addUser(client);
 	new_channel.addOp(client);
 	sendJoinNotif(client, new_channel);
-	_server->_channels.push_back(new_channel); // TO DO server.addChannel
+	_server->_channels.push_back(new_channel); // TO DO server.addChannel to set _channels to private
 
 }
 

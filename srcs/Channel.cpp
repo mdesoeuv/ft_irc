@@ -60,10 +60,20 @@ bool	Channel::isOp(const std::string op) const {
 }
 
 void	Channel::addUser(Client user) {
+	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	{
+		if (it->getNickname() == user.getNickname())
+			return ;
+	}
 	_user_list.push_back(user);
 }
 
 void	Channel::addOp(Client op) {
+	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+	{
+		if (it->getNickname() == op.getNickname())
+			return ;
+	}
 	_op_list.push_back(op);
 }
 

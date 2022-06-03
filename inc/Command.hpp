@@ -42,6 +42,15 @@ public:
 	void execute(Client& client, std::string arguments);
 };
 
+class PartCommand : public Command
+{
+public:
+	PartCommand(Server *server);
+	~PartCommand();
+
+	void execute(Client& client, std::string arguments);
+};
+
 class NickCommand : public Command
 {
 public:
