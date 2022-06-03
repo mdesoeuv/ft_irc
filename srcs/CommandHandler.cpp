@@ -52,7 +52,7 @@ void	CommandHandler::parsing(Client& client, std::string message)
 		try
 		{
 			Command *command = _commands.at(arguments[0]);
-			command->execute(client, arguments);
+			command->execute(client, arguments[1]);
 		}
 		catch (const std::out_of_range &e)
 		{

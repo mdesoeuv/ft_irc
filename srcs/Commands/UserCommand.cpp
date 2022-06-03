@@ -4,16 +4,22 @@ UserCommand::UserCommand(Server *server) : Command(server) {}
 
 UserCommand::~UserCommand() {}
 
-void UserCommand::execute(Client& client, std::vector<std::string> arguments) {
+void UserCommand::execute(Client& client, std::string arguments) {
 	//checker si user déjà registered ?
-
-	if (arguments.size() < 5) {
-		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "USER"));
+	std::vector<std::string> splited_args = arguments;
+	
+	std::cout <<"=====" << std::endl;
+	for (std::string::iterator it = arguments.begin(); it != arguments.end(); ++it)
+		std::cout << *it << std::endl;
+	std::cout <<"=====" << std::endl;
+	
+	if (splited_args.size() < 4) {
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), std::string("USER")));
 		return;
 	}
-	client.setUsername(arguments[1]);
-	client.setRealName(arguments[4]);
-	std::cout <<"Client Username set : " << arguments[1] << std::endl;
-	std::cout <<"Client RealName set : " << arguments[4] << std::endl;
+	client.setUsername(splited_args[0]);
+	client.setRealName(splited_args[3]);
+	std::cout <<"Client Username set : " << client.getUsername() << std::endl;
+	std::cout <<"Client RealName set : " << client.getRealName() << std::endl;
 	client.welcome();
 }

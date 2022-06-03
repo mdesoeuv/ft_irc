@@ -10,7 +10,8 @@ OPTI			:= -O3
 INC				:= Client.hpp \
 					Server.hpp \
 					CommandHandler.hpp \
-					Command.hpp
+					Command.hpp \
+					utils.hpp
 
 INC_DIR			:= inc/
 
