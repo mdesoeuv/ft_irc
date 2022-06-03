@@ -1,7 +1,7 @@
 #include "../inc/Client.hpp"
 
 Client::Client(int fd,const std::string hostname, int port)
-		: _socketfd(fd), _hostname(hostname), _port(port){
+		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _port(port){
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
@@ -10,6 +10,7 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_realName(other.getRealName()),
 										_password(other.getPassword()),
 										_hostname(other._hostname),
+										_isAuthentified(other.isAuthentified()),
 										_port(other.getPort()) {
 }
 
@@ -22,6 +23,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_username = rhs.getUsername();
 	_realName = rhs.getRealName();
 	_password = rhs.getPassword();
+	_isAuthentified = rhs.isAuthentified();
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
 
@@ -48,7 +50,9 @@ void Client::welcome() {
 	std::cout << "welcome messsage sent to "  << _nickname << std::endl;
 }
 
-
+bool	Client::isAuthentified() const {
+	return _isAuthentified ;
+}
 
 const std::string&	Client::getNickname() const {
 	return _nickname ;
@@ -97,3 +101,8 @@ void				Client::setRealName(const std::string& new_realName) {
 void				Client::setPassword(const std::string& new_password) {
 	_password = new_password;
 }
+
+void				Client::setIsAuthentified(bool is_Authentified) {
+	_isAuthentified = is_Authentified;
+}
+

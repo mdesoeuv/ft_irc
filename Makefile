@@ -27,6 +27,7 @@ SRCS			:=	main.cpp \
 					Commands/NickCommand.cpp \
 					Commands/QuitCommand.cpp \
 					Commands/PingCommand.cpp \
+					Commands/PassCommand.cpp \
 					Channel.cpp \
 					utils.cpp
 

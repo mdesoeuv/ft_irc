@@ -22,6 +22,7 @@ class Client
 		const std::string&	getRealName() const;
 		const std::string&	getPassword() const;
 		const std::string&	getHostname() const;
+		bool 				isAuthentified() const;
 		int					getSocketfd() const;
 		int					getPort() const;
 		std::string 		getPrefix() const;
@@ -29,7 +30,7 @@ class Client
 		void 				write(const std::string &message) const;
 		void 				welcome();
 		void				reply(const std::string &reply);
-
+		void				setIsAuthentified(bool is_Authentified);
 		void				setNickname(const std::string& new_nickname);
 		void				setRealName(const std::string& new_nickname);
 		void				setUsername(const std::string& new_username);
@@ -46,7 +47,8 @@ class Client
 		std::string _realName;
 		std::string _password;
 		std::string	_hostname;
-		int _port;
+		bool 	_isAuthentified;
+		int 		_port;
 		// std::string	_send_queue;
 
 };
