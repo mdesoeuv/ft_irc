@@ -3,9 +3,11 @@
 
 #include <string>
 #include "Server.hpp"
+#include "Channel.hpp"
 #include "utils.hpp"
 
 class Server;
+class Channel;
 
 class Command
 {
@@ -34,6 +36,8 @@ class JoinCommand : public Command
 public:
 	JoinCommand(Server *server);
 	~JoinCommand();
+
+	void sendJoinNotif(Client& client, Channel channel);
 
 	void execute(Client& client, std::string arguments);
 };

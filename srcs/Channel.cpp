@@ -42,36 +42,36 @@ void	Channel::setTopic(const std::string new_topic) {
 }
 
 bool	Channel::isUser(const std::string nick) const {
-	for (std::vector<std::string>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		if (*it == nick)
+		if (it->getNickname() == nick)
 			return true;
 	}
 	return false;
 }
 
 bool	Channel::isOp(const std::string op) const {
-	for (std::vector<std::string>::const_iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+	for (std::vector<Client>::const_iterator it = _op_list.begin(); it != _op_list.end(); ++it)
 	{
-		if (*it == op)
+		if (it->getNickname() == op)
 			return true;
 	}
 	return false;
 }
 
-void	Channel::addUser(const std::string user) {
+void	Channel::addUser(Client user) {
 	_user_list.push_back(user);
 }
 
-void	Channel::addOp(const std::string op) {
+void	Channel::addOp(Client op) {
 	_op_list.push_back(op);
 }
 
 
-void	Channel::delUser(const std::string user) {
-	for (std::vector<std::string>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+void	Channel::delUser(Client user) {
+	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		if (*it == user)
+		if (it->getNickname() == user.getNickname())
 		{
 			_user_list.erase(it);
 			return ;
@@ -79,12 +79,29 @@ void	Channel::delUser(const std::string user) {
 	}
 }
 
-void	Channel::delOp(const std::string op) {
-	for (std::vector<std::string>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+void	Channel::delOp(Client op) {
+	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
 	{
-		if (*it == op)
+		if (it->getNickname() == op.getNickname())
 			_op_list.erase(it);
 		return ;
 	}
 }
 
+std::string	Channel::getUserList() const {
+	std::string result;
+	
+	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	{
+		result += " ";
+		result += it->getNickname();
+	}
+	return result;
+}
+
+void	Channel::broadcastMessage(std::string message) {
+	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	{
+		it->reply(message);
+	}
+}
