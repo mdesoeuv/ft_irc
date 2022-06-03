@@ -6,7 +6,8 @@ UserCommand::~UserCommand() {}
 
 void UserCommand::execute(Client *client, std::vector<std::string> arguments) {
 	(void)arguments;
+	(void)client;
 	//client->setUsername(arguments[0]);
 	//client->setRealName(arguments[1]);
-	client->welcome();
+	//client->welcome();
 }
