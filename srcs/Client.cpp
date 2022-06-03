@@ -1,10 +1,6 @@
 #include "../inc/Client.hpp"
 
-Client::Client( int fd, 
-				const std::string& nick, 
-				std::string user, 
-				std::string pass) : 
-				_socketfd(fd), _nickname(nick), _username(user), _password(pass) {
+Client::Client(int fd) : _socketfd(fd) {
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 

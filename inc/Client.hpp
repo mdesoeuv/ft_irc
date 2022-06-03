@@ -9,10 +9,7 @@ class Client
 {
 	public:
 
-		Client( int fd,
-				const std::string& nick, 
-				std::string user = "unregistered", 
-				std::string pass = "unregistered" );
+		Client(int fd);
 
 		Client(const Client& other);
 		

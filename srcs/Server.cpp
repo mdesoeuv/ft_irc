@@ -135,7 +135,7 @@ void Server::onClientMessage(int fd) {
 	try {
 		// getting which client has sent the msg by finding the fd in de client list 
 		Client myclient = _clients.at(fd);
-		_commandHandler->parsing(&myclient, readMessage(fd));
+		_commandHandler->parsing(myclient, readMessage(fd));
 	}
 	catch (const std::out_of_range &ex) {
 	}
@@ -175,7 +175,7 @@ Client *Server::getClient(const std::string &nickname) {
 }
 
 Client&	Server::addClient(int fd) { // checker la bonne insertion => try/catch
-	return _clients.insert(std::make_pair(fd, Client(fd, "default_nickname"))).first->second; // retourne une pair dont le first est une paire si on la deference
+	return _clients.insert(std::make_pair(fd, Client(fd))).first->second; // retourne une pair dont le first est une paire si on la deference
 }
 
 void	Server::deleteClient(int fd) {

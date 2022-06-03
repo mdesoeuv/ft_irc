@@ -27,7 +27,7 @@ CommandHandler::~CommandHandler()
 		delete it->second;
 }
 
-void	CommandHandler::parsing(Client *client, std::string message)
+void	CommandHandler::parsing(Client& client, std::string message)
 {
 	size_t		pos = 0;
 	std::string	sub_message;
