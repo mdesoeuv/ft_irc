@@ -44,7 +44,7 @@ public:
 	void start();
 
 	std::string getPassword() const { return _password; };
-	Client *getClient(const std::string &nickname);
+	Client *getClient(const std::string nickname);
 
 	int			newSocket();
 	void		onClientConnect();

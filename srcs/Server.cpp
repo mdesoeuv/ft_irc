@@ -112,8 +112,12 @@ void Server::onClientConnect() {
 	char hostname[NI_MAXHOST];
 	if (getnameinfo((struct sockaddr *) &s_address, sizeof(s_address), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) != 0)
 		throw std::runtime_error("Error while getting hostname of new client.");
+
 	// Creates a new Client and store it in Clients map
 	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port))));
+		std::cout << _clients.begin()->second.getPort() << std::endl;
+		std::cout << _clients.begin()->second.getNickname() << std::endl;
+
 	std::cout << "Client connnected" << std::endl;
 }
 
@@ -138,6 +142,7 @@ void Server::onClientMessage(int fd) {
 		// getting which client has sent the msg by finding the fd in de client list 
 		Client& myclient = _clients.at(fd);
 		_commandHandler->parsing(myclient, readMessage(fd));
+
 	}
 	catch (const std::out_of_range &ex) {
 	}
@@ -164,15 +169,13 @@ std::string Server::readMessage(int fd) {
 	return message;
 }
 
-Client *Server::getClient(const std::string &nickname) {
+Client *Server::getClient(const std::string nickname) {
 	
-	clients_iterator iter = _clients.begin();
-
-	for (; iter != _clients.end(); ++iter)
-	{
-		if (iter->second.getNickname() == nickname)
-			return &iter->second;
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		if (!nickname.compare(it->second.getNickname()))
+			return &it->second;
 	}
+	std::cout <<"No client found" << std::endl;
 	return nullptr;
 }
 
