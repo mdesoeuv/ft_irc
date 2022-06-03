@@ -16,5 +16,5 @@ void NickCommand::execute(Client& client, std::string arguments) {
 	}
 	client.setNickname(arguments);
 	std::cout <<"Client Nickname set : " << client.getNickname() << std::endl;
-	
+	client.welcome();
 }
