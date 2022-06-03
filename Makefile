@@ -23,7 +23,8 @@ SRCS			:=	main.cpp \
 					Commands/UserCommand.cpp \
 					Commands/JoinCommand.cpp \
 					Commands/NickCommand.cpp \
-					Commands/QuitCommand.cpp
+					Commands/QuitCommand.cpp \
+					utils.cpp
 
 SRCS_DIR		:= srcs/
 
