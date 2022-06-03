@@ -9,6 +9,7 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_username(other.getUsername()),
 										_realName(other.getRealName()),
 										_password(other.getPassword()),
+										_hostname(other._hostname),
 										_port(other.getPort()) {
 }
 
@@ -21,6 +22,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_username = rhs.getUsername();
 	_realName = rhs.getRealName();
 	_password = rhs.getPassword();
+	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
 
 	return *this ;
@@ -90,12 +92,4 @@ void				Client::setRealName(const std::string& new_realName) {
 
 void				Client::setPassword(const std::string& new_password) {
 	_password = new_password;
-}
-
-void				Client::setSocketfd(int new_socketfd) {
-	_socketfd = new_socketfd;
-}
-
-void				Client::setPort(int new_port) {
-	_port = new_port;
 }

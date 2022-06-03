@@ -33,8 +33,6 @@ class Client
 		void				setRealName(const std::string& new_nickname);
 		void				setUsername(const std::string& new_username);
 		void				setPassword(const std::string& new_password);
-		void				setSocketfd(int new_socketfd);
-		void				setPort(int new_port);
 		// void				addSendQueue(const std::string msg);
 
 	private:
