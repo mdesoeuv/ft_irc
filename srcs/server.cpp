@@ -1,8 +1,8 @@
 #include "../inc/Server.hpp"
 #include "../inc/CommandHandler.hpp"
 
-Server::Server(const std::string host, const std::string password, const std::string port)
-		: _running(1), _host(host), _port(port), _password(password) {
+Server::Server(const std::string port, const std::string password)
+		: _running(1), _host("127.0.0.1"), _port(port), _password(password) {
 
 	_commandHandler = new CommandHandler(this);
 	_sock = newSocket();
@@ -22,8 +22,7 @@ void Server::start() {
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
 			throw std::runtime_error("Error while polling from fd.");
-			
-		//Un des fd a un nouveau message, on les parcourt pour savoir lequel
+		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
 		for (pollfds_iterator it = _pollfds.begin() ;it != _pollfds.end(); ++it) {
 
 			if (it->revents == 0)
