@@ -34,6 +34,7 @@ class Client
 		void				setUsername(const std::string& new_username);
 		void				setPassword(const std::string& new_password);
 		void				setSocketfd(int new_socketfd);
+		// void				addSendQueue(const std::string msg);
 
 	private:
 
@@ -45,5 +46,6 @@ class Client
 		std::string _password;
 		std::string	_hostname;
 		std::string _port;
+		// std::string	_send_queue;
 
 };
