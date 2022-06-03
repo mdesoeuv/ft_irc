@@ -97,7 +97,8 @@ int Server::newSocket() {
 
 void Server::onClientConnect() {
 
-	// adding new fd to poll
+	// adding new fd to poll 
+	
 	int fd;
 	sockaddr_in s_address = {};
 	socklen_t s_size = sizeof(s_address);
