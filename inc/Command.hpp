@@ -46,3 +46,12 @@ public:
 
 	void execute(Client *client, std::vector<std::string> arguments);
 };
+
+class QuitCommand : public Command
+{
+public:
+	QuitCommand(Server *server);
+	~QuitCommand();
+
+	void execute(Client *client, std::vector<std::string> arguments);
+};
