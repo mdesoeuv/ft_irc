@@ -17,7 +17,7 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 			return ;
 		}
 	}
-
+	//TODO : error messages pour les differents cas d'erreur
 	//TODO : avec ses modes par defaut +t +n
 	Channel	new_channel(arguments);
 	new_channel.addUser(client);
@@ -27,8 +27,13 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 
 }
 
+// IMPORTANT determiner si broadcast sur tout le channel ou seulement a la personne qui join
 void JoinCommand::sendJoinNotif(Client& client, Channel channel) {
-	channel.broadcastMessage("JOIN " + channel.getName());
+	channel.broadcastMessage(":" + client.getPrefix() + " JOIN " + channel.getName());
+	if (!channel.getTopic().empty())
+		channel.broadcastMessage(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic()));
+	else
+		channel.broadcastMessage(RPL_NOTOPIC(client.getNickname(), channel.getName()));
 	channel.broadcastMessage(RPL_NAMEREPLY(client.getNickname(), channel.getName(), channel.getUserList()));
 	channel.broadcastMessage(RPL_ENDOFNAMES(client.getNickname(), channel.getName()));	
 }

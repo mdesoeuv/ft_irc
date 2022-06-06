@@ -33,6 +33,8 @@ void	CommandHandler::parsing(Client& client, std::string message)
 	size_t		pos = 0;
 	std::string	sub_message;
 
+	std::cout << "client sent this full message :" + message << std::endl;
+
 	while (message.size() != 0)
 	{
 		// Divide in sub messages separated by \r\n

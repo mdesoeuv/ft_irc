@@ -27,7 +27,7 @@ class Client
 		int					getSocketfd() const;
 		int					getPort() const;
 		std::string 		getPrefix() const;
-		std::string			getFullId(const std::string& host) const;
+		// std::string			getFullId(const std::string& host) const;
 		void 				write(const std::string &message) const;
 		void 				welcome();
 		void				reply(const std::string &reply);

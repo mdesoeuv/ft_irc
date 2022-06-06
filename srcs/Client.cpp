@@ -96,9 +96,9 @@ const std::string&	Client::getHostname() const {
 	return _hostname ;
 }
 
-std::string	Client::getFullId(const std::string& host) const {
-	return (getNickname() + "!" + getUsername() + "@" + host);
-}
+// std::string	Client::getFullId(const std::string& host) const {
+// 	return (getNickname() + "!" + getUsername() + "@" + host);
+// }
 
 void				Client::setNickname(const std::string& new_nickname) {
 	_nickname = new_nickname;

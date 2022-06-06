@@ -150,8 +150,8 @@ std::string Server::readMessage(int fd) {
 
 	std::string message;
 
-	char buffer[100];
-	bzero(buffer, 100);
+	char buffer[101]; // added 1 char to /0 the char line
+	bzero(buffer, 101);
 
 	while (!std::strstr(buffer, "\r\n")) {
 		bzero(buffer, 100);

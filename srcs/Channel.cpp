@@ -87,6 +87,8 @@ void	Channel::delUser(Client user) {
 			return ;
 		}
 	}
+	// Error message if user is not on channel
+	user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
 }
 
 void	Channel::delOp(Client op) {
@@ -112,6 +114,7 @@ std::string	Channel::getUserList() const {
 void	Channel::broadcastMessage(std::string message) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		it->reply(message);
+		it->write(message);
+		std::cout << "broadcast message sent to client" << std::endl;
 	}
 }
