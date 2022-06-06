@@ -22,18 +22,16 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	Channel	new_channel(arguments, "");
 	new_channel.addUser(client);
 	new_channel.addOp(client);
-	sendJoinNotif(client, new_channel);
 	_server->_channels.push_back(new_channel); // TO DO server.addChannel to set _channels to private
-
+	sendJoinNotif(client, new_channel);
 }
 
-// IMPORTANT determiner si broadcast sur tout le channel ou seulement a la personne qui join
 void JoinCommand::sendJoinNotif(Client& client, Channel channel) {
 	channel.broadcastMessage(":" + client.getPrefix() + " JOIN " + channel.getName());
 	if (!channel.getTopic().empty())
-		channel.broadcastMessage(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic()));
+		client.reply(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic())); // TO DO: prefixer ces message avec id server 
 	else
-		channel.broadcastMessage(RPL_NOTOPIC(client.getNickname(), channel.getName()));
-	channel.broadcastMessage(RPL_NAMEREPLY(client.getNickname(), channel.getName(), channel.getUserList()));
-	channel.broadcastMessage(RPL_ENDOFNAMES(client.getNickname(), channel.getName()));	
+		client.reply(RPL_NOTOPIC(client.getNickname(), channel.getName()));
+	client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getName(), channel.getUserList()));
+	client.reply(RPL_ENDOFNAMES(client.getNickname(), channel.getName()));
 }
