@@ -4,14 +4,15 @@ Channel::Channel(void) {
 }
 
 Channel::Channel(const std::string& chan_name, const std::string& chan_topic) : 
-					_name(chan_name), _topic(chan_topic), _modes("+t +n") {
+					_name(chan_name), _topic(chan_topic), _modes("+t +n"), _user_nb(0) {
 }
 
 Channel::Channel(const Channel& other) :	_user_list(other._user_list),
 											_op_list(other._op_list),
 											_name(other._name),
 											_topic(other._name),
-											_modes(other._modes) {
+											_modes(other._modes),
+											_user_nb(other._user_nb) {
 }
 
 Channel::~Channel(void) {
@@ -23,6 +24,7 @@ Channel&	Channel::operator=(const Channel& rhs) {
 	_name = rhs._name;
 	_topic = rhs._topic;
 	_modes = rhs._modes;
+	_user_nb = rhs._user_nb;
 
 	return *this;
 }
@@ -37,6 +39,10 @@ std::string	Channel::getTopic() const {
 
 std::string Channel::getModes() const {
 	return _modes;
+}
+
+size_t		Channel::getUserNb() const {
+	return _user_nb;
 }
 
 void	Channel::setName(const std::string new_name) {
@@ -76,6 +82,7 @@ void	Channel::addUser(Client user) {
 			return ;
 	}
 	_user_list.push_back(user);
+	_user_nb++;
 }
 
 void	Channel::addOp(Client op) {
@@ -94,6 +101,7 @@ void	Channel::delUser(Client user) {
 		if (it->getNickname() == user.getNickname())
 		{
 			_user_list.erase(it);
+			_user_nb--;
 			return ;
 		}
 	}

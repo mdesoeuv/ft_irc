@@ -15,11 +15,12 @@ class Channel
 		std::string			_name;
 		std::string			_topic;
 		std::string			_modes;
+		size_t				_user_nb;
 		
 	public:
 
 		Channel(void);
-		Channel(const std::string& chan_name, const std::string& chan_topic = "default topic");
+		Channel(const std::string& chan_name, const std::string& chan_topic);
 		Channel(const Channel& other);
 		~Channel(void);
 
@@ -28,6 +29,7 @@ class Channel
 		std::string	getName() const;
 		std::string	getTopic() const;
 		std::string	getModes() const;
+		size_t		getUserNb() const;
 		void		setName(const std::string new_name);
 		void		setTopic(const std::string new_topic);
 		void		setModes(const std::string new_modes);

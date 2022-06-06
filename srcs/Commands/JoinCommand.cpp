@@ -19,7 +19,7 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	}
 	//TODO : error messages pour les differents cas d'erreur
 	//TODO : avec ses modes par defaut +t +n
-	Channel	new_channel(arguments);
+	Channel	new_channel(arguments, "");
 	new_channel.addUser(client);
 	new_channel.addOp(client);
 	sendJoinNotif(client, new_channel);

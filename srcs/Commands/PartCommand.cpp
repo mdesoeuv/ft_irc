@@ -18,6 +18,11 @@ void PartCommand::execute(Client& client, std::string arguments) {
     {
       it->broadcastMessage(":" + client.getPrefix() + " PART " + it->getName());
 			it->delUser(client);
+      if (it->getUserList().empty())
+      {
+        std::cout << "last user leaved channel => destruction" << std::endl;
+        _server->_channels.erase(it);
+      }
       return ;
     }
 	}
