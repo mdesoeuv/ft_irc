@@ -125,6 +125,6 @@ void	Channel::broadcastMessage(std::string message) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		it->write(message);
-		std::cout << "broadcast message sent to client" << std::endl;
+		// std::cout << "broadcast message sent to client" << std::endl;
 	}
 }
