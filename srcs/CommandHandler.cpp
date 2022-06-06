@@ -14,7 +14,7 @@ CommandHandler::CommandHandler(Server *server) : _server(server)
 	//_commands["PASS"] = new PassCommand(_server);
 
 	_commands["JOIN"] = new JoinCommand(_server);
-	// _commands["MODE"] = new ModeCommand(_server);
+	_commands["MODE"] = new ModeCommand(_server);
 	_commands["PART"] = new PartCommand(_server);
 	// _commands["KICK"] = new KickCommand(_server);
 

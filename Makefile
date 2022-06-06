@@ -30,6 +30,7 @@ SRCS			:=	main.cpp \
 					Commands/PongCommand.cpp \
 					Commands/PassCommand.cpp \
 					Commands/PartCommand.cpp \
+					Commands/ModeCommand.cpp \
 					Channel.cpp \
 					utils.cpp
 

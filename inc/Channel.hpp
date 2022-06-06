@@ -14,6 +14,7 @@ class Channel
 		std::vector<Client>	_op_list;
 		std::string			_name;
 		std::string			_topic;
+		std::string			_modes;
 		
 	public:
 
@@ -26,8 +27,10 @@ class Channel
 
 		std::string	getName() const;
 		std::string	getTopic() const;
+		std::string	getModes() const;
 		void		setName(const std::string new_name);
 		void		setTopic(const std::string new_topic);
+		void		setModes(const std::string new_modes);
 		bool		isUser(const std::string nick) const;
 		bool		isOp(const std::string nick) const;
 		void		addUser(Client user);

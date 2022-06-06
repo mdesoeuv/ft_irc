@@ -4,13 +4,14 @@ Channel::Channel(void) {
 }
 
 Channel::Channel(const std::string& chan_name, const std::string& chan_topic) : 
-					_name(chan_name), _topic(chan_topic) {
+					_name(chan_name), _topic(chan_topic), _modes("+t +n") {
 }
 
 Channel::Channel(const Channel& other) :	_user_list(other._user_list),
 											_op_list(other._op_list),
 											_name(other._name),
-											_topic(other._name) {
+											_topic(other._name),
+											_modes(other._modes) {
 }
 
 Channel::~Channel(void) {
@@ -21,6 +22,7 @@ Channel&	Channel::operator=(const Channel& rhs) {
 	_op_list = rhs._op_list;
 	_name = rhs._name;
 	_topic = rhs._topic;
+	_modes = rhs._modes;
 
 	return *this;
 }
@@ -33,12 +35,20 @@ std::string	Channel::getTopic() const {
 	return _topic;
 }
 
+std::string Channel::getModes() const {
+	return _modes;
+}
+
 void	Channel::setName(const std::string new_name) {
 	_name = new_name;
 }
 
 void	Channel::setTopic(const std::string new_topic) {
 	_topic = new_topic;
+}
+
+void	Channel::setModes(const std::string new_modes) {
+	_modes = new_modes;
 }
 
 bool	Channel::isUser(const std::string nick) const {

@@ -42,6 +42,15 @@ public:
 	void execute(Client& client, std::string arguments);
 };
 
+class ModeCommand : public Command
+{
+public:
+	ModeCommand(Server *server);
+	~ModeCommand();
+
+	void execute(Client& client, std::string arguments);
+};
+
 class PartCommand : public Command
 {
 public:

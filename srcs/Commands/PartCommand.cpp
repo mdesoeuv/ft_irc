@@ -14,8 +14,8 @@ void PartCommand::execute(Client& client, std::string arguments) {
 	{
 		if (it->getName() == sub_arguments)
     {
-			it->delUser(client);
       it->broadcastMessage(":" + client.getPrefix() + " PART " + it->getName());
+			it->delUser(client);
       std::cout << "part command executed" << std::endl;
       return ;
     }

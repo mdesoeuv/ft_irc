@@ -9,6 +9,7 @@
 #define RPL_WELCOME(myclient)							"001 " + myclient + " :Welcome " + myclient + " to the ft_irc network"
 #define RPL_QUIT(myclient, message)						":" + myclient + " QUIT :Quit: " + message
 #define RPL_PING(myclient, token)						":" + myclient + " PONG :" + token
+#define RPL_CHANNELMODEIS(myclient, mychannel, mode_string, mode_args)	"324 " + myclient + " " + mychannel + " " + mode_string + mode_args
 #define RPL_NOTOPIC(myclient, mychannel)				"331 " + myclient + " " + mychannel + " :No topic is set"
 #define RPL_TOPIC(myclient, mychannel, channel_topic)	"332 " + myclient + " " + mychannel + " :" + channel_topic
 #define RPL_NAMEREPLY(myclient, channel, users)  	 	"353 " + myclient + " = " + channel + " :" + users
