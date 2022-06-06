@@ -9,6 +9,8 @@ void PartCommand::execute(Client& client, std::string arguments) {
   std::cout << "part command initiated with args :" + arguments << std::endl;
   // arguments parsing to extract channel_name
   size_t pos = arguments.find(" ");
+
+  //TO DO: parser le reste des arguments pour recuperer le <reason>
   std::string sub_arguments = arguments.substr(0, pos);
 	for (std::vector<Channel>::iterator it = _server->_channels.begin(); it != _server->_channels.end(); ++it)
 	{
@@ -16,11 +18,10 @@ void PartCommand::execute(Client& client, std::string arguments) {
     {
       it->broadcastMessage(":" + client.getPrefix() + " PART " + it->getName());
 			it->delUser(client);
-      std::cout << "part command executed" << std::endl;
       return ;
     }
 	}
-  // Error message if channel is not found
+  // Error message if channel is not found => TO DO: a verifier
   client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), sub_arguments));
 }
 
