@@ -38,6 +38,7 @@ public:
 	~JoinCommand();
 
 	void sendJoinNotif(Client& client, Channel channel);
+	bool invalidChannelName(const std::string& channel_name);
 
 	void execute(Client& client, std::string arguments);
 };
@@ -56,6 +57,15 @@ class PartCommand : public Command
 public:
 	PartCommand(Server *server);
 	~PartCommand();
+
+	void execute(Client& client, std::string arguments);
+};
+
+class TopicCommand : public Command
+{
+public:
+	TopicCommand(Server *server);
+	~TopicCommand();
 
 	void execute(Client& client, std::string arguments);
 };

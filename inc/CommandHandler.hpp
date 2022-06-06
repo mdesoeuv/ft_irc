@@ -2,6 +2,7 @@
 
 class CommandHandler;
 class Command;
+class Channel;
 
 #include <iostream>
 #include <string>
@@ -10,6 +11,7 @@ class Command;
 
 #include "Command.hpp"
 #include "Server.hpp"
+#include "Channel.hpp"
 #include "utils.hpp"
 
 class Server;
@@ -23,6 +25,8 @@ private:
 public:
 
 	typedef std::map<std::string, Command *>::iterator commands_iterator;
+	typedef std::pair<bool, std::vector<Channel>::iterator> channel_search_res;
+	
 	CommandHandler(Server *server);
 
 	~CommandHandler();

@@ -17,9 +17,11 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	}
 	//TODO : error messages pour les differents cas d'erreur
 	//TODO : avec ses modes par defaut +t +n
-	Channel	new_channel(arguments, "");
+	Channel	new_channel(arguments);
 	new_channel.addUser(client);
 	new_channel.addOp(client);
+	if (invalidChannelName(arguments))
+		return ;
 	_server->addChannel(new_channel);
 	sendJoinNotif(client, new_channel);
 }
@@ -32,4 +34,16 @@ void JoinCommand::sendJoinNotif(Client& client, Channel channel) {
 		client.reply(RPL_NOTOPIC(client.getNickname(), channel.getName()));
 	client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getName(), channel.getUserList()));
 	client.reply(RPL_ENDOFNAMES(client.getNickname(), channel.getName()));
+}
+
+bool JoinCommand::invalidChannelName(const std::string& channel_name) {
+	if (channel_name.empty())
+		return true;
+	if (channel_name.size() > 50)
+		return true;
+	if (channel_name[0] != '&' && channel_name[0] != '#' && channel_name[0] !=  '+' && channel_name[0] !=  '!')
+		return true;
+	if (channel_name.find(" ") < channel_name.size() || channel_name.find(",") < channel_name.size() || channel_name.find("^G") < channel_name.size())
+		return true;
+	return false;
 }

@@ -20,7 +20,7 @@ class Channel
 	public:
 
 		Channel(void);
-		Channel(const std::string& chan_name, const std::string& chan_topic);
+		Channel(const std::string& chan_name);
 		Channel(const Channel& other);
 		~Channel(void);
 

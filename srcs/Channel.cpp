@@ -3,14 +3,14 @@
 Channel::Channel(void) {
 }
 
-Channel::Channel(const std::string& chan_name, const std::string& chan_topic) : 
-					_name(chan_name), _topic(chan_topic), _modes("+t +n"), _user_nb(0) {
+Channel::Channel(const std::string& chan_name) : 
+					_name(chan_name), _topic(""), _modes("+t +n"), _user_nb(0) {
 }
 
 Channel::Channel(const Channel& other) :	_user_list(other._user_list),
 											_op_list(other._op_list),
 											_name(other._name),
-											_topic(other._name),
+											_topic(other._topic),
 											_modes(other._modes),
 											_user_nb(other._user_nb) {
 }
