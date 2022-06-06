@@ -29,6 +29,7 @@ class Server
 
 	typedef std::vector<pollfd>::iterator pollfds_iterator;
 	typedef std::map<int, Client >::iterator clients_iterator;
+	typedef std::pair<bool, std::vector<Channel>::iterator> channel_search_res;
 
 	int							_running;
 	int							_sock;
