@@ -6,23 +6,21 @@ JoinCommand::~JoinCommand() {}
 
 void JoinCommand::execute(Client& client, std::string arguments) {
 	//check if Channel exist
-	for(std::vector<Channel>::iterator it = _server->_channels.begin(); it !=_server->_channels.end(); ++it)
+	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);
+	if (result.first)
 	{
 	//si oui:
 	//client join le channel
-		if (it->getName() == arguments)
-		{
-			it->addUser(client);
-			sendJoinNotif(client, *it);
-			return ;
-		}
+		result.second->addUser(client);
+		sendJoinNotif(client, *result.second);
+		return ;
 	}
 	//TODO : error messages pour les differents cas d'erreur
 	//TODO : avec ses modes par defaut +t +n
 	Channel	new_channel(arguments, "");
 	new_channel.addUser(client);
 	new_channel.addOp(client);
-	_server->_channels.push_back(new_channel); // TO DO server.addChannel to set _channels to private
+	_server->addChannel(new_channel);
 	sendJoinNotif(client, new_channel);
 }
 

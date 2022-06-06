@@ -179,3 +179,27 @@ Client *Server::getClient(const std::string nickname) {
 void	Server::deleteClient(int fd) {
 	_clients.erase(fd);
 }
+
+void	Server::addChannel(Channel channel) {
+	_channels.push_back(channel);
+}
+
+void	Server::removeChannel(std::vector<Channel>::iterator pos) {
+	_channels.erase(pos);
+}
+
+
+std::pair<bool, std::vector<Channel>::iterator>	Server::searchChannel(const std::string channel_name) {
+	
+	std::vector<Channel>::iterator iter = _channels.begin();
+
+	for(; iter != _channels.end(); ++iter)
+	{
+
+		if (iter->getName() == channel_name)
+		{
+			return std::make_pair(true, iter);
+		}
+	}
+	return std::make_pair(false, iter);
+}

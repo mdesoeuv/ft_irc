@@ -6,11 +6,11 @@ ModeCommand::~ModeCommand() {}
 
 // uniquement channel mode pour le moment 
 void ModeCommand::execute(Client& client, std::string arguments) {
-	for(std::vector<Channel>::iterator it = _server->_channels.begin(); it !=_server->_channels.end(); ++it)
+	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);
 	{
-		if (it->getName() == arguments)
+		if (result.first)
 		{
-			client.reply(RPL_CHANNELMODEIS(client.getNickname(), it->getName(), it->getModes(), ""));
+			client.reply(RPL_CHANNELMODEIS(client.getNickname(), result.second->getName(), result.second->getModes(), ""));
 			return ;
 		}
 	}

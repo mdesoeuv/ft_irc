@@ -37,10 +37,10 @@ class Server
 	const std::string			_password;
 	std::vector<pollfd>			_pollfds;
 	std::map<int, Client>		_clients;
+	std::vector<Channel>		_channels;
 	CommandHandler*				_commandHandler;
 
 public:
-	std::vector<Channel>		_channels; // a voir
 
 	Server(const std::string port, const std::string password);
 	~Server();
@@ -55,6 +55,9 @@ public:
 	void		onClientMessage(int fd);
 	void		onClientDisconnect(int fd);
 	void		deleteClient(int fd);
+	void		addChannel(Channel channel);
+	void		removeChannel(std::vector<Channel>::iterator pos);
 	std::string readMessage(int fd);
+	std::pair<bool, std::vector<Channel>::iterator>	searchChannel(const std::string channel_name);
 };
 

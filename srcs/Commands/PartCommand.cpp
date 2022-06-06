@@ -11,16 +11,14 @@ void PartCommand::execute(Client& client, std::string arguments) {
   std::string sub_arguments = arguments.substr(0, pos);
 
   // check if channel exists and proceed
-	for (std::vector<Channel>::iterator it = _server->_channels.begin(); it != _server->_channels.end(); ++it)
+std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(sub_arguments);
+	if (result.first)
 	{
-		if (it->getName() == sub_arguments)
-    {
-      it->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
-			it->delUser(client);
-      if (it->getUserList().empty())
-        _server->_channels.erase(it);
+      result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
+			result.second->delUser(client);
+      if (result.second->getUserList().empty())
+        _server->removeChannel(result.second);
       return ;
-    }
 	}
   client.write(ERR_NOSUCHCHANNEL(client.getNickname(), sub_arguments));
 }
