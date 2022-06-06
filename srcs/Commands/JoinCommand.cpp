@@ -5,7 +5,7 @@ JoinCommand::JoinCommand(Server *server) : Command(server) {}
 JoinCommand::~JoinCommand() {}
 
 void JoinCommand::execute(Client& client, std::string arguments) {
-	//check de l'existance du Channel
+	//check if Channel exist
 	for(std::vector<Channel>::iterator it = _server->_channels.begin(); it !=_server->_channels.end(); ++it)
 	{
 	//si oui:
@@ -29,7 +29,7 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 void JoinCommand::sendJoinNotif(Client& client, Channel channel) {
 	channel.broadcastMessage(":" + client.getPrefix() + " JOIN " + channel.getName());
 	if (!channel.getTopic().empty())
-		client.reply(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic())); // TO DO: prefixer ces message avec id server 
+		client.reply(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic()));
 	else
 		client.reply(RPL_NOTOPIC(client.getNickname(), channel.getName()));
 	client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getName(), channel.getUserList()));

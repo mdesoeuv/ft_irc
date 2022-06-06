@@ -45,7 +45,8 @@ void Client::write(const std::string &message) const {
 }
 
 void Client::reply(const std::string &reply) {
-	write(":" + getPrefix() + " " + reply);
+	write(":ft_irc " + reply); // TO DO: verifier veritable prefix du server
+	// write(":" + getPrefix() + " " + reply);
 }
 
 void Client::welcome() {
@@ -95,10 +96,6 @@ int					Client::getPort() const {
 const std::string&	Client::getHostname() const {
 	return _hostname ;
 }
-
-// std::string	Client::getFullId(const std::string& host) const {
-// 	return (getNickname() + "!" + getUsername() + "@" + host);
-// }
 
 void				Client::setNickname(const std::string& new_nickname) {
 	_nickname = new_nickname;

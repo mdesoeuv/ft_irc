@@ -22,5 +22,5 @@ void PartCommand::execute(Client& client, std::string arguments) {
       return ;
     }
 	}
-  client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), sub_arguments));
+  client.write(ERR_NOSUCHCHANNEL(client.getNickname(), sub_arguments));
 }
