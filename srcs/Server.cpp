@@ -123,7 +123,7 @@ void Server::onClientDisconnect(int fd) {
 
 	// removing fd of leaving client from poll 
 	deleteClient(fd);
-	// TO DO : supprimer le client de tous 
+	// TO DO : supprimer le client de tous les channels server->allChannelLeave ?
 	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it) {
 		if (it->fd == fd)
 		{
@@ -132,6 +132,7 @@ void Server::onClientDisconnect(int fd) {
 			break;
 		}			
 	}
+
 }
 
 void Server::onClientMessage(int fd) {
@@ -214,19 +215,22 @@ std::pair<bool, std::vector<Channel>::iterator>	Server::searchChannel(const std:
 	return std::make_pair(false, iter);
 }
 
-//TO DO: changer le bool en broadcast du vrai message
-void	Server::allChannelLeave(Client client, bool broadcast_message) {
-	
+void	Server::allChannelLeave(Client client, std::string broadcast_message) {
+
+	std::vector<std::string> channels_to_remove;
+
 	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
 		if (chan_iter->isUser(client.getNickname()))
 		{
-			std::cout << "dsddddddddd" << std::endl;
-			if (broadcast_message)
-				chan_iter->broadcastMessage(":" + client.getPrefix() + " PART " + chan_iter->getName());
+			chan_iter->broadcastMessage(broadcast_message);
 			chan_iter->delUser(client);
-			if (chan_iter->getUserList().empty()) ///iterator invalidated here => buffer overflow
-				removeChannel(chan_iter);
+			if (chan_iter->getUserList().empty())
+				channels_to_remove.push_back(chan_iter->getName()); // cannot remove in loop because iterator is invalidated by each removal
 		}
+	}
+	for (std::vector<std::string>::iterator iter = channels_to_remove.begin(); iter != channels_to_remove.end(); ++iter)
+	{
+		removeChannel(this->searchChannel(*iter).second);
 	}
 }

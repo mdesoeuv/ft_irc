@@ -56,7 +56,6 @@ void Client::write(const std::string &message) const {
 void Client::reply(const std::string &reply) {
 	write(":ft_irc " + reply); // TO DO: verifier veritable prefix du server
 	// write(":" + getPrefix() + " " + reply);
-	std::cout << "full reply :" + reply << std::endl;
 }
 
 void Client::welcome() {
