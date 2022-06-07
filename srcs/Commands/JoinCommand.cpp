@@ -4,6 +4,7 @@ JoinCommand::JoinCommand(Server *server) : Command(server) {}
 
 JoinCommand::~JoinCommand() {}
 
+//TO DO: verifier comportement si deja join
 void JoinCommand::execute(Client& client, std::string arguments) {
 	//check if Channel exist
 	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);

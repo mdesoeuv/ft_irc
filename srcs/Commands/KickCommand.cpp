@@ -6,14 +6,10 @@ KickCommand::~KickCommand() {}
 
 void KickCommand::execute(Client& client, std::string arguments) {
 	
-	std::cout << "args to parse :" + arguments << std::endl;
-
 	// checks if channel exists and get a ref to it
 	size_t pos = arguments.find(" ");
 	std::string channel_name = arguments.substr(0, pos);
 
-	std::cout << "channel name :" + channel_name  + "//" << std::endl;
-	
 	Channel channel;
 	try
 	{
@@ -51,10 +47,9 @@ void KickCommand::execute(Client& client, std::string arguments) {
 		colon_pos = arguments.find(":");
 	}
 	std::string user_to_kick = arguments.substr(pos + 1, colon_pos - 2 - pos);
-	std::cout << "user to kick :" + user_to_kick + "//" << std::endl;
 
-	Client	kicked_user;
 	// checks if user_to_kick is on channel and kicks
+	Client	kicked_user;
 	try
 	{
 		kicked_user = channel.getChanClient(user_to_kick);

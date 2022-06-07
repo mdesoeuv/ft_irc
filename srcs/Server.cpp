@@ -214,13 +214,15 @@ std::pair<bool, std::vector<Channel>::iterator>	Server::searchChannel(const std:
 	return std::make_pair(false, iter);
 }
 
-void	Server::allChannelLeave(Client client) {
+//TO DO: changer le bool en broadcast du vrai message
+void	Server::allChannelLeave(Client client, bool broadcast_message) {
 	
 	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
 		if (chan_iter->isUser(client.getNickname()))
 		{
-			chan_iter->broadcastMessage(":" + client.getPrefix() + " PART " + chan_iter->getName());
+			if (broadcast_message)
+				chan_iter->broadcastMessage(":" + client.getPrefix() + " PART " + chan_iter->getName());
 			chan_iter->delUser(client);
 			if (chan_iter->getUserList().empty())
 				removeChannel(chan_iter);

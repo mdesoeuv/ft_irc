@@ -59,7 +59,7 @@ public:
 	void			removeChannel(std::vector<Channel>::iterator pos);
 	std::string 	readMessage(int fd);
 	chan_it_pair	searchChannel(const std::string channel_name);
-	void			allChannelLeave(Client client);
+	void			allChannelLeave(Client client, bool broadcast_message);
 
 };
 
