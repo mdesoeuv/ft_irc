@@ -27,5 +27,6 @@
 #define ERR_ALREADYAUTHENTIFIED(myclient)				"462 " + myclient + " :Already authentified"
 #define ERR_WRONGPASSWORD(myclient)						"464 " + myclient + " :Password incorrect"
 #define ERR_ALREADYREGISTERED(myclient)					"462 " + myclient + " :You may not reregister"
+#define ERR_CHANOPRIVSNEEDED(myclient, mychannel)		"482 " + myclient + " " + mychannel " :You're not channel operator"
 
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);
