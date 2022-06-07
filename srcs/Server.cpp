@@ -147,6 +147,7 @@ void Server::onClientMessage(int fd) {
 	}
 }
 
+// TO DO: reconstitution des messages par concatenation des fragments de messages envoyés avant d'envoyer la commande a parser
 std::string Server::readMessage(int fd) {
 
 	std::string message;
@@ -154,10 +155,10 @@ std::string Server::readMessage(int fd) {
 	char buffer[101]; // added 1 char to /0 the char line
 	bzero(buffer, 101);
 
-	while (!std::strstr(buffer, "\r\n")) {
+	while (!std::strstr(buffer, "\r\n")) { // stoper la boucle si recv n'a plus rien a lire meme si message incomplet
 		bzero(buffer, 100);
 
-		if (recv(fd, buffer, 100, 0) < 0) {
+		if (recv(fd, buffer, 100, 0) < 0) { // checker le retour du recv pour voir si la partie du message envoyée a bien été lue
 			if (errno != EWOULDBLOCK)
 				throw std::runtime_error("Error while reading buffer from client.");
 		}
