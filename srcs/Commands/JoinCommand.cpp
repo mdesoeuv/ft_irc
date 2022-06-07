@@ -15,13 +15,15 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 		sendJoinNotif(client, *result.second);
 		return ;
 	}
-	//TODO : error messages pour les differents cas d'erreur
-	//TODO : avec ses modes par defaut +t +n
-	Channel	new_channel(arguments);
-	new_channel.addUser(client);
-	new_channel.addOp(client);
+	// check if channel_name is not valid
 	if (invalidChannelName(arguments))
 		return ;
+	//TODO : error messages pour les differents cas d'erreur
+	Channel	new_channel(arguments);
+	Client	client_copy = client;
+	client_copy.setNickname("@" + client.getNickname());
+	new_channel.addUser(client_copy);
+	new_channel.addOp(client);
 	_server->addChannel(new_channel);
 	sendJoinNotif(client, new_channel);
 }
