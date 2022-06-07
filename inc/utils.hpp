@@ -18,6 +18,7 @@
 /* Error Messages */
 
 #define ERR_NOSUCHCHANNEL(myclient, mychannel)			"403 " + myclient + " " + mychannel + " :No such channel"
+#define ERR_USERNOTINCHANNEL(myclient, target, mychannel) "441 " + myclient + " " + target + " " + mychannel + " :They aren't on that channel"
 #define ERR_NOTONCHANNEL(myclient, mychannel)			"442 " + myclient + " " + mychannel + " :You're not on that channel"
 #define ERR_NONICKNAMEGIVEN(myclient)					"431 " + myclient + " :Nickname not given"
 #define ERR_NICKNAMEALREADYUSED(myclient)				"433 " + myclient + " " + myclient  + " :Nickname is already in use"
@@ -26,6 +27,6 @@
 #define ERR_ALREADYAUTHENTIFIED(myclient)				"462 " + myclient + " :You may not reregister"
 #define ERR_WRONGPASSWORD(myclient)						"464 " + myclient + " :Password incorrect"
 #define ERR_ALREADYREGISTERED(myclient)					"462 " + myclient + " :You may not reregister"
-#define ERR_CHANOPRIVSNEEDED(myclient, mychannel)		"482 " + myclient + " " + mychannel " :You're not channel operator"
+#define ERR_CHANOPRIVSNEEDED(myclient, mychannel)		"482 " + myclient + " " + mychannel + " :You're not channel operator"
 
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);

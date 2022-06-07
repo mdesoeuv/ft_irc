@@ -30,6 +30,7 @@ class Channel
 		std::string	getTopic() const;
 		std::string	getModes() const;
 		size_t		getUserNb() const;
+		Client&		getChanClient(const std::string& client_name);
 		void		setName(const std::string new_name);
 		void		setTopic(const std::string new_topic);
 		void		setModes(const std::string new_modes);
@@ -37,7 +38,7 @@ class Channel
 		bool		isOp(const std::string nick) const;
 		void		addUser(Client user);
 		void		addOp(Client op);
-		void		delUser(Client user, const std::string message);
+		void		delUser(Client user);
 		void		delOp(Client op);
 		std::string getUserList() const;
 		void		broadcastMessage(std::string message);

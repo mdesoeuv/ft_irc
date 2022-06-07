@@ -70,6 +70,15 @@ public:
 	void execute(Client& client, std::string arguments);
 };
 
+class KickCommand : public Command
+{
+public:
+	KickCommand(Server *server);
+	~KickCommand();
+
+	void execute(Client& client, std::string arguments);
+};
+
 class NickCommand : public Command
 {
 public:

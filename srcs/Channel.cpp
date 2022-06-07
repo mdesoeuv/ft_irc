@@ -45,6 +45,15 @@ size_t		Channel::getUserNb() const {
 	return _user_nb;
 }
 
+Client&		Channel::getChanClient(const std::string& client_name) {
+	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	{
+		if (it->getNickname() == client_name)
+			return *it;
+	}
+	throw std::out_of_range("client not found");
+}
+
 void	Channel::setName(const std::string new_name) {
 	_name = new_name;
 }
@@ -95,12 +104,11 @@ void	Channel::addOp(Client op) {
 }
 
 
-void	Channel::delUser(Client user, const std::string message) {
+void	Channel::delUser(Client user) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == user.getNickname())
 		{
-    		broadcastMessage(":" + user.getPrefix() + " PART " + message);
 			_user_list.erase(it);
 			_user_nb--;
 			return ;

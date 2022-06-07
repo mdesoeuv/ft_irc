@@ -1,5 +1,9 @@
 #include "../inc/Client.hpp"
 
+Client::Client() {
+
+}
+
 Client::Client(int fd, const std::string hostname, int port, const std::string chan_prefix)
 		: _socketfd(fd), _hostname(hostname), _isAuthentified(true), _isRegistered(false), _port(port), _chanPrefix(chan_prefix) {
 }
@@ -42,6 +46,9 @@ void Client::write(const std::string &message) const {
 	
 	// TO DO check la taille max du message
 	std::string buffer = message + "\r\n";
+	
+	std::cout << "full message sent :" + message << std::endl;
+
 	if (send(_socketfd, buffer.c_str(), buffer.length(), 0) < 0)
 		throw std::runtime_error("Error while sending message to client.");
 }

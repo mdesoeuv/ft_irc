@@ -176,6 +176,16 @@ Client *Server::getClient(const std::string nickname) {
 	return nullptr;
 }
 
+Channel&	Server::getChannel(const std::string& channel_name) {
+
+	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
+	{
+		if (it->getName() == channel_name)
+			return *it;
+	}
+	throw std::out_of_range("channel does not exist");
+}
+
 void	Server::deleteClient(int fd) {
 	_clients.erase(fd);
 }
@@ -208,9 +218,12 @@ void	Server::allChannelLeave(Client client) {
 	
 	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
-		if (chan_iter->isUser(client.getNickname()) || chan_iter->isOp(client.getNickname()))
-			chan_iter->delUser(client, "");
-		if (chan_iter->getUserList().empty())
-      		removeChannel(chan_iter);
+		if (chan_iter->isUser(client.getNickname()))
+		{
+			chan_iter->broadcastMessage(":" + client.getPrefix() + " PART " + chan_iter->getName());
+			chan_iter->delUser(client);
+			if (chan_iter->getUserList().empty())
+				removeChannel(chan_iter);
+		}
 	}
 }

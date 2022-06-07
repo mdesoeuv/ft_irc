@@ -32,6 +32,7 @@ SRCS			:=	main.cpp \
 					Commands/PartCommand.cpp \
 					Commands/ModeCommand.cpp \
 					Commands/TopicCommand.cpp \
+					Commands/KickCommand.cpp \
 					Channel.cpp \
 					utils.cpp
 

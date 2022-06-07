@@ -8,6 +8,8 @@
 class Client
 {
 	public:
+	
+		Client(void);
 
 		Client(int fd, const std::string hostname, int port, const std::string chan_prefix);
 
@@ -42,7 +44,6 @@ class Client
 
 	private:
 
-		Client(void);
 		
 		int			_socketfd;
 		std::string _nickname;

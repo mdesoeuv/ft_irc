@@ -29,7 +29,7 @@ class Server
 
 	typedef std::vector<pollfd>::iterator pollfds_iterator;
 	typedef std::map<int, Client >::iterator clients_iterator;
-	typedef std::pair<bool, std::vector<Channel>::iterator> channel_search_res;
+	typedef std::pair<bool, std::vector<Channel>::iterator> chan_it_pair;
 
 	int							_running;
 	int							_sock;
@@ -46,21 +46,20 @@ public:
 	Server(const std::string port, const std::string password);
 	~Server();
 
-	void start();
-
-	std::string getPassword() const { return _password; };
-	Client *getClient(const std::string nickname);
-
-	int			newSocket();
-	void		onClientConnect();
-	void		onClientMessage(int fd);
-	void		onClientDisconnect(int fd);
-	void		deleteClient(int fd);
-	void		addChannel(Channel channel);
-	void		removeChannel(std::vector<Channel>::iterator pos);
-	std::string readMessage(int fd);
-	std::pair<bool, std::vector<Channel>::iterator>	searchChannel(const std::string channel_name);
-	void		allChannelLeave(Client client);
+	void 			start();
+	std::string 	getPassword() const { return _password; };
+	Client*			getClient(const std::string nickname);
+	Channel&		getChannel(const std::string& channel_name);
+	int				newSocket();
+	void			onClientConnect();
+	void			onClientMessage(int fd);
+	void			onClientDisconnect(int fd);
+	void			deleteClient(int fd);
+	void			addChannel(Channel channel);
+	void			removeChannel(std::vector<Channel>::iterator pos);
+	std::string 	readMessage(int fd);
+	chan_it_pair	searchChannel(const std::string channel_name);
+	void			allChannelLeave(Client client);
 
 };
 
