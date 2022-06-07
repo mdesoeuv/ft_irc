@@ -11,7 +11,7 @@ CommandHandler::CommandHandler(Server *server) : _server(server)
 
 	_commands["PING"] = new PingCommand(_server);
 	_commands["PONG"] = new PongCommand(_server);
-	//_commands["PASS"] = new PassCommand(_server);
+	_commands["PASS"] = new PassCommand(_server);
 
 	_commands["JOIN"] = new JoinCommand(_server);
 	_commands["MODE"] = new ModeCommand(_server);

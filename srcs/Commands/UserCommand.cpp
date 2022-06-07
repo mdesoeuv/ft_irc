@@ -6,8 +6,13 @@ UserCommand::~UserCommand() {}
 
 void UserCommand::execute(Client& client, std::string arguments) {
 	
-	if (client.isRegistered() || !client.isAuthentified()) {
+	if (client.isRegistered()) {
 		client.reply(ERR_ALREADYREGISTERED(client.getNickname()));
+		return;
+	}
+
+	if (!client.isAuthentified()) {
+		client.reply("ERROR : Please connect to server with password.");
 		return;
 	}
 
