@@ -14,11 +14,18 @@ void PartCommand::execute(Client& client, std::string arguments) {
 std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(sub_arguments);
 	if (result.first)
 	{
-      result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
-			result.second->delUser(client);
-      if (result.second->getUserList().empty())
-        _server->removeChannel(result.second);
+    // check if user is not on channel
+    if (result.second->getUserList().find(client.getNickname()) > result.second->getUserList().size())
+    {
+      user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
       return ;
+    }
+    result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
+    // delete user and delete channel if last user
+    result.second->delUser(client);
+    if (result.second->getUserList().empty())
+      _server->removeChannel(result.second);
 	}
-  client.write(ERR_NOSUCHCHANNEL(client.getNickname(), sub_arguments));
+  else
+    client.write(ERR_NOSUCHCHANNEL(client.getNickname(), sub_arguments));
 }

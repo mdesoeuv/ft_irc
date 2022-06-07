@@ -30,6 +30,7 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 	}
 	else
 	{
+		// single argument case : send topic subject
 		channel_name = arguments;
 		result = _server->searchChannel(channel_name);
 		if (!result.first || !result.second->isUser(client.getNickname()))
