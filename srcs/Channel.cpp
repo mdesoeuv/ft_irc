@@ -70,7 +70,10 @@ bool	Channel::isUser(const std::string nick) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == nick)
+		{
+			std::cout << "TESTESTESTESTESTEST'" << std::endl;
 			return true;
+		}
 	}
 	return false;
 }

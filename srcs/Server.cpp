@@ -221,10 +221,11 @@ void	Server::allChannelLeave(Client client, bool broadcast_message) {
 	{
 		if (chan_iter->isUser(client.getNickname()))
 		{
+			std::cout << "dsddddddddd" << std::endl;
 			if (broadcast_message)
 				chan_iter->broadcastMessage(":" + client.getPrefix() + " PART " + chan_iter->getName());
 			chan_iter->delUser(client);
-			if (chan_iter->getUserList().empty())
+			if (chan_iter->getUserList().empty()) ///iterator invalidated here => buffer overflow
 				removeChannel(chan_iter);
 		}
 	}
