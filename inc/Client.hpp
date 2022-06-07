@@ -9,7 +9,7 @@ class Client
 {
 	public:
 
-		Client(int fd, const std::string hostname, int port);
+		Client(int fd, const std::string hostname, int port, const std::string chan_prefix);
 
 		Client(const Client& other);
 		
@@ -22,6 +22,7 @@ class Client
 		const std::string&	getRealName() const;
 		const std::string&	getPassword() const;
 		const std::string&	getHostname() const;
+		const std::string&	getChanPrefix() const;
 		bool 				isAuthentified() const;
 		bool 				isRegistered() const;
 		int					getSocketfd() const;
@@ -36,6 +37,7 @@ class Client
 		void				setRealName(const std::string& new_nickname);
 		void				setUsername(const std::string& new_username);
 		void				setPassword(const std::string& new_password);
+		void				setChanPrefix(const std::string new_prefix);
 		// void				addSendQueue(const std::string msg);
 
 	private:
@@ -48,9 +50,10 @@ class Client
 		std::string _realName;
 		std::string _password;
 		std::string	_hostname;
-		bool 	_isAuthentified;
-		bool 	_isRegistered;
+		bool 		_isAuthentified;
+		bool 		_isRegistered;
 		int 		_port;
+		std::string	_chanPrefix;
 		// std::string	_send_queue;
 
 };

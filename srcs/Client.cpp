@@ -1,7 +1,7 @@
 #include "../inc/Client.hpp"
 
-Client::Client(int fd,const std::string hostname, int port)
-		: _socketfd(fd), _hostname(hostname), _isAuthentified(true), _isRegistered(false), _port(port){
+Client::Client(int fd, const std::string hostname, int port, const std::string chan_prefix)
+		: _socketfd(fd), _hostname(hostname), _isAuthentified(true), _isRegistered(false), _port(port), _chanPrefix(chan_prefix) {
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
@@ -12,7 +12,8 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_hostname(other._hostname),
 										_isAuthentified(other.isAuthentified()),
 										_isRegistered(other.isRegistered()),
-										_port(other.getPort()) {
+										_port(other.getPort()),
+										_chanPrefix(other.getChanPrefix()) {
 }
 
 Client::~Client() {
@@ -28,6 +29,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_isRegistered = rhs.isRegistered();
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
+	_chanPrefix = rhs.getChanPrefix();
 
 	return *this ;
 }
@@ -63,39 +65,43 @@ void Client::welcome() {
 }
 
 bool	Client::isAuthentified() const {
-	return _isAuthentified ;
+	return _isAuthentified;
 }
 
 bool	Client::isRegistered() const {
-	return _isRegistered ;
+	return _isRegistered;
 }
 
 const std::string&	Client::getNickname() const {
-	return _nickname ;
+	return _nickname;
 }
 
 const std::string&	Client::getUsername() const {
-	return _username ;
+	return _username;
 }
 
 const std::string&	Client::getRealName() const {
-	return _realName ;
+	return _realName;
 }
 
 const std::string&	Client::getPassword() const {
-	return _password ;
+	return _password;
 }
 
 int					Client::getSocketfd() const {
-	return _socketfd ;
+	return _socketfd;
 }
 
 int					Client::getPort() const {
-	return _port ;
+	return _port;
 }
 
 const std::string&	Client::getHostname() const {
-	return _hostname ;
+	return _hostname;
+}
+
+const std::string&	Client::getChanPrefix() const {
+	return _chanPrefix;
 }
 
 void				Client::setNickname(const std::string& new_nickname) {
@@ -122,3 +128,6 @@ void				Client::setIsRegistered(bool is_Registered) {
 	_isRegistered = is_Registered;
 }
 
+void				Client::setChanPrefix(const std::string new_prefix) {
+	_chanPrefix = new_prefix;
+}

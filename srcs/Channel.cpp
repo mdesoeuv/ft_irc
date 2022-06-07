@@ -125,6 +125,7 @@ std::string	Channel::getUserList() const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		result += " ";
+		result += it->getChanPrefix();
 		result += it->getNickname();
 	}
 	return result;

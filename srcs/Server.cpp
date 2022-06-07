@@ -115,7 +115,7 @@ void Server::onClientConnect() {
 		throw std::runtime_error("Error while getting hostname of new client.");
 
 	// Creates a new Client and store it in Clients map
-	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port))));
+	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port), "")));
 	std::cout << "Client connnected" << std::endl;
 }
 
