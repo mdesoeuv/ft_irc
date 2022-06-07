@@ -1,7 +1,7 @@
 #include "../inc/Client.hpp"
 
 Client::Client(int fd, const std::string hostname, int port, const std::string chan_prefix)
-		: _socketfd(fd), _hostname(hostname), _isAuthentified(true), _isRegistered(false), _port(port), _chanPrefix(chan_prefix) {
+		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port), _chanPrefix(chan_prefix) {
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
