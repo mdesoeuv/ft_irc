@@ -123,7 +123,7 @@ void Server::onClientDisconnect(int fd) {
 
 	// removing fd of leaving client from poll 
 	deleteClient(fd);
-	
+	// TO DO : supprimer le client de tous 
 	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it) {
 		if (it->fd == fd)
 		{

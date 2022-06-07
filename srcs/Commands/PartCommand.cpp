@@ -17,7 +17,7 @@ std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(
     // check if user is not on channel
     if (result.second->getUserList().find(client.getNickname()) > result.second->getUserList().size())
     {
-      user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
+      client.reply(ERR_NOTONCHANNEL(client.getNickname(), result.second->getName()));
       return ;
     }
     result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
