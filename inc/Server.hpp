@@ -60,5 +60,7 @@ public:
 	void		removeChannel(std::vector<Channel>::iterator pos);
 	std::string readMessage(int fd);
 	std::pair<bool, std::vector<Channel>::iterator>	searchChannel(const std::string channel_name);
+	void		allChannelLeave(Client client);
+
 };
 

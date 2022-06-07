@@ -20,9 +20,8 @@ std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(
       client.reply(ERR_NOTONCHANNEL(client.getNickname(), result.second->getName()));
       return ;
     }
-    result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
     // delete user and delete channel if last user
-    result.second->delUser(client);
+    result.second->delUser(client, arguments);
     if (result.second->getUserList().empty())
       _server->removeChannel(result.second);
 	}

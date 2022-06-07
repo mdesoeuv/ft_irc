@@ -203,3 +203,14 @@ std::pair<bool, std::vector<Channel>::iterator>	Server::searchChannel(const std:
 	}
 	return std::make_pair(false, iter);
 }
+
+void	Server::allChannelLeave(Client client) {
+	
+	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
+	{
+		if (chan_iter->isUser(client.getNickname()) || chan_iter->isOp(client.getNickname()))
+			chan_iter->delUser(client, "");
+		if (chan_iter->getUserList().empty())
+      		removeChannel(chan_iter);
+	}
+}

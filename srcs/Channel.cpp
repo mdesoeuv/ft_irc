@@ -4,7 +4,7 @@ Channel::Channel(void) {
 }
 
 Channel::Channel(const std::string& chan_name) : 
-					_name(chan_name), _topic(""), _modes("+t +n"), _user_nb(0) {
+					_name(chan_name), _topic(""), _modes("+nt"), _user_nb(0) {
 }
 
 Channel::Channel(const Channel& other) :	_user_list(other._user_list),
@@ -95,11 +95,12 @@ void	Channel::addOp(Client op) {
 }
 
 
-void	Channel::delUser(Client user) {
+void	Channel::delUser(Client user, const std::string message) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == user.getNickname())
 		{
+    		broadcastMessage(":" + user.getPrefix() + " PART " + message);
 			_user_list.erase(it);
 			_user_nb--;
 			return ;
