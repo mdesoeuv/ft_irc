@@ -45,9 +45,9 @@ void KickCommand::execute(Client& client, std::string arguments) {
 
 	// parsing user_to_kick nickname
 	size_t colon_pos = arguments.find(":");
-	if (pos > arguments.size())
+	if (colon_pos >= arguments.size())
 	{
-		arguments += " :Inapropriate behavior";
+		arguments.append(" :Inapropriate behavior");
 		colon_pos = arguments.find(":");
 	}
 	std::string user_to_kick = arguments.substr(pos + 1, colon_pos - 2 - pos);
