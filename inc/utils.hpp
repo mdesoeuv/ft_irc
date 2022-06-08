@@ -16,6 +16,7 @@
 #define RPL_TOPIC(myclient, mychannel, channel_topic)	"332 " + myclient + " " + mychannel + " :" + channel_topic
 #define RPL_NAMEREPLY(myclient, channel, users)  	 	"353 " + myclient + " = " + channel + " :" + users
 #define RPL_ENDOFNAMES(myclient, mychannel)				"366 " + myclient + " " + mychannel + " :End of /NAMES list"
+#define RPL_PRIVMSG(myclient, target, message)			":" + myclient + " PRIVMSG " + target + " :" + message
 
 /* Error Messages */
 
@@ -30,6 +31,8 @@
 #define ERR_WRONGPASSWORD(myclient)						"464 " + myclient + " :Password incorrect"
 #define ERR_ALREADYREGISTERED(myclient)					"462 " + myclient + " :You may not reregister"
 #define ERR_CHANOPRIVSNEEDED(myclient, mychannel)		"482 " + myclient + " " + mychannel + " :You're not channel operator"
+#define ERR_NOSUCHNICK(myclient, nickname)				"401 " + myclient + " " + nickname + " :No such nickname"
+#define ERR_CANNOTSENDTOCHAN(myclient, channel)			"404 " + myclient + " " + channel + " :Cannot send to channel"
 
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);
 void	sig_quit(int code);

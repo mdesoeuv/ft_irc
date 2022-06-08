@@ -126,15 +126,6 @@ void Server::onClientDisconnect(int fd) {
 
 	// removing fd of leaving client from poll 
 	deleteClient(fd);
-	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it) {
-		if (it->fd == fd)
-		{
-			_pollfds.erase(it);
-			close(fd);
-			break;
-		}			
-	}
-
 }
 
 void Server::onClientMessage(int fd) {
@@ -188,6 +179,14 @@ Channel&	Server::getChannel(const std::string& channel_name) {
 
 void	Server::deleteClient(int fd) {
 	_clients.erase(fd);
+	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it) {
+		if (it->fd == fd)
+		{
+			_pollfds.erase(it);
+			close(fd);
+			break;
+		}			
+	}
 }
 
 void	Server::addChannel(Channel channel) {

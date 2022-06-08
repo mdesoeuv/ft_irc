@@ -123,3 +123,12 @@ public:
 
 	void execute(Client& client, std::string arguments);
 };
+
+class PrivMsgCommand : public Command
+{
+public:
+	PrivMsgCommand(Server *server);
+	~PrivMsgCommand();
+
+	void execute(Client& client, std::string arguments);
+};
