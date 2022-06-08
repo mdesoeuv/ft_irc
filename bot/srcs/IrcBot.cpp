@@ -8,18 +8,6 @@ IrcBot::IrcBot(const std::string &host, const std::string &port, const std::stri
 IrcBot::~IrcBot() {
 }
 
-void IrcBot::receiver(IrcBot *instance) {
-	char buffer[256];
-	int length;
-
-	while ((length = recv(instance->_sock, buffer, 256, 0)) > 0) {
-		buffer[length] = 0;
-		instance->onMessageReceived(std::string(buffer, length));
-	}
-
-	close(instance->_sock);
-}
-
 int IrcBot::newSocket() {
 
 	/* creating socket :
@@ -66,7 +54,7 @@ void IrcBot::start() {
 	while (input != "exit") {
 		getline(std::cin, input);
 	}
-
+	close(_sock);
 	sendMessageToServer("QUIT :Bye !");
 
 }

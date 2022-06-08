@@ -29,7 +29,6 @@ private:
 	std::string _password;
 	std::string _buffer;
 
-	static void receiver(IrcBot *instance);
 	int			newSocket();
 	void 		sendMessageToServer(const std::string &message);
 	void 		sendPrivMsg(const std::string &source, const std::string &message);
