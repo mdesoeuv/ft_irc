@@ -30,6 +30,7 @@ class Client
 		int					getSocketfd() const;
 		int					getPort() const;
 		std::string 		getPrefix() const;
+		std::string&		getMessageBuffer();
 		void 				write(const std::string &message) const;
 		void 				welcome();
 		void				reply(const std::string &reply);
@@ -40,11 +41,10 @@ class Client
 		void				setUsername(const std::string& new_username);
 		void				setPassword(const std::string& new_password);
 		void				setChanPrefix(const std::string new_prefix);
-		// void				addSendQueue(const std::string msg);
+		std::string			extractMessage();
 
 	private:
 
-		
 		int			_socketfd;
 		std::string _nickname;
 		std::string _username;
@@ -55,6 +55,6 @@ class Client
 		bool 		_isRegistered;
 		int 		_port;
 		std::string	_chanPrefix;
-		// std::string	_send_queue;
+		std::string _messageBuffer;
 
 };

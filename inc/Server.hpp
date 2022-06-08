@@ -57,7 +57,7 @@ public:
 	void			deleteClient(int fd);
 	void			addChannel(Channel channel);
 	void			removeChannel(std::vector<Channel>::iterator pos);
-	std::string 	readMessage(int fd);
+	void		 	readMessage(int fd);
 	chan_it_pair	searchChannel(const std::string channel_name);
 	void			allChannelLeave(Client client, std::string broadcast_message);
 

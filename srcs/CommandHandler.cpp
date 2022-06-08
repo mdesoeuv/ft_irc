@@ -31,39 +31,23 @@ CommandHandler::~CommandHandler()
 
 void	CommandHandler::parsing(Client& client, std::string message)
 {
-	size_t		pos = 0;
-	std::string	sub_message;
+	// split of the first word of message to get command
+	std::vector<std::string>	arguments;
+	splitCommand(arguments, message);
 
-	std::cout << "client sent this full message :" + message << std::endl;
-
-	while (message.size() != 0)
+	//display du split pour debug parsing
+	// for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
+	// 	std::cout << *it << std::endl;
+	try
 	{
-		// Divide in sub messages separated by \r\n
-		pos = message.find("\r\n");
-		if (pos > message.size())
-			break;
-		sub_message = message.substr(0, pos);
-		message.erase(0, pos + 2);
-
-		// split of the first word of sub message
-		std::vector<std::string>	arguments;
-		splitCommand(arguments, sub_message);
-
-		//display du split pour debug parsing
-		// for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
-		// 	std::cout << *it << std::endl;
-		try
-		{
-			Command *command = _commands.at(arguments[0]);
-			command->execute(client, arguments[1]);
-		}
-		catch (const std::out_of_range &e)
-		{
-			std::cout <<"Command unknown :" << std::endl;
-			std::cout << sub_message << std::endl;
-			client.reply(ERR_UNKNOWNCOMMAND(client.getNickname(), sub_message));
-		}
-		arguments.clear();
+		Command *command = _commands.at(arguments[0]);
+		command->execute(client, arguments[1]);
+	}
+	catch (const std::out_of_range &e)
+	{
+		std::cout <<"Command unknown :" << std::endl;
+		std::cout << message << std::endl;
+		client.reply(ERR_UNKNOWNCOMMAND(client.getNickname(), message));
 	}
 }
 
