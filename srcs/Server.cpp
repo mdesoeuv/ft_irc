@@ -139,43 +139,34 @@ void Server::onClientDisconnect(int fd) {
 
 void Server::onClientMessage(int fd) {
 	std::cout << "Client message !" << std::endl;
-	try {
-		// getting which client has sent the msg by finding the fd in de client list 
-		Client& myclient = _clients.at(fd);
-		_commandHandler->parsing(myclient, readMessage(fd));
-
-	}
-	catch (const std::out_of_range &ex) {
-	}
+	readMessage(fd);
 }
 
 // TO DO: reconstitution des messages par concatenation des fragments de messages envoyés avant d'envoyer la commande a parser
-std::string Server::readMessage(int fd) {
-
-	std::string message;
+void Server::readMessage(int fd) {
 
 	int			read_bytes = -10;
-	
 	char		buffer[101];
+	
 	bzero(buffer, 101);
-
-
-	while (read_bytes != 0 && !std::strstr(buffer, "\r\n")) { // stopper la boucle si recv n'a plus rien a lire meme si message incomplet
-		
+	while (read_bytes != 0)
+	{
 		bzero(buffer, 100);
 		read_bytes = recv(fd, buffer, 100, 0);
 		if (read_bytes < 0)
 		{
+			if (errno != EWOULDBLOCK)
 			throw std::runtime_error("Error while reading buffer from client.");
 			break ;
 		}
 		std::cout << "bytes read :" << read_bytes << std::endl;
 		buffer[read_bytes] = '\0';
-		message.append(buffer);
+		_clients[fd].getMessageBuffer().append(buffer);
+		while (_clients[fd].getMessageBuffer().find("\r\n") < _clients[fd].getMessageBuffer().size())
+		{
+			_commandHandler->parsing(_clients[fd], _clients[fd].extractMessage());
+		}
 	}
-	std::cout << "message packet received :" + message + "//" << std::endl;
-
-	return message;
 }
 
 Client *Server::getClient(const std::string nickname) {

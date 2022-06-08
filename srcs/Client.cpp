@@ -110,6 +110,10 @@ const std::string&	Client::getChanPrefix() const {
 	return _chanPrefix;
 }
 
+std::string&		Client::getMessageBuffer() {
+	return _messageBuffer;
+}
+
 void				Client::setNickname(const std::string& new_nickname) {
 	_nickname = new_nickname;
 }
@@ -136,4 +140,16 @@ void				Client::setIsRegistered(bool is_Registered) {
 
 void				Client::setChanPrefix(const std::string new_prefix) {
 	_chanPrefix = new_prefix;
+}
+
+std::string				Client::extractMessage() {
+
+	std::string message; 
+
+	size_t pos = _messageBuffer.find("\r\n");
+	message = _messageBuffer.substr(0, pos);
+	_messageBuffer.erase(0, pos + 2);
+
+	std::cout << "extracted message :" + message << std::endl;
+	return message;
 }
