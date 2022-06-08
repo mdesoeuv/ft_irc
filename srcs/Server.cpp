@@ -142,7 +142,6 @@ void Server::onClientMessage(int fd) {
 	readMessage(fd);
 }
 
-// TO DO: reconstitution des messages par concatenation des fragments de messages envoyés avant d'envoyer la commande a parser
 void Server::readMessage(int fd) {
 
 	int			read_bytes = -10;
@@ -153,11 +152,8 @@ void Server::readMessage(int fd) {
 	{
 		bzero(buffer, 100);
 		read_bytes = recv(fd, buffer, 100, 0);
-		if (read_bytes < 0) {
-			if (errno != EWOULDBLOCK) /// TO DO: remove this
-				throw std::runtime_error("Error while reading buffer from client.");
+		if (read_bytes < 0)
 			break ;
-		}
 		std::cout << "bytes read :" << read_bytes << std::endl;
 		buffer[read_bytes] = '\0';
 		std::cout << "packet received :" + std::string(buffer) + "//" << std::endl;

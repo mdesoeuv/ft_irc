@@ -26,7 +26,7 @@ void KickCommand::execute(Client& client, std::string arguments) {
 	try
 	{
 		user = channel.getChanClient(client.getNickname());
-		if (user.getPrefix().find("@") > user.getPrefix().size())
+		if (user.getChanPrefix().find("@") > user.getChanPrefix().size())
 		{
 			user.reply(ERR_CHANOPRIVSNEEDED(user.getNickname(), channel_name));
 			return ;
