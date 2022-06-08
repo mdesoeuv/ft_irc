@@ -152,19 +152,26 @@ std::string Server::readMessage(int fd) {
 
 	std::string message;
 
-	char buffer[101]; // added 1 char to /0 the char line
+	int			read_bytes = -10;
+	
+	char		buffer[101];
 	bzero(buffer, 101);
 
-	while (!std::strstr(buffer, "\r\n")) { // stoper la boucle si recv n'a plus rien a lire meme si message incomplet
+
+	while (read_bytes != 0 && !std::strstr(buffer, "\r\n")) { // stoper la boucle si recv n'a plus rien a lire meme si message incomplet
+		
 		bzero(buffer, 100);
-
-		if (recv(fd, buffer, 100, 0) < 0) { // checker le retour du recv pour voir si la partie du message envoyée a bien été lue
-			if (errno != EWOULDBLOCK)
+		read_bytes = recv(fd, buffer, 100, 0);
+		if (read_bytes < 0) { // checker le retour du recv pour voir si la partie du message envoyée a bien été lue
+			if (errno != EWOULDBLOCK) // <===== check interdit par la correction !! macro qui correspond au fameux EAGAIN
 				throw std::runtime_error("Error while reading buffer from client.");
+			break ;
 		}
-
+		std::cout << "bytes read :" << read_bytes << std::endl;
+		buffer[read_bytes] = '\0';
 		message.append(buffer);
 	}
+	std::cout << "message packet received :" + message + "//" << std::endl;
 
 	return message;
 }
