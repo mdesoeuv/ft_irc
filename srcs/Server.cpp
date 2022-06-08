@@ -161,6 +161,7 @@ void Server::readMessage(int fd) {
 		}
 		std::cout << "bytes read :" << read_bytes << std::endl;
 		buffer[read_bytes] = '\0';
+		std::cout << "packet received :" + std::string(buffer) + "//" << std::endl;
 		_clients[fd].getMessageBuffer().append(buffer);
 		while (_clients[fd].getMessageBuffer().find("\r\n") < _clients[fd].getMessageBuffer().size())
 		{
