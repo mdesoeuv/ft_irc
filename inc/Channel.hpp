@@ -42,6 +42,6 @@ class Channel
 		void		delOp(Client op);
 		std::string getUserList() const;
 		void		broadcastMessage(std::string message);
-
+		void		broadcastExceptSource(std::string message, const std::string& source_nick);
 
 };

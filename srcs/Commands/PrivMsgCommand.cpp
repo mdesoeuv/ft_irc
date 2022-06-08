@@ -46,7 +46,7 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 				return;
 			}
 		}
-		channel.broadcastMessage(RPL_PRIVMSG(client.getPrefix(), target, message));
+		channel.broadcastExceptSource(RPL_PRIVMSG(client.getPrefix(), target, message), client.getNickname());
 		return;
 	}
 
