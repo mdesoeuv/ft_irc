@@ -11,6 +11,11 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	if (result.first)
 	{
 	//si oui:
+	
+	// TO DO: verifier si le mode du channel permet aux utilisateurs de le rejoindre
+
+	// TO DO: verifier la limite d'utilisateurs du channel
+
 	//client join le channel
 		result.second->addUser(client);
 		sendJoinNotif(client, *result.second);
