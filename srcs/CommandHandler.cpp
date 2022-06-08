@@ -34,9 +34,6 @@ void	CommandHandler::parsing(Client& client, std::string message)
 	std::vector<std::string>	arguments;
 	splitCommand(arguments, message);
 
-	//display du split pour debug parsing
-	// for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it)
-	// 	std::cout << *it << std::endl;
 	try
 	{
 		Command *command = _commands.at(arguments[0]);
@@ -53,7 +50,7 @@ void	CommandHandler::parsing(Client& client, std::string message)
 void	CommandHandler::splitCommand(std::vector<std::string> &arguments, const std::string& message)
 {
 
-	size_t				pos = 0;
+	size_t	pos = 0;
 
 	pos = message.find(" ");
 	if (pos < message.size())

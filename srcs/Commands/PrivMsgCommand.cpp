@@ -30,11 +30,11 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 		Channel channel;
 		try
 		{
-			channel = _server->getChannel(target.substr(1));
+			channel = _server->getChannel(target);
 		}
 		catch (const std::out_of_range &e)
 		{
-			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), target.substr(1)));
+			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), target));
 			return;
 		}
 
