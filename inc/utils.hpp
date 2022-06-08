@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdlib.h>
 
 /* replies Message */
 
@@ -31,3 +32,4 @@
 #define ERR_CHANOPRIVSNEEDED(myclient, mychannel)		"482 " + myclient + " " + mychannel + " :You're not channel operator"
 
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);
+void	sig_quit(int code);
