@@ -31,9 +31,7 @@ CommandHandler::~CommandHandler()
 
 void	CommandHandler::parsing(Client& client, std::string message)
 {
-	std::cout << "client sent this full message :" + message << std::endl;
-
-	// split of the first word of sub message
+	// split of the first word of message to get command
 	std::vector<std::string>	arguments;
 	splitCommand(arguments, message);
 
