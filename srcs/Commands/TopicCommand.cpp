@@ -19,14 +19,28 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 		new_topic = arguments.substr(pos + 1);
 		channel_name = arguments.substr(0, pos - 1);
 		result = _server->searchChannel(channel_name);
+		bool found_channel = result.first;
+		std::vector<Channel>::iterator chan_iter = result.second;
 
-		// TO DO: check if user has rights to change topic
-		if (!result.first || !result.second->isUser(client.getNickname()))
+		// TO DO: verifier si le channel autorise le changement de topic
+
+		// checks if user is on channel
+		if (!found_channel || !chan_iter->isUser(client.getNickname()))
 		{
 			client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel_name));
 			return ;
 		}
-		result.second->setTopic(new_topic);		
+
+		// checks if user has rights to change topic
+		if (!chan_iter->isOp(client.getNickname()))
+		{
+			client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), channel_name));
+			return ;
+		}
+
+		// sets new topic
+		chan_iter->setTopic(new_topic);
+		chan_iter->broadcastMessage(":" + client.getPrefix() + " TOPIC " + arguments);
 	}
 	else
 	{

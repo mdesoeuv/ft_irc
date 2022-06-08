@@ -76,10 +76,15 @@ bool	Channel::isUser(const std::string nick) const {
 }
 
 bool	Channel::isOp(const std::string op) const {
-	for (std::vector<Client>::const_iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == op)
-			return true;
+		{
+			if (it->getPrefix().find("@") < it->getPrefix().size())
+				return true;
+			else
+				return false;
+		}
 	}
 	return false;
 }
