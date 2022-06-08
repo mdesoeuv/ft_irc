@@ -10,7 +10,7 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 	{
 		if (result.first)
 		{
-			client.reply(RPL_CHANNELMODEIS(client.getNickname(), result.second->getName(), result.second->getModes(), ""));
+			client.write((":ft_irc MODE " + result.second->getName() + " :" + result.second->getModes())); // TO DO: trouver pourquoi le RPL_MODES ne marche pas
 			return ;
 		}
 	}

@@ -99,6 +99,8 @@ void	Channel::addUser(Client user) {
 	_user_nb++;
 }
 
+
+// TO DO: to rework
 void	Channel::addOp(Client op) {
 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
 	{

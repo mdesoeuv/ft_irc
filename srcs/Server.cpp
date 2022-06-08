@@ -121,9 +121,11 @@ void Server::onClientConnect() {
 
 void Server::onClientDisconnect(int fd) {
 
+	// client is removed from all subscribed channels
+	allChannelLeave(_clients[fd], ":" + _clients[fd].getPrefix() + " QUIT :Quit:");
+
 	// removing fd of leaving client from poll 
 	deleteClient(fd);
-	// TO DO : supprimer le client de tous les channels server->allChannelLeave ?
 	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it) {
 		if (it->fd == fd)
 		{
@@ -158,13 +160,13 @@ std::string Server::readMessage(int fd) {
 	bzero(buffer, 101);
 
 
-	while (read_bytes != 0 && !std::strstr(buffer, "\r\n")) { // stoper la boucle si recv n'a plus rien a lire meme si message incomplet
+	while (read_bytes != 0 && !std::strstr(buffer, "\r\n")) { // stopper la boucle si recv n'a plus rien a lire meme si message incomplet
 		
 		bzero(buffer, 100);
 		read_bytes = recv(fd, buffer, 100, 0);
-		if (read_bytes < 0) { // checker le retour du recv pour voir si la partie du message envoyée a bien été lue
-			if (errno != EWOULDBLOCK) // <===== check interdit par la correction !! macro qui correspond au fameux EAGAIN
-				throw std::runtime_error("Error while reading buffer from client.");
+		if (read_bytes < 0)
+		{
+			throw std::runtime_error("Error while reading buffer from client.");
 			break ;
 		}
 		std::cout << "bytes read :" << read_bytes << std::endl;
