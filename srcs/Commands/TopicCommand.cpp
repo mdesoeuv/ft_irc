@@ -32,7 +32,7 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 		}
 
 		// checks if user has rights to change topic
-		if (!chan_iter->isOp(client.getNickname()))
+		if (chan_iter->isOp(client.getNickname()) == false)
 		{
 			client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), channel_name));
 			return ;

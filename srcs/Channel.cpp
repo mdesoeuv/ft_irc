@@ -80,8 +80,11 @@ bool	Channel::isOp(const std::string op) const {
 	{
 		if (it->getNickname() == op)
 		{
-			if (it->getPrefix().find("@") < it->getPrefix().size())
+			if (it->getChanPrefix().find("@") < it->getChanPrefix().size())
+			{
+				std::cout << it->getNickname() + " is operator on this channel" << std::endl;
 				return true;
+			}
 			else
 				return false;
 		}
