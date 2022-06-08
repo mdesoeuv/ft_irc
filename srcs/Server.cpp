@@ -154,7 +154,8 @@ void Server::readMessage(int fd) {
 		bzero(buffer, 100);
 		read_bytes = recv(fd, buffer, 100, 0);
 		if (read_bytes < 0) {
-			throw std::runtime_error("Error while reading buffer from client.");
+			if (errno != EWOULDBLOCK)
+				throw std::runtime_error("Error while reading buffer from client.");
 			break ;
 		}
 		std::cout << "bytes read :" << read_bytes << std::endl;
