@@ -162,9 +162,8 @@ std::string Server::readMessage(int fd) {
 		
 		bzero(buffer, 100);
 		read_bytes = recv(fd, buffer, 100, 0);
-		if (read_bytes < 0) { // checker le retour du recv pour voir si la partie du message envoyée a bien été lue
-			if (errno != EWOULDBLOCK) // <===== check interdit par la correction !! macro qui correspond au fameux EAGAIN
-				throw std::runtime_error("Error while reading buffer from client.");
+		if (read_bytes < 0) {
+			throw std::runtime_error("Error while reading buffer from client.");
 			break ;
 		}
 		std::cout << "bytes read :" << read_bytes << std::endl;

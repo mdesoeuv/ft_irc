@@ -21,3 +21,11 @@ void	split_args(const std::string str, const std::string sep, std::vector<std::s
 	}
 
 }
+
+void	sig_quit(int code)
+{
+	(void)code;
+	std::cout << std::endl;
+	std::cout << "Goodbye !" << std::endl;
+	exit(0);
+}

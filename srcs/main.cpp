@@ -1,7 +1,9 @@
 #include "../inc/Server.hpp"
+#include "../inc/utils.hpp"
 
 int main(int ac, char **av)
 {
+	signal(SIGINT, &sig_quit);
 	try
 	{
 		if (ac != 3)
