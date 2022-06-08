@@ -15,7 +15,8 @@ INC_DIR			:= inc/
 INC_FILES		:= $(addprefix $(INC_DIR), $(INC))
 
 SRCS			:=	main.cpp \
-					IrcBot.cpp
+					IrcBot.cpp \
+					utils.cpp
 
 SRCS_DIR		:= srcs/
 

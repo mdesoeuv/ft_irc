@@ -70,6 +70,7 @@
 		"utility": "cpp",
 		"deque": "cpp",
 		"numeric": "cpp",
-		"regex": "cpp"
+		"regex": "cpp",
+		"thread": "cpp"
 	}
 }
