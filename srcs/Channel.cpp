@@ -155,3 +155,11 @@ void	Channel::broadcastMessage(std::string message) {
 		it->write(message);
 	}
 }
+
+void	Channel::broadcastExceptSource(std::string message, const std::string& source_nick) {
+	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	{
+		if (it->getNickname() != source_nick)
+			it->write(message);
+	}
+}

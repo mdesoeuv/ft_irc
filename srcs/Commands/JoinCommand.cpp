@@ -47,9 +47,16 @@ void JoinCommand::sendJoinNotif(Client& client, Channel channel) {
 bool JoinCommand::invalidChannelName(const std::string& channel_name) {
 	if (channel_name.empty())
 		return true;
-	if (channel_name.size() > 50)
+	if (channel_name.size() > 50 || channel_name.size() < 2)
 		return true;
-	if (channel_name[0] != '&' && channel_name[0] != '#' && channel_name[0] !=  '+' && channel_name[0] !=  '!')
+
+	/*
+	** restricted channel name creation to #channel only
+	** normal condition would be :
+	** if (channel_name[0] != '#' && channel_name[0] !=  '+' && channel_name[0] !=  '!' && channel_name[0] != '&')
+	*/
+
+	if (channel_name[0] != '#')
 		return true;
 	if (channel_name.find(" ") < channel_name.size() || channel_name.find(",") < channel_name.size() || channel_name.find("^G") < channel_name.size())
 		return true;
