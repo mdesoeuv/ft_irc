@@ -132,3 +132,12 @@ public:
 
 	void execute(Client& client, std::string arguments);
 };
+
+class NoticeCommand : public Command
+{
+public:
+	NoticeCommand(Server *server);
+	~NoticeCommand();
+
+	void execute(Client& client, std::string arguments);
+};
