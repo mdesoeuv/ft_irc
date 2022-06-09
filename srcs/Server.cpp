@@ -23,7 +23,7 @@ void Server::start() {
 	// Le server écoute désormais les POLL IN
 	while (_running) {
 		time_t	actualTime = time(NULL);
-		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end();) {
+		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
 			//ping all clients at interval PING_INTERVAL
 			if (actualTime > (lastPingTime + PING_INTERVAL))
 			{
@@ -31,24 +31,13 @@ void Server::start() {
 				lastPingTime = actualTime;
 			}
 			//Check that clients have answered to ping	
-			if (it->second.getLastPingTime() + TIMEOUT < actualTime)
+			if (it->second.getLastPingTime() + PING_INTERVAL + TIMEOUT < actualTime)
 			{
-				std::cout << "it->second.getLastPingTime()" << it->second.getLastPingTime() << std::endl;
-
-				std::cout << "it->second.getLastPingTime() + TIMEOUT" << it->second.getLastPingTime() + TIMEOUT << std::endl;
-
-				std::cout << "lastPingTime" << lastPingTime << std::endl;
-				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user"));
+				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user : timeout"));
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
 				std::cout << "Client has Timeout " << std::endl;
-				std::map<int, Client>::iterator	iter_saved = it;
-				iter_saved++;
-				deleteClient(it->second.getSocketfd());
-				std::cout << "Client deleted" << std::endl;
-				it = iter_saved;
+				//it->second à supprimer
 			}
-			else
-				it++;	
 		}
 
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
@@ -79,8 +68,11 @@ void Server::start() {
 			}
 
 			//POLLERR
-
 		}
+
+		deleteClient(it->second.getSocketfd());
+		std::cout << "Client deleted" << std::endl;
+
 	}
 }
 
