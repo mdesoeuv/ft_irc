@@ -268,7 +268,7 @@ void	Server::allChannelLeave(Client client, std::string broadcast_message) {
 		{
 			chan_iter->delUser(client);
 			if (chan_iter->getUserList().empty())
-				channels_to_remove.push_back(chan_iter->getName()); // cannot remove in loop because iterator is invalidated by each removal
+				channels_to_remove.push_back(chan_iter->getName());
 			chan_iter->broadcastMessage(broadcast_message);
 		}
 	}
