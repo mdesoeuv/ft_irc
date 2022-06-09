@@ -15,8 +15,6 @@ Server::~Server() {
 	delete _commandHandler;
 }
 
-
-// TO DO: gros soucis d'iterateurs invalidés par la suppression d'un client
 void Server::start() {
 	time_t lastPingTime = time(NULL);
 	pollfd server_fd = {_sock, POLLIN, 0}; // POLLHUP & POLLERR sont fournis automatiquement
