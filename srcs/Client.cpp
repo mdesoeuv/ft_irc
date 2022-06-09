@@ -48,10 +48,8 @@ std::string Client::getPrefix() const {
 void Client::write(const std::string &message) const {
 	
 	// TO DO check la taille max du message
-	std::string buffer = message + "\r\n";
 	
-	// Qrite should be a server method 
-	_clientOnServer->addSendQueue(message + "\r\n");
+	_clientOnServer->addSendQueue(message);
 	
 	std::cout << "full message added to send queue :" + _clientOnServer->getSendQueue() << std::endl;
 	// if (send(_socketfd, buffer.c_str(), buffer.length(), 0) < 0)
@@ -178,4 +176,5 @@ std::string			Client::extractMessage() {
 
 void				Client::addSendQueue(const std::string message) {
 	_sendQueue += message;
+	_sendQueue += "\r\n";
 }

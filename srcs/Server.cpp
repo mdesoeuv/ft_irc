@@ -29,6 +29,8 @@ void Server::start() {
 			//ping all clients at interval PING_INTERVAL
 			if (actualTime > (lastPingTime + PING_INTERVAL))
 			{
+				std::cout << "je ping" << std::endl;
+				it->second.addSendQueue(RPL_PING(std::string("ft_irc"), std::string("check if client is still connect")));
 				lastPingTime = actualTime;
 			}
 			//Check that clients have answered to ping	
