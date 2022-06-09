@@ -35,6 +35,7 @@ class Server
 	int							_running;
 	int							_sock;
 	const std::string			_host;
+	const std::string			_name;
 	const std::string			_port;
 	const std::string			_password;
 	std::vector<pollfd>			_pollfds;
@@ -52,6 +53,7 @@ public:
 	std::string 	getPassword() const { return _password; };
 	Client*			getClient(const std::string nickname);
 	Channel&		getChannel(const std::string& channel_name);
+	std::string		getServerPrefix() const;
 	void			addClientToDelete(int fd);
 	int				newSocket();
 	void			onClientConnect();

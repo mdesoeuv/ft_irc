@@ -50,21 +50,14 @@ std::string Client::getPrefix() const {
 	return _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
 }
 
-// TODO: remplacer write par addSendQueue(message + "\r\n")
+// TODO: remplacer write par addSendQueue(message)
 void Client::write(const std::string &message) const {
-	
-	// TODO check la taille max du message
-	
+
 	_clientOnServer->addSendQueue(message);
-	
-	std::cout << "full message added to send queue :" + _clientOnServer->getSendQueue() << std::endl;
-	// if (send(_socketfd, buffer.c_str(), buffer.length(), 0) < 0)
-	// 	throw std::runtime_error("Error while sending message to client.");
 }
 
 void Client::reply(const std::string &reply) {
-	write(":ft_irc " + reply); // TODO: verifier veritable prefix du server
-	// write(":" + getPrefix() + " " + reply);
+	addSendQueue(_serverPrefix + reply); // TODO: verifier veritable prefix du server
 }
 
 void Client::welcome() {

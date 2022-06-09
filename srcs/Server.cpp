@@ -3,7 +3,7 @@
 
 
 Server::Server(const std::string port, const std::string password)
-		: _running(1), _host("127.0.0.1"), _port(port), _password(password), _commandHandler(this) {
+		: _running(1), _host("127.0.0.1"), _name("ft_irc"), _port(port), _password(password), _commandHandler(this) {
 
 	_sock = newSocket();
 }
@@ -23,7 +23,7 @@ void Server::start() {
 			//ping all clients at interval PING_INTERVAL
 			if (actualTime > (lastPingTime + PING_INTERVAL))
 			{
-				it->second.addSendQueue(RPL_PING(std::string("ft_irc"), std::string("check if client is still connect")));
+				it->second.addSendQueue(RPL_PING(getServerPrefix(), std::string("check if client is still connected")));
 				lastPingTime = actualTime;
 			}
 			//Check that clients have answered to ping	
@@ -146,7 +146,7 @@ void Server::onClientConnect() {
 		throw std::runtime_error("Error while getting hostname of new client.");
 
 	// Creates a new Client and store it in Clients map
-	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port), "")));
+	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port), getServerPrefix())));
 	_clients[fd].setPtr(&_clients[fd]);
 	std::cout << "Client connnected" << std::endl;
 }
@@ -158,6 +158,7 @@ void Server::onClientDisconnect(int fd) {
 
 	// removing fd of leaving client from poll 
 	deleteClient(fd);
+	std::cout << "Client has disconnected" << std::endl;
 }
 
 void Server::onClientMessage(int fd) {
@@ -277,4 +278,8 @@ void	Server::allChannelLeave(Client client, std::string broadcast_message) {
 void	Server::addClientToDelete(int fd) {
 
 	_fdToDelete.push_back(fd);
+}
+
+std::string		Server::getServerPrefix() const {
+	return (_name + "@" + _host);
 }
