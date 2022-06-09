@@ -36,6 +36,12 @@ void Server::start() {
 			//Check that clients have answered to ping	
 			if (it->second.getLastPingTime() + TIMEOUT < lastPingTime)
 			{
+				std::cout << "it->second.getLastPingTime()" << it->second.getLastPingTime() << std::endl;
+
+				std::cout << "it->second.getLastPingTime() + TIMEOUT" << it->second.getLastPingTime() + TIMEOUT << std::endl;
+
+				std::cout << "lastPingTime" << lastPingTime << std::endl;
+
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user"));
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
 				std::cout << "Client has Timeout " << std::endl;
