@@ -40,6 +40,7 @@ class Server
 	std::vector<pollfd>			_pollfds;
 	std::map<int, Client>		_clients;
 	std::vector<Channel>		_channels;
+	std::vector<int>			_fdToDelete;
 	CommandHandler*				_commandHandler;
 
 public:
@@ -51,6 +52,7 @@ public:
 	std::string 	getPassword() const { return _password; };
 	Client*			getClient(const std::string nickname);
 	Channel&		getChannel(const std::string& channel_name);
+	void			addClientToDelete(int fd);
 	int				newSocket();
 	void			onClientConnect();
 	void			onClientMessage(int fd);

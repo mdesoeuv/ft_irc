@@ -9,7 +9,6 @@ void QuitCommand::execute(Client& client, std::string arguments) {
 	std::string reason = arguments.empty() ? "Quit for unknown reason !" : arguments;
 	_server->allChannelLeave(client, RPL_QUIT(client.getPrefix(), reason));
 	client.write(RPL_QUIT(client.getPrefix(), reason));
-	//_server->deleteClient(client.getSocketfd());
-	//mettre dans la queue to delete
+	_server->addClientToDelete(client.getSocketfd());
 	std::cout << "Client has Quit " << std::endl;
 }

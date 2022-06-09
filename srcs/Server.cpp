@@ -37,6 +37,7 @@ void Server::start() {
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
 				std::cout << "Client has Timeout " << std::endl;
 				//it->second à supprimer
+				_fdToDelete.push_back(it->second.getSocketfd());
 			}
 		}
 
@@ -69,9 +70,12 @@ void Server::start() {
 
 			//POLLERR
 		}
-
-		deleteClient(it->second.getSocketfd());
-		std::cout << "Client deleted" << std::endl;
+		for (std::vector<int>::iterator	it = _fdToDelete.begin(); it != _fdToDelete.end(); ++it)
+		{
+			deleteClient(*it);
+			std::cout << "Client deleted" << std::endl;
+		}
+		_fdToDelete.clear();
 
 	}
 }
@@ -272,4 +276,9 @@ void	Server::allChannelLeave(Client client, std::string broadcast_message) {
 	{
 		removeChannel(this->searchChannel(*iter).second);
 	}
+}
+
+void	Server::addClientToDelete(int fd) {
+
+	_fdToDelete.push_back(fd);
 }
