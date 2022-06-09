@@ -34,7 +34,8 @@ void	CommandHandler::parsing(Client& client, std::string message)
 	// split of the first word of message to get command
 	std::vector<std::string>	arguments;
 	splitCommand(arguments, message);
-
+	
+	client.setLastPingTime(time(NULL));
 	try
 	{
 		Command *command = _commands.at(arguments[0]);

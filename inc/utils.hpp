@@ -35,5 +35,6 @@
 #define ERR_NOSUCHNICK(myclient, nickname)				"401 " + myclient + " " + nickname + " :No such nickname"
 #define ERR_CANNOTSENDTOCHAN(myclient, channel)			"404 " + myclient + " " + channel + " :Cannot send to channel"
 
+#define PING_INTERVAL 20 // seconds
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);
 void	sig_quit(int code);

@@ -110,6 +110,10 @@ const std::string&	Client::getChanPrefix() const {
 	return _chanPrefix;
 }
 
+time_t		Client::getLastPingTime() {
+	return _lastPingTime;
+}
+
 std::string&		Client::getMessageBuffer() {
 	return _messageBuffer;
 }
@@ -140,6 +144,10 @@ void				Client::setIsRegistered(bool is_Registered) {
 
 void				Client::setChanPrefix(const std::string new_prefix) {
 	_chanPrefix = new_prefix;
+}
+
+void				Client::setLastPingTime(time_t new_lastPingTime) {
+	_lastPingTime = new_lastPingTime;
 }
 
 std::string				Client::extractMessage() {

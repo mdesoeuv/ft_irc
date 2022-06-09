@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sys/socket.h> // socket()
 #include "utils.hpp"
+#include <ctime>
 
 class Client
 {
@@ -42,6 +43,8 @@ class Client
 		void				setPassword(const std::string& new_password);
 		void				setChanPrefix(const std::string new_prefix);
 		std::string			extractMessage();
+		time_t				getLastPingTime();
+		void				setLastPingTime(time_t new_lastPingTime);
 
 	private:
 
@@ -56,5 +59,6 @@ class Client
 		int 		_port;
 		std::string	_chanPrefix;
 		std::string _messageBuffer;
+		time_t		_lastPingTime;
 
 };

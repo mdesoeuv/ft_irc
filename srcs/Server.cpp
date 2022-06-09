@@ -16,11 +16,27 @@ Server::~Server() {
 }
 
 void Server::start() {
+	time_t lastPingTime = 0;
 	pollfd server_fd = {_sock, POLLIN, 0}; // POLLHUP & POLLERR sont fournis automatiquement
 	_pollfds.push_back(server_fd);
 
 	// Le server écoute désormais les POLL IN
 	while (_running) {
+
+		if (time(NULL) > (lastPingTime + PING_INTERVAL))
+		{
+			lastPingTime = time(NULL);
+			//ping all clients ici
+		}
+
+		//Check that clients have answered to ing	
+		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+			if (it->second.getLastPingTime() > lastPingTime + PING_INTERVAL)
+				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user"));
+				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
+				std::cout << "Client has Timeout " << std::endl;
+				deleteClient(it->second.getSocketfd());
+		}
 
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
