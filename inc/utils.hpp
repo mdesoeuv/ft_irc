@@ -9,7 +9,8 @@
 
 #define RPL_WELCOME(myclient)							"001 " + myclient + " :Welcome " + myclient + " to the ft_irc network"
 #define RPL_QUIT(myclient, message)						":" + myclient + " QUIT :Quit: " + message
-#define RPL_PING(myclient, token)						":" + myclient + " PONG :" + token
+#define RPL_PING(myclient, token)						":" + myclient + " PING :" + token
+#define RPL_PONG(myclient, token)						":" + myclient + " PONG :" + token
 #define RPL_CLOSECLIENT				": ERROR : you should be conected "
 #define RPL_CHANNELMODEIS(myclient, mychannel, mode_string, mode_args)	"324 " + myclient + " " + mychannel + " " + mode_string + mode_args
 #define RPL_NOTOPIC(myclient, mychannel)				"331 " + myclient + " " + mychannel + " :No topic is set"
@@ -36,5 +37,6 @@
 #define ERR_CANNOTSENDTOCHAN(myclient, channel)			"404 " + myclient + " " + channel + " :Cannot send to channel"
 
 #define PING_INTERVAL 20 // seconds
+#define TIMEOUT 20 // seconds
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);
 void	sig_quit(int code);

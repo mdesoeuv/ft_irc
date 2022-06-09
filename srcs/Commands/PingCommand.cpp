@@ -11,6 +11,6 @@ void PingCommand::execute(Client& client, std::string arguments) {
 		return;
 	}
 
-	client.write(RPL_PING(client.getPrefix(), arguments));
+	client.write(RPL_PONG(client.getPrefix(), arguments));
 	std::cout <<"Client has Ping " << client.getNickname() << std::endl;
 }

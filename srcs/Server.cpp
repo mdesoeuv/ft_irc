@@ -18,7 +18,7 @@ Server::~Server() {
 
 // TO DO: gros soucis d'iterateurs invalidés par la suppression d'un client
 void Server::start() {
-	time_t lastPingTime = 0;
+	time_t lastPingTime = time(NULL);
 	pollfd server_fd = {_sock, POLLIN, 0}; // POLLHUP & POLLERR sont fournis automatiquement
 	_pollfds.push_back(server_fd);
 
@@ -31,9 +31,9 @@ void Server::start() {
 			//ping all clients ici
 		}
 
-		//Check that clients have answered to ing	
+		//Check that clients have answered to ping	
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
-			if (it->second.getLastPingTime() > lastPingTime + PING_INTERVAL)
+			if (it->second.getLastPingTime() + TIMEOUT < lastPingTime)
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user"));
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
 				std::cout << "Client has Timeout " << std::endl;
