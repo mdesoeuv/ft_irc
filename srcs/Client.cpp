@@ -5,7 +5,7 @@ Client::Client() {
 }
 
 Client::Client(int fd, const std::string hostname, int port, const std::string chan_prefix)
-		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port), _chanPrefix(chan_prefix) {
+		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port), _chanPrefix(chan_prefix), _clientOnServer(this) {
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
@@ -17,7 +17,8 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_isAuthentified(other.isAuthentified()),
 										_isRegistered(other.isRegistered()),
 										_port(other.getPort()),
-										_chanPrefix(other.getChanPrefix()) {
+										_chanPrefix(other.getChanPrefix()),
+										_clientOnServer(other._clientOnServer) {
 }
 
 Client::~Client() {
@@ -34,6 +35,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
 	_chanPrefix = rhs.getChanPrefix();
+	_clientOnServer = rhs._clientOnServer;
 
 	return *this ;
 }
@@ -42,15 +44,18 @@ std::string Client::getPrefix() const {
 	return _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
 }
 
+// TODO: remplacer write par addSendQueue(message + "\r\n")
 void Client::write(const std::string &message) const {
 	
 	// TO DO check la taille max du message
 	std::string buffer = message + "\r\n";
 	
-	std::cout << "full message sent :" + message << std::endl;
-
-	if (send(_socketfd, buffer.c_str(), buffer.length(), 0) < 0)
-		throw std::runtime_error("Error while sending message to client.");
+	// Qrite should be a server method 
+	_clientOnServer->addSendQueue(message + "\r\n");
+	
+	std::cout << "full message added to send queue :" + _clientOnServer->getSendQueue() << std::endl;
+	// if (send(_socketfd, buffer.c_str(), buffer.length(), 0) < 0)
+	// 	throw std::runtime_error("Error while sending message to client.");
 }
 
 void Client::reply(const std::string &reply) {
@@ -114,6 +119,11 @@ std::string&		Client::getMessageBuffer() {
 	return _messageBuffer;
 }
 
+std::string&		Client::getSendQueue() {
+	return _sendQueue;
+}
+
+
 void				Client::setNickname(const std::string& new_nickname) {
 	_nickname = new_nickname;
 }
@@ -142,7 +152,11 @@ void				Client::setChanPrefix(const std::string new_prefix) {
 	_chanPrefix = new_prefix;
 }
 
-std::string				Client::extractMessage() {
+void				Client::setPtr(Client* clientPtr) {
+	_clientOnServer = clientPtr;
+}
+
+std::string			Client::extractMessage() {
 
 	std::string message; 
 
@@ -152,4 +166,8 @@ std::string				Client::extractMessage() {
 
 	std::cout << "extracted message :" + message << std::endl;
 	return message;
+}
+
+void				Client::addSendQueue(const std::string message) {
+	_sendQueue += message;
 }

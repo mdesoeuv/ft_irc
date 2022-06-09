@@ -31,6 +31,7 @@ class Client
 		int					getPort() const;
 		std::string 		getPrefix() const;
 		std::string&		getMessageBuffer();
+		std::string&		getSendQueue();
 		void 				write(const std::string &message) const;
 		void 				welcome();
 		void				reply(const std::string &reply);
@@ -41,7 +42,9 @@ class Client
 		void				setUsername(const std::string& new_username);
 		void				setPassword(const std::string& new_password);
 		void				setChanPrefix(const std::string new_prefix);
+		void				setPtr(Client* client);
 		std::string			extractMessage();
+		void				addSendQueue(const std::string message);
 
 	private:
 
@@ -56,5 +59,7 @@ class Client
 		int 		_port;
 		std::string	_chanPrefix;
 		std::string _messageBuffer;
+		std::string	_sendQueue;
+		Client*		_clientOnServer;
 
 };

@@ -39,13 +39,17 @@ void Server::start() {
 
 				if (it->fd == _sock) {
 					onClientConnect();
-					break; // voir si possibilité de continuer la boucle quand meme
+					break ;
 				}
-
-				onClientMessage(it->fd);
+				else
+					onClientMessage(it->fd);
 			}
 
 			//POLLOUT
+			if ((it->fd != _sock) && (it->revents & POLLOUT)) {
+				
+				sendMessage(_clients[it->fd]);
+			}
 
 			//POLLERR
 		}
@@ -123,6 +127,7 @@ void Server::onClientConnect() {
 
 	// Creates a new Client and store it in Clients map
 	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port), "")));
+	_clients[fd].setPtr(&_clients[fd]);
 	std::cout << "Client connnected" << std::endl;
 }
 
@@ -161,6 +166,17 @@ void Server::readMessage(int fd) {
 			_commandHandler->parsing(_clients[fd], _clients[fd].extractMessage());
 		}
 	}
+}
+
+void Server::sendMessage(Client& client) {
+
+	if (client.getSendQueue().empty())
+		return ;
+	int	sent_bytes = send(client.getSocketfd(), client.getSendQueue().c_str(), client.getSendQueue().length(), 0);
+	if (sent_bytes < 0)
+		throw std::runtime_error("Error while sending message to client.");
+	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes) << std::endl;
+	client.getSendQueue().erase(0, sent_bytes);
 }
 
 Client *Server::getClient(const std::string nickname) {
