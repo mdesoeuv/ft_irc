@@ -6,6 +6,8 @@ Client::Client() {
 
 Client::Client(int fd, const std::string hostname, int port, const std::string chan_prefix)
 		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port), _chanPrefix(chan_prefix), _clientOnServer(this) {
+	
+	_lastPingTime = time(NULL);
 }
 
 Client::Client(const Client& other) :	_socketfd(other.getSocketfd()), 
@@ -19,6 +21,9 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_port(other.getPort()),
 										_chanPrefix(other.getChanPrefix()),
 										_clientOnServer(other._clientOnServer) {
+
+	_lastPingTime = time(NULL);
+	
 }
 
 Client::~Client() {
@@ -36,6 +41,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_port = rhs.getPort();
 	_chanPrefix = rhs.getChanPrefix();
 	_clientOnServer = rhs._clientOnServer;
+	_lastPingTime = rhs._lastPingTime;
 
 	return *this ;
 }
