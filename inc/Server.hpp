@@ -17,6 +17,7 @@
 #include <netdb.h>
 #include "Channel.hpp"
 
+// TO DO: BUFFER_SIZE
 #define MAX_CONNECTIONS 100
 
 class Server;

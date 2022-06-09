@@ -1,6 +1,9 @@
 #include "../inc/Server.hpp"
 #include "../inc/CommandHandler.hpp"
 
+
+// TODO: pourquoi commandhandler ne serait pas membre?
+
 Server::Server(const std::string port, const std::string password)
 		: _running(1), _host("127.0.0.1"), _port(port), _password(password) {
 
@@ -13,7 +16,7 @@ Server::~Server() {
 }
 
 void Server::start() {
-	pollfd server_fd = {_sock, POLLIN, 0};
+	pollfd server_fd = {_sock, POLLIN, 0}; // POLLHUP & POLLERR sont fournis automatiquement
 	_pollfds.push_back(server_fd);
 
 	// Le server écoute désormais les POLL IN
@@ -25,23 +28,24 @@ void Server::start() {
 		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
 		for (pollfds_iterator it = _pollfds.begin() ;it != _pollfds.end(); ++it) {
 
-			if (it->revents == 0)
-				continue;
-
-			if (it->revents == POLLHUP) {
+			if (it->revents & POLLHUP) {
 				onClientDisconnect(it->fd);
 				break;
 			}
 
-			if (it->revents == POLLIN) {
+			if (it->revents & POLLIN) {
 
 				if (it->fd == _sock) {
 					onClientConnect();
-					break;
+					break; // voir si possibilité de continuer la boucle quand meme
 				}
 
 				onClientMessage(it->fd);
 			}
+
+			//POLLOUT
+
+			//POLLERR
 		}
 	}
 }
@@ -92,6 +96,7 @@ int Server::newSocket() {
 	// Define max connexions and let socket be able to listen for requests
 	if (listen(sockfd, MAX_CONNECTIONS) < 0)
 		throw std::runtime_error("Error while listening on socket.");
+
 	return sockfd;
 }
 
@@ -107,7 +112,7 @@ void Server::onClientConnect() {
 	if (fd < 0)
 		throw std::runtime_error("Error while accepting new client.");
 
-	pollfd pollfd = {fd, POLLIN, 0};
+	pollfd pollfd = {fd, POLLIN | POLLOUT, 0};
 	_pollfds.push_back(pollfd);
 
 	char hostname[NI_MAXHOST];
