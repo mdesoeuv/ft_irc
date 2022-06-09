@@ -22,7 +22,7 @@ void	split_args(const std::string str, const std::string sep, std::vector<std::s
 
 }
 
-// TO DO: close toutes les connections client
+// TODO: close toutes les connections client
 void	sig_quit(int code)
 {
 	(void)code;

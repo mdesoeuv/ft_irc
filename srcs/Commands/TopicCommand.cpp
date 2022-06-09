@@ -22,7 +22,7 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 		bool found_channel = result.first;
 		std::vector<Channel>::iterator chan_iter = result.second;
 
-		// TO DO: verifier si le channel autorise le changement de topic
+		// TODO: verifier si le channel autorise le changement de topic
 
 		// checks if user is on channel
 		if (!found_channel || !chan_iter->isUser(client.getNickname()))

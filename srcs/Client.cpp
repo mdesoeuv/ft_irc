@@ -53,7 +53,7 @@ std::string Client::getPrefix() const {
 // TODO: remplacer write par addSendQueue(message + "\r\n")
 void Client::write(const std::string &message) const {
 	
-	// TO DO check la taille max du message
+	// TODO check la taille max du message
 	
 	_clientOnServer->addSendQueue(message);
 	
@@ -63,7 +63,7 @@ void Client::write(const std::string &message) const {
 }
 
 void Client::reply(const std::string &reply) {
-	write(":ft_irc " + reply); // TO DO: verifier veritable prefix du server
+	write(":ft_irc " + reply); // TODO: verifier veritable prefix du server
 	// write(":" + getPrefix() + " " + reply);
 }
 

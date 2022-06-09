@@ -10,9 +10,9 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 	{
 		if (result.first)
 		{
-			client.write((":ft_irc MODE " + result.second->getName() + " :" + result.second->getModes())); // TO DO: trouver pourquoi le RPL_MODES ne marche pas
+			client.write((":ft_irc MODE " + result.second->getName() + " :" + result.second->getModes())); // TODO: trouver pourquoi le RPL_MODES ne marche pas
 			return ;
 		}
 	}
-	//TO DO error handling
+	//TODO error handling
 }

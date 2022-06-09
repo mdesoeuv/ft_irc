@@ -6,7 +6,7 @@ PartCommand::~PartCommand() {}
 
 void PartCommand::execute(Client& client, std::string arguments) {
 
-  // arguments parsing to extract channel_name
+  // arguments parseExecute to extract channel_name
   size_t pos = arguments.find(" ");
   std::string channel_name = arguments.substr(0, pos);
 

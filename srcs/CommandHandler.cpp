@@ -28,8 +28,7 @@ CommandHandler::~CommandHandler()
 		delete it->second;
 }
 
-// TODO: renommer parseExecute()
-void	CommandHandler::parsing(Client& client, std::string message)
+void	CommandHandler::parseExecute(Client& client, std::string message)
 {
 	// split of the first word of message to get command
 	std::vector<std::string>	arguments;

@@ -4,7 +4,7 @@ JoinCommand::JoinCommand(Server *server) : Command(server) {}
 
 JoinCommand::~JoinCommand() {}
 
-//TO DO: verifier comportement si deja join
+//TODO: verifier comportement si deja join
 void JoinCommand::execute(Client& client, std::string arguments) {
 	//check if Channel exist
 	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);
@@ -12,9 +12,9 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	{
 	//si oui:
 	
-	// TO DO: verifier si le mode du channel permet aux utilisateurs de le rejoindre
+	// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre
 
-	// TO DO: verifier la limite d'utilisateurs du channel
+	// TODO: verifier la limite d'utilisateurs du channel
 
 	//client join le channel
 		result.second->addUser(client);

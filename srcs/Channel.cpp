@@ -102,8 +102,6 @@ void	Channel::addUser(Client user) {
 	_user_nb++;
 }
 
-
-// TO DO: to rework
 void	Channel::addOp(Client op) {
 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
 	{
@@ -112,7 +110,6 @@ void	Channel::addOp(Client op) {
 	}
 	_op_list.push_back(op);
 }
-
 
 void	Channel::delUser(Client user) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)

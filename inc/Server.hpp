@@ -41,7 +41,7 @@ class Server
 	std::map<int, Client>		_clients;
 	std::vector<Channel>		_channels;
 	std::vector<int>			_fdToDelete;
-	CommandHandler*				_commandHandler;
+	CommandHandler				_commandHandler;
 
 public:
 

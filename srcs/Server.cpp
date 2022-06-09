@@ -2,17 +2,13 @@
 #include "../inc/CommandHandler.hpp"
 
 
-// TODO: pourquoi commandhandler ne serait pas membre?
-
 Server::Server(const std::string port, const std::string password)
-		: _running(1), _host("127.0.0.1"), _port(port), _password(password) {
+		: _running(1), _host("127.0.0.1"), _port(port), _password(password), _commandHandler(this) {
 
-	_commandHandler = new CommandHandler(this);
 	_sock = newSocket();
 }
 
 Server::~Server() {
-	delete _commandHandler;
 }
 
 void Server::start() {
@@ -187,7 +183,7 @@ void Server::readMessage(int fd) {
 		_clients[fd].getMessageBuffer().append(buffer);
 		while (_clients[fd].getMessageBuffer().find("\r\n") < _clients[fd].getMessageBuffer().size())
 		{
-			_commandHandler->parsing(_clients[fd], _clients[fd].extractMessage());
+			_commandHandler.parseExecute(_clients[fd], _clients[fd].extractMessage());
 		}
 	}
 }
@@ -198,7 +194,7 @@ void Server::sendMessage(Client& client) {
 		return ;
 	int	sent_bytes = send(client.getSocketfd(), client.getSendQueue().c_str(), client.getSendQueue().length(), 0);
 	if (sent_bytes < 0)
-		throw std::runtime_error("Error while sending message to client.");
+		std::cout << "Error while sending message to client." << std::endl;
 	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes) << std::endl;
 	client.getSendQueue().erase(0, sent_bytes);
 }

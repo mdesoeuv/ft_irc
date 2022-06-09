@@ -39,7 +39,7 @@ void KickCommand::execute(Client& client, std::string arguments) {
 	}
 
 
-	// parsing user_to_kick nickname
+	// parseExecute user_to_kick nickname
 	size_t colon_pos = arguments.find(":");
 	if (colon_pos >= arguments.size())
 	{
