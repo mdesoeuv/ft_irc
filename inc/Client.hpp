@@ -12,7 +12,7 @@ class Client
 	
 		Client(void);
 
-		Client(int fd, const std::string hostname, int port, const std::string chan_prefix);
+		Client(int fd, const std::string hostname, int port, const std::string serverPrefix);
 
 		Client(const Client& other);
 		
@@ -33,9 +33,13 @@ class Client
 		std::string 		getPrefix() const;
 		std::string&		getMessageBuffer();
 		std::string&		getSendQueue();
+		time_t				getLastPingTime();
+		void				setLastPingTime(time_t new_lastPingTime);
+		void				addSendQueue(const std::string message);
 		void 				write(const std::string &message) const;
-		void 				welcome();
 		void				reply(const std::string &reply);
+		void 				welcome();
+		std::string			extractMessage();
 		void				setIsAuthentified(bool is_Authentified);
 		void				setIsRegistered(bool is_Registered);
 		void				setNickname(const std::string& new_nickname);
@@ -44,10 +48,6 @@ class Client
 		void				setPassword(const std::string& new_password);
 		void				setChanPrefix(const std::string new_prefix);
 		void				setPtr(Client* client);
-		std::string			extractMessage();
-		time_t				getLastPingTime();
-		void				setLastPingTime(time_t new_lastPingTime);
-		void				addSendQueue(const std::string message);
 
 	private:
 
@@ -57,6 +57,7 @@ class Client
 		std::string _realName;
 		std::string _password;
 		std::string	_hostname;
+		std::string	_serverPrefix;
 		bool 		_isAuthentified;
 		bool 		_isRegistered;
 		int 		_port;

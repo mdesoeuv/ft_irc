@@ -35,8 +35,12 @@
 #define ERR_CHANOPRIVSNEEDED(myclient, mychannel)		"482 " + myclient + " " + mychannel + " :You're not channel operator"
 #define ERR_NOSUCHNICK(myclient, nickname)				"401 " + myclient + " " + nickname + " :No such nickname"
 #define ERR_CANNOTSENDTOCHAN(myclient, channel)			"404 " + myclient + " " + channel + " :Cannot send to channel"
+#define	ERR_CHANNELISFULL(myclient, channel)			"471 " + myclient + " " + channel + " :Cannot join channel (+l)"
+#define	ERR_INVITEONLYCHAN(myclient, channel)			"473 " + myclient + " " + channel + " :Cannot join channel (+i)"
+#define	ERR_BANNEDFROMCHAN(myclient, channel)			"474 " + myclient + " " + channel + " :Cannot join channel (+b)"
+#define	ERR_BADCHANNELKEY(myclient, channel)			"475 " + myclient + " " + channel + " :Cannot join channel (+k)"
 
-#define PING_INTERVAL 10 // seconds
-#define TIMEOUT 10 // seconds
+#define PING_INTERVAL 20 // seconds
+#define TIMEOUT 20 // seconds
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result);
 void	sig_quit(int code);

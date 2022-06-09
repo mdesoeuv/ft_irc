@@ -6,13 +6,18 @@ JoinCommand::~JoinCommand() {}
 
 //TODO: verifier comportement si deja join
 void JoinCommand::execute(Client& client, std::string arguments) {
+	
 	//check if Channel exist
 	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);
 	if (result.first)
 	{
 	//si oui:
+
+	// checks if client is already on channel
+	if (result.second->isUser(client.getNickname()))
+		return ;
 	
-	// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre
+	// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre => invite only || ban
 
 	// TODO: verifier la limite d'utilisateurs du channel
 

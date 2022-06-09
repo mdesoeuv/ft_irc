@@ -15,7 +15,9 @@ class Channel
 		std::string			_name;
 		std::string			_topic;
 		std::string			_modes;
+		std::string			_ban_list;
 		size_t				_user_nb;
+		size_t				_user_limit;
 		
 	public:
 
