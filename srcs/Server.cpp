@@ -25,15 +25,14 @@ void Server::start() {
 	// Le server écoute désormais les POLL IN
 	while (_running) {
 
-	
-
-		//Check that clients have answered to ping	
+		
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+			//ping all clients at interval PING_INTERVAL
 			if (time(NULL) > (lastPingTime + PING_INTERVAL))
 			{
 				lastPingTime = time(NULL);
-				//ping all clients ici
 			}
+			//Check that clients have answered to ping	
 			if (it->second.getLastPingTime() + TIMEOUT < lastPingTime)
 			{
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user"));
