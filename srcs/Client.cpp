@@ -50,14 +50,12 @@ std::string Client::getPrefix() const {
 	return _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
 }
 
-// TODO: remplacer write par addSendQueue(message)
 void Client::write(const std::string &message) const {
-
 	_clientOnServer->addSendQueue(message);
 }
 
 void Client::reply(const std::string &reply) {
-	addSendQueue(_serverPrefix + reply); // TODO: verifier veritable prefix du server
+	addSendQueue(_serverPrefix + reply);
 }
 
 void Client::welcome() {
