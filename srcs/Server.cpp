@@ -15,6 +15,8 @@ Server::~Server() {
 	delete _commandHandler;
 }
 
+
+// TO DO: gros soucis d'iterateurs invalidés par la suppression d'un client
 void Server::start() {
 	pollfd server_fd = {_sock, POLLIN, 0}; // POLLHUP & POLLERR sont fournis automatiquement
 	_pollfds.push_back(server_fd);
@@ -141,13 +143,13 @@ void Server::onClientMessage(int fd) {
 void Server::readMessage(int fd) {
 
 	int			read_bytes = -10;
-	char		buffer[101];
+	char		buffer[BUFFER_SIZE + 1];
 	
-	bzero(buffer, 101);
+	bzero(buffer, BUFFER_SIZE + 1);
 	while (read_bytes != 0)
 	{
-		bzero(buffer, 100);
-		read_bytes = recv(fd, buffer, 100, 0);
+		bzero(buffer, BUFFER_SIZE);
+		read_bytes = recv(fd, buffer, BUFFER_SIZE, 0);
 		if (read_bytes < 0)
 			break ;
 		std::cout << "bytes read :" << read_bytes << std::endl;
@@ -224,10 +226,10 @@ void	Server::allChannelLeave(Client client, std::string broadcast_message) {
 	{
 		if (chan_iter->isUser(client.getNickname()))
 		{
-			chan_iter->broadcastMessage(broadcast_message);
 			chan_iter->delUser(client);
 			if (chan_iter->getUserList().empty())
 				channels_to_remove.push_back(chan_iter->getName()); // cannot remove in loop because iterator is invalidated by each removal
+			chan_iter->broadcastMessage(broadcast_message);
 		}
 	}
 	for (std::vector<std::string>::iterator iter = channels_to_remove.begin(); iter != channels_to_remove.end(); ++iter)
