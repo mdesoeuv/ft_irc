@@ -11,7 +11,7 @@
 #define RPL_QUIT(myclient, message)						":" + myclient + " QUIT :Quit: " + message
 #define RPL_PING(myclient, token)						":" + myclient + " PING :" + token
 #define RPL_PONG(myclient, token)						":" + myclient + " PONG :" + token
-#define RPL_CLOSECLIENT				": ERROR : you should be conected "
+#define RPL_CLOSECLIENT									": ERROR : you should be conected "
 #define RPL_CHANNELMODEIS(myclient, mychannel, mode_string, mode_args)	"324 " + myclient + " " + mychannel + " " + mode_string + mode_args
 #define RPL_NOTOPIC(myclient, mychannel)				"331 " + myclient + " " + mychannel + " :No topic is set"
 #define RPL_TOPIC(myclient, mychannel, channel_topic)	"332 " + myclient + " " + mychannel + " :" + channel_topic
