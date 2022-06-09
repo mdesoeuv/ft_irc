@@ -24,13 +24,12 @@ void Server::start() {
 
 	// Le server écoute désormais les POLL IN
 	while (_running) {
-
-		
+		time_t actualTime = time(NULL);
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
 			//ping all clients at interval PING_INTERVAL
-			if (time(NULL) > (lastPingTime + PING_INTERVAL))
+			if (actualTime > (lastPingTime + PING_INTERVAL))
 			{
-				lastPingTime = time(NULL);
+				lastPingTime = actualTime;
 			}
 			//Check that clients have answered to ping	
 			if (it->second.getLastPingTime() + TIMEOUT < lastPingTime)
