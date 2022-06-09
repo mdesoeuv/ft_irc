@@ -25,19 +25,22 @@ void Server::start() {
 	// Le server écoute désormais les POLL IN
 	while (_running) {
 
-		if (time(NULL) > (lastPingTime + PING_INTERVAL))
-		{
-			lastPingTime = time(NULL);
-			//ping all clients ici
-		}
+	
 
 		//Check that clients have answered to ping	
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+			if (time(NULL) > (lastPingTime + PING_INTERVAL))
+			{
+				lastPingTime = time(NULL);
+				//ping all clients ici
+			}
 			if (it->second.getLastPingTime() + TIMEOUT < lastPingTime)
+			{
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user"));
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
 				std::cout << "Client has Timeout " << std::endl;
 				deleteClient(it->second.getSocketfd());
+			}		
 		}
 
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
