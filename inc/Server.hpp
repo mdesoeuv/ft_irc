@@ -17,7 +17,7 @@
 #include <netdb.h>
 #include "Channel.hpp"
 
-// TO DO: BUFFER_SIZE
+#define BUFFER_SIZE 100
 #define MAX_CONNECTIONS 100
 
 class Server;
@@ -59,6 +59,7 @@ public:
 	void			addChannel(Channel channel);
 	void			removeChannel(std::vector<Channel>::iterator pos);
 	void		 	readMessage(int fd);
+	void			sendMessage(Client& client);
 	chan_it_pair	searchChannel(const std::string channel_name);
 	void			allChannelLeave(Client client, std::string broadcast_message);
 

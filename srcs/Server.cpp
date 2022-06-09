@@ -15,6 +15,8 @@ Server::~Server() {
 	delete _commandHandler;
 }
 
+
+// TO DO: gros soucis d'iterateurs invalidés par la suppression d'un client
 void Server::start() {
 	time_t lastPingTime = 0;
 	pollfd server_fd = {_sock, POLLIN, 0}; // POLLHUP & POLLERR sont fournis automatiquement
@@ -53,13 +55,17 @@ void Server::start() {
 
 				if (it->fd == _sock) {
 					onClientConnect();
-					break; // voir si possibilité de continuer la boucle quand meme
+					break ;
 				}
-
-				onClientMessage(it->fd);
+				else
+					onClientMessage(it->fd);
 			}
 
 			//POLLOUT
+			if ((it->fd != _sock) && (it->revents & POLLOUT)) {
+				
+				sendMessage(_clients[it->fd]);
+			}
 
 			//POLLERR
 		}
@@ -137,6 +143,7 @@ void Server::onClientConnect() {
 
 	// Creates a new Client and store it in Clients map
 	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port), "")));
+	_clients[fd].setPtr(&_clients[fd]);
 	std::cout << "Client connnected" << std::endl;
 }
 
@@ -157,13 +164,13 @@ void Server::onClientMessage(int fd) {
 void Server::readMessage(int fd) {
 
 	int			read_bytes = -10;
-	char		buffer[101];
+	char		buffer[BUFFER_SIZE + 1];
 	
-	bzero(buffer, 101);
+	bzero(buffer, BUFFER_SIZE + 1);
 	while (read_bytes != 0)
 	{
-		bzero(buffer, 100);
-		read_bytes = recv(fd, buffer, 100, 0);
+		bzero(buffer, BUFFER_SIZE);
+		read_bytes = recv(fd, buffer, BUFFER_SIZE, 0);
 		if (read_bytes < 0)
 			break ;
 		std::cout << "bytes read :" << read_bytes << std::endl;
@@ -175,6 +182,17 @@ void Server::readMessage(int fd) {
 			_commandHandler->parsing(_clients[fd], _clients[fd].extractMessage());
 		}
 	}
+}
+
+void Server::sendMessage(Client& client) {
+
+	if (client.getSendQueue().empty())
+		return ;
+	int	sent_bytes = send(client.getSocketfd(), client.getSendQueue().c_str(), client.getSendQueue().length(), 0);
+	if (sent_bytes < 0)
+		throw std::runtime_error("Error while sending message to client.");
+	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes) << std::endl;
+	client.getSendQueue().erase(0, sent_bytes);
 }
 
 Client *Server::getClient(const std::string nickname) {
@@ -240,10 +258,10 @@ void	Server::allChannelLeave(Client client, std::string broadcast_message) {
 	{
 		if (chan_iter->isUser(client.getNickname()))
 		{
-			chan_iter->broadcastMessage(broadcast_message);
 			chan_iter->delUser(client);
 			if (chan_iter->getUserList().empty())
 				channels_to_remove.push_back(chan_iter->getName()); // cannot remove in loop because iterator is invalidated by each removal
+			chan_iter->broadcastMessage(broadcast_message);
 		}
 	}
 	for (std::vector<std::string>::iterator iter = channels_to_remove.begin(); iter != channels_to_remove.end(); ++iter)

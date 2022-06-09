@@ -27,6 +27,7 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	//TODO : error messages pour les differents cas d'erreur
 	Channel	new_channel(arguments);
 	Client	client_copy = client;
+	client_copy.setPtr(&client);
 	client_copy.setChanPrefix("@");
 	new_channel.addUser(client_copy);
 	new_channel.addOp(client);
