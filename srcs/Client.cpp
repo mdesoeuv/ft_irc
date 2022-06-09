@@ -160,7 +160,6 @@ void				Client::setLastPingTime(time_t new_lastPingTime) {
 	_lastPingTime = new_lastPingTime;
 }
 
-std::string				Client::extractMessage() {
 void				Client::setPtr(Client* clientPtr) {
 	_clientOnServer = clientPtr;
 }
