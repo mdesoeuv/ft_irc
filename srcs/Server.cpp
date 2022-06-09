@@ -1,38 +1,42 @@
 #include "../inc/Server.hpp"
 #include "../inc/CommandHandler.hpp"
 
-
 Server::Server(const std::string port, const std::string password)
-		: _running(1), _host("127.0.0.1"), _port(port), _password(password), _commandHandler(this) {
+	: _running(1), _host("127.0.0.1"), _port(port), _password(password), _commandHandler(this)
+{
 
 	_sock = newSocket();
 }
 
-Server::~Server() {
+Server::~Server()
+{
 }
 
-void Server::start() {
+void Server::start()
+{
 	time_t lastPingTime = time(NULL);
 	pollfd server_fd = {_sock, POLLIN, 0}; // POLLHUP & POLLERR sont fournis automatiquement
 	_pollfds.push_back(server_fd);
 
 	// Le server écoute désormais les POLL IN
-	while (_running) {
-		time_t	actualTime = time(NULL);
-		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
-			//ping all clients at interval PING_INTERVAL
+	while (_running)
+	{
+		time_t actualTime = time(NULL);
+		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		{
+			// ping all clients at interval PING_INTERVAL
 			if (actualTime > (lastPingTime + PING_INTERVAL))
 			{
 				it->second.addSendQueue(RPL_PING(std::string("ft_irc"), std::string("check if client is still connect")));
 				lastPingTime = actualTime;
 			}
-			//Check that clients have answered to ping	
+			// Check that clients have answered to ping
 			if (it->second.getLastPingTime() + PING_INTERVAL + TIMEOUT < actualTime)
 			{
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user : timeout"));
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
 				std::cout << "Client has Timeout " << std::endl;
-				//it->second à supprimer
+				// it->second à supprimer
 				_fdToDelete.push_back(it->second.getSocketfd());
 			}
 		}
@@ -41,48 +45,53 @@ void Server::start() {
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
 			throw std::runtime_error("Error while polling from fd.");
 		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
-		for (pollfds_iterator it = _pollfds.begin() ;it != _pollfds.end(); ++it) {
+		for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it)
+		{
 
-			if (it->revents & POLLHUP) {
+			if (it->revents & POLLHUP)
+			{
 				onClientDisconnect(it->fd);
 				break;
 			}
 
-			if (it->revents & POLLIN) {
+			if (it->revents & POLLIN)
+			{
 
-				if (it->fd == _sock) {
+				if (it->fd == _sock)
+				{
 					onClientConnect();
-					break ;
+					break;
 				}
 				else
 					onClientMessage(it->fd);
 			}
 
-			//POLLOUT
-			if ((it->fd != _sock) && (it->revents & POLLOUT)) {
-				
+			// POLLOUT
+			if ((it->fd != _sock) && (it->revents & POLLOUT))
+			{
+
 				sendMessage(_clients[it->fd]);
 			}
 
-			//POLLERR
+			// POLLERR
 		}
-		for (std::vector<int>::iterator	it = _fdToDelete.begin(); it != _fdToDelete.end(); ++it)
+		for (std::vector<int>::iterator it = _fdToDelete.begin(); it != _fdToDelete.end(); ++it)
 		{
 			deleteClient(*it);
 			std::cout << "Client deleted" << std::endl;
 		}
 		_fdToDelete.clear();
-
 	}
 }
 
-int Server::newSocket() {
+int Server::newSocket()
+{
 
 	/* creating socket :
 	 * domain : AF_INET -> Socket using IPV4
 	 * type : SOCK_STREAM : Dialogue support guaranteeing integrity, providing a binary data stream, and integrating a mechanism for out-of-band data transmissions.
 	 * protocol : 0 indicates that the caller does not want to specify the protocol and will leave it up to the service provider.
-	*/
+	 */
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
 		throw std::runtime_error("Error while opening socket.");
@@ -99,9 +108,10 @@ int Server::newSocket() {
 	/* Setting the socket to NON-BLOCKING mode allowing it to return any data that the system has in it's read buffer
 	 * for that socket even if the fd is still in use. It won't wait for that data to be terminated and will send an error.
 	 * command : F_SETFL : setting for state attribute of fd
-	 * arg : O_NONBLOCK meaning described previously 
+	 * arg : O_NONBLOCK meaning described previously
 	 */
-	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) {
+	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1)
+	{
 		throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
 	}
 
@@ -109,14 +119,14 @@ int Server::newSocket() {
 	struct sockaddr_in serv_address = {};
 
 	// Clear address structure, should prevent some segmentation fault and artifacts
-	bzero((char *) &serv_address, sizeof(serv_address));
+	bzero((char *)&serv_address, sizeof(serv_address));
 
-	serv_address.sin_family = AF_INET; // Socket using IPV4
-	serv_address.sin_addr.s_addr = INADDR_ANY; // means can attached socket to any address
+	serv_address.sin_family = AF_INET;				 // Socket using IPV4
+	serv_address.sin_addr.s_addr = INADDR_ANY;		 // means can attached socket to any address
 	serv_address.sin_port = htons(std::stoi(_port)); // TCP protocol does not read a port int so we use htons() to convert unsigned short int to big-endian network byte order as expected from TCP protocol standards
 
 	// Bind the socket to the IP address and port
-	if (bind(sockfd, (struct sockaddr *) &serv_address, sizeof(serv_address)) < 0)
+	if (bind(sockfd, (struct sockaddr *)&serv_address, sizeof(serv_address)) < 0)
 		throw std::runtime_error("Error while setting socket IP address and port.");
 
 	// Define max connexions and let socket be able to listen for requests
@@ -126,15 +136,16 @@ int Server::newSocket() {
 	return sockfd;
 }
 
-void Server::onClientConnect() {
+void Server::onClientConnect()
+{
 
-	// adding new fd to poll 
-	
+	// adding new fd to poll
+
 	int fd;
 	sockaddr_in s_address = {};
 	socklen_t s_size = sizeof(s_address);
 
-	fd = accept(_sock, (sockaddr *) &s_address, &s_size);
+	fd = accept(_sock, (sockaddr *)&s_address, &s_size);
 	if (fd < 0)
 		throw std::runtime_error("Error while accepting new client.");
 
@@ -142,7 +153,7 @@ void Server::onClientConnect() {
 	_pollfds.push_back(pollfd);
 
 	char hostname[NI_MAXHOST];
-	if (getnameinfo((struct sockaddr *) &s_address, sizeof(s_address), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) != 0)
+	if (getnameinfo((struct sockaddr *)&s_address, sizeof(s_address), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) != 0)
 		throw std::runtime_error("Error while getting hostname of new client.");
 
 	// Creates a new Client and store it in Clients map
@@ -151,32 +162,35 @@ void Server::onClientConnect() {
 	std::cout << "Client connnected" << std::endl;
 }
 
-void Server::onClientDisconnect(int fd) {
+void Server::onClientDisconnect(int fd)
+{
 
 	// client is removed from all subscribed channels
 	allChannelLeave(_clients[fd], ":" + _clients[fd].getPrefix() + " QUIT :Quit:");
 
-	// removing fd of leaving client from poll 
+	// removing fd of leaving client from poll
 	deleteClient(fd);
 }
 
-void Server::onClientMessage(int fd) {
+void Server::onClientMessage(int fd)
+{
 	std::cout << "Client message !" << std::endl;
 	readMessage(fd);
 }
 
-void Server::readMessage(int fd) {
+void Server::readMessage(int fd)
+{
 
-	int			read_bytes = -10;
-	char		buffer[BUFFER_SIZE + 1];
-	
+	int read_bytes = -10;
+	char buffer[BUFFER_SIZE + 1];
+
 	bzero(buffer, BUFFER_SIZE + 1);
 	while (read_bytes != 0)
 	{
 		bzero(buffer, BUFFER_SIZE);
 		read_bytes = recv(fd, buffer, BUFFER_SIZE, 0);
 		if (read_bytes < 0)
-			break ;
+			break;
 		std::cout << "bytes read :" << read_bytes << std::endl;
 		buffer[read_bytes] = '\0';
 		std::cout << "packet received :" + std::string(buffer) + "//" << std::endl;
@@ -188,27 +202,31 @@ void Server::readMessage(int fd) {
 	}
 }
 
-void Server::sendMessage(Client& client) {
+void Server::sendMessage(Client &client)
+{
 
 	if (client.getSendQueue().empty())
-		return ;
-	int	sent_bytes = send(client.getSocketfd(), client.getSendQueue().c_str(), client.getSendQueue().length(), 0);
+		return;
+	int sent_bytes = send(client.getSocketfd(), client.getSendQueue().c_str(), client.getSendQueue().length(), 0);
 	if (sent_bytes < 0)
 		std::cout << "Error while sending message to client." << std::endl;
 	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes) << std::endl;
 	client.getSendQueue().erase(0, sent_bytes);
 }
 
-Client *Server::getClient(const std::string nickname) {
-	
-	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+Client *Server::getClient(const std::string nickname)
+{
+
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+	{
 		if (!nickname.compare(it->second.getNickname()))
 			return &it->second;
 	}
 	return nullptr;
 }
 
-Channel&	Server::getChannel(const std::string& channel_name) {
+Channel &Server::getChannel(const std::string &channel_name)
+{
 
 	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
 	{
@@ -218,32 +236,36 @@ Channel&	Server::getChannel(const std::string& channel_name) {
 	throw std::out_of_range("channel does not exist");
 }
 
-void	Server::deleteClient(int fd) {
+void Server::deleteClient(int fd)
+{
 	_clients.erase(fd);
-	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it) {
+	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it)
+	{
 		if (it->fd == fd)
 		{
 			_pollfds.erase(it);
 			close(fd);
 			break;
-		}			
+		}
 	}
 }
 
-void	Server::addChannel(Channel channel) {
+void Server::addChannel(Channel channel)
+{
 	_channels.push_back(channel);
 }
 
-void	Server::removeChannel(std::vector<Channel>::iterator pos) {
+void Server::removeChannel(std::vector<Channel>::iterator pos)
+{
 	_channels.erase(pos);
 }
 
+std::pair<bool, std::vector<Channel>::iterator> Server::searchChannel(const std::string channel_name)
+{
 
-std::pair<bool, std::vector<Channel>::iterator>	Server::searchChannel(const std::string channel_name) {
-	
 	std::vector<Channel>::iterator iter = _channels.begin();
 
-	for(; iter != _channels.end(); ++iter)
+	for (; iter != _channels.end(); ++iter)
 	{
 
 		if (iter->getName() == channel_name)
@@ -254,7 +276,8 @@ std::pair<bool, std::vector<Channel>::iterator>	Server::searchChannel(const std:
 	return std::make_pair(false, iter);
 }
 
-void	Server::allChannelLeave(Client client, std::string broadcast_message) {
+void Server::allChannelLeave(Client client, std::string broadcast_message)
+{
 
 	std::vector<std::string> channels_to_remove;
 
@@ -274,7 +297,8 @@ void	Server::allChannelLeave(Client client, std::string broadcast_message) {
 	}
 }
 
-void	Server::addClientToDelete(int fd) {
+void Server::addClientToDelete(int fd)
+{
 
 	_fdToDelete.push_back(fd);
 }
