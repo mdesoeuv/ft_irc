@@ -32,7 +32,8 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 	if (//check if client is channel operator) {
 		client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
 		return;
-	}*/
+	}
+*/
 
 	int i = 0;
 	int p = 2;
