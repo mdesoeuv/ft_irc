@@ -242,7 +242,6 @@ Client *Server::getClient(const std::string nickname)
 
 Channel &Server::getChannel(const std::string &channel_name)
 {
-
 	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
 	{
 		if (it->getName() == channel_name)

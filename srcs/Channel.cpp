@@ -75,16 +75,15 @@ bool	Channel::isUser(const std::string nick) const {
 	return false;
 }
 
+
+//TODO: rework with modes string
 bool	Channel::isOp(const std::string op) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == op)
 		{
 			if (it->getChanPrefix().find("@") < it->getChanPrefix().size())
-			{
-				std::cout << it->getNickname() + " is operator on this channel" << std::endl;
 				return true;
-			}
 			else
 				return false;
 		}
@@ -102,13 +101,13 @@ void	Channel::addUser(Client user) {
 	_user_nb++;
 }
 
-void	Channel::addOp(Client op) {
-	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-	{
-		if (it->getNickname() == op.getNickname())
-			return ;
-	}
-	_op_list.push_back(op);
+// void	Channel::addOp(Client op) {
+// 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+// 	{
+// 		if (it->getNickname() == op.getNickname())
+// 			return ;
+// 	}
+// 	_op_list.push_back(op);
 }
 
 void	Channel::delUser(Client user) {
@@ -125,14 +124,14 @@ void	Channel::delUser(Client user) {
 	user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
 }
 
-void	Channel::delOp(Client op) {
-	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-	{
-		if (it->getNickname() == op.getNickname())
-			_op_list.erase(it);
-		return ;
-	}
-}
+// void	Channel::delOp(Client op) {
+// 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
+// 	{
+// 		if (it->getNickname() == op.getNickname())
+// 			_op_list.erase(it);
+// 		return ;
+// 	}
+// }
 
 std::string	Channel::getUserList() const {
 	std::string result;

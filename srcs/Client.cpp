@@ -148,7 +148,7 @@ void				Client::setIsRegistered(bool is_Registered) {
 }
 
 void				Client::setChanPrefix(const std::string new_prefix) {
-	_chanPrefix = new_prefix;
+	_chanPrefix += new_prefix;
 }
 
 void				Client::setLastPingTime(time_t new_lastPingTime) {
@@ -174,4 +174,15 @@ std::string			Client::extractMessage() {
 void				Client::addSendQueue(const std::string message) {
 	_sendQueue += message;
 	_sendQueue += "\r\n";
+}
+
+void				Client::addUserMode(char mode) {
+	_modes += mode;
+	std::cout << "user mode string :" + _modes;
+}
+
+void				Client::removeUserMode(char mode) {
+	size_t pos = _modes.find(mode);
+	_modes.erase(pos);
+	std::cout << "user mode string :" + _modes;
 }

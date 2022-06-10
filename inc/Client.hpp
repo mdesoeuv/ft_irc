@@ -48,6 +48,8 @@ class Client
 		void				setPassword(const std::string& new_password);
 		void				setChanPrefix(const std::string new_prefix);
 		void				setPtr(Client* client);
+		void				addUserMode(char mode);
+		void				removeUserMode(char mode);
 
 	private:
 
@@ -62,6 +64,7 @@ class Client
 		bool 		_isRegistered;
 		int 		_port;
 		std::string	_chanPrefix;
+		std::string _modes;
 		std::string _messageBuffer;
 		time_t		_lastPingTime;
 		std::string	_sendQueue;

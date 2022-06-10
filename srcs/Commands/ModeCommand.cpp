@@ -10,23 +10,26 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 	std::vector<std::string> splited_args;
 	split_args(arguments, " ", splited_args);
 
+	// TODO: reply de la commande MODE #channel
+	
 	// checks if a target and a parameter are present
 	if (splited_args.size() < 2 || splited_args[0].empty() || splited_args[1].empty())
 	{
-		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "PRIVMSG"));
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "PRIVMSG")); //TODO: verifier si PRIVMSG ou MODE
 		return;
 	}
 
 	std::string target = splited_args[0];
 	
-
+	std::cout << "target :" + target + "//" << std::endl;
 	// check if target is a channel then if client is op and then execute operation
 	if (target[0] == '#')
 	{
-		Channel channel;
+		
 		try
 		{
-			channel = _server->getChannel(target);
+			Channel& channel = _server->getChannel(target);
+			std::cout << "channel found" << std::endl;
 			if (!channel.isOp(client.getNickname()))
 			{
 				client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
@@ -36,23 +39,26 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 		}
 		catch(const std::out_of_range& e)
 		{
+			std::cout << e.what() << std::endl;
 			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), target));
 			return ;
 		}
 	}
-
-	// checks if user exists and execute operation
-
-	Client* target_client = _server->getClient(target);
-	if (target_client != nullptr)
-		mode_client(target_client, splited_args);
 	else
-		client.reply(ERR_NOSUCHNICK(client.getNickname(), target));
-	
+	{
+		// checks if user exists and execute operation
+
+		Client* target_client = _server->getClient(target);
+		if (target_client != nullptr)
+			mode_client(target_client, splited_args);
+		else
+			client.reply(ERR_NOSUCHNICK(client.getNickname(), target));
+	}
+
 
 }
 
-void	ModeCommand::mode_channel(Channel& channel, Client client, std::vector<std::string> splited_args) {
+void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std::string> splited_args) {
 
 	//DEBUG display 
 	std::cout << "executing Mode command :";
@@ -75,6 +81,51 @@ void	ModeCommand::mode_channel(Channel& channel, Client client, std::vector<std:
 			case 'n': {
 				//channel.setNoExt(active);
 				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+n" : "-n"), ""));
+				break;
+			}
+
+			case 'o': {
+				std::cout << "active :" << active << std::endl;
+				if (splited_args.size() != 3)
+				{
+					client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
+					return ;
+				}
+				if (!channel.isUser(splited_args[2]))
+				{
+					client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
+					return ;
+				}
+				if (active && !channel.isOp(splited_args[2]))
+				{
+					try {
+						Client&	target_client = channel.getChanClient(splited_args[2]);
+						target_client.addUserMode('o');
+						std::cout << "added channel op" << std::endl;
+						channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
+					}
+					catch(std::out_of_range& e)
+					{
+						std::cout << "client not found" << std::endl;
+					}
+				}
+				else if (!active && channel.isOp(splited_args[2]))
+				{
+					std::cout << "nick :" + splited_args[2] + "//" << std::endl;
+					try {
+						Client&	target_client = channel.getChanClient(splited_args[2]);
+						target_client.removeUserMode('o');
+						std::cout << "removed channel op" << std::endl;
+						channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
+					}
+					catch(std::out_of_range& e)
+					{
+						std::cout << "client not found" << std::endl;
+					}
+				}
+				else
+					return ;
+				return ;
 				break;
 			}
 
