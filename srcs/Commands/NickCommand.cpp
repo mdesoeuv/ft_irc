@@ -5,7 +5,7 @@ NickCommand::NickCommand(Server *server) : Command(server) {}
 NickCommand::~NickCommand() {}
 
 void NickCommand::execute(Client& client, std::string arguments) {
-	if (arguments.empty() || arguments.empty()) {
+	if (arguments.empty()) {
 		client.reply(ERR_NONICKNAMEGIVEN(client.getNickname()));
 		return;
 	}

@@ -18,7 +18,8 @@
 #define RPL_NAMEREPLY(myclient, channel, users)  	 	"353 " + myclient + " = " + channel + " :" + users
 #define RPL_ENDOFNAMES(myclient, mychannel)				"366 " + myclient + " " + mychannel + " :End of /NAMES list"
 #define RPL_PRIVMSG(myclient, target, message)			":" + myclient + " PRIVMSG " + target + " :" + message
-#define RPL_NOTICE(source, target, message)			":" + source + " NOTICE " + target + " :" + message
+#define RPL_NOTICE(myclient, target, message)			":" + myclient + " NOTICE " + target + " :" + message
+#define RPL_MODE(myclient, channel, modes, args)		":" + myclient + " MODE " + channel + " " + modes + " " + args
 
 /* Error Messages */
 
