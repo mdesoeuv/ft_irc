@@ -20,7 +20,7 @@
 #define BUFFER_SIZE 100
 #define MAX_CONNECTIONS 100
 
-extern int g_ServerRunning;
+extern bool g_ServerRunning;
 
 class Server;
 class Client;

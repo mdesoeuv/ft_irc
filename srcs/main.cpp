@@ -1,7 +1,7 @@
 #include "../inc/Server.hpp"
 #include "../inc/utils.hpp"
 
-int g_ServerRunning = 1;
+bool g_ServerRunning = true;
 
 int main(int ac, char **av)
 {

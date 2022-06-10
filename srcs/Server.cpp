@@ -71,10 +71,18 @@ void Server::start()
 				sendMessage(_clients[it->fd]);
 			}
 
-			// POLLERR
+			// POLLERR for Clients : allChannelLeave + deleteClient
+			if ((it->fd != _sock) && (it->revents & POLLERR))
+			{
+				onClientDisconnect(it->fd);
+			}
 
-			//server POLLERR -> g_runningServer = 0
-			//client POLLERR -> kick cient
+			//server POLLERR -> g_runningServer = false
+			if ((it->fd == _sock) && (it->revents & POLLERR))
+			{
+				g_ServerRunning = false;
+			}
+
 		}
 		for (std::vector<int>::iterator it = _fdToDelete.begin(); it != _fdToDelete.end(); ++it)
 		{

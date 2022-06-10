@@ -27,5 +27,5 @@ void	sig_quit(int code)
 {
 	(void)code;
 	std::cout << "Server is being turned down. Please wait." << std::endl;
-	g_ServerRunning = 0;
+	g_ServerRunning = false;
 }
