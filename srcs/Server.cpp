@@ -36,7 +36,6 @@ void Server::start()
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user : timeout"));
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
 				std::cout << "Client has Timeout " << std::endl;
-				// it->second à supprimer
 				_fdToDelete.push_back(it->second.getSocketfd());
 			}
 		}
@@ -69,11 +68,13 @@ void Server::start()
 			// POLLOUT
 			if ((it->fd != _sock) && (it->revents & POLLOUT))
 			{
-
 				sendMessage(_clients[it->fd]);
 			}
 
 			// POLLERR
+
+			//server POLLERR -> g_runningServer = 0
+			//client POLLERR -> kick cient
 		}
 		for (std::vector<int>::iterator it = _fdToDelete.begin(); it != _fdToDelete.end(); ++it)
 		{
@@ -146,7 +147,6 @@ void Server::onClientConnect()
 {
 
 	// adding new fd to poll
-
 	int fd;
 	sockaddr_in s_address = {};
 	socklen_t s_size = sizeof(s_address);
