@@ -20,6 +20,8 @@
 #define BUFFER_SIZE 100
 #define MAX_CONNECTIONS 100
 
+extern int g_ServerRunning;
+
 class Server;
 class Client;
 class CommandHandler;
@@ -32,7 +34,6 @@ class Server
 	typedef std::map<int, Client >::iterator clients_iterator;
 	typedef std::pair<bool, std::vector<Channel>::iterator> chan_it_pair;
 
-	int							_running;
 	int							_sock;
 	const std::string			_host;
 	const std::string			_name;

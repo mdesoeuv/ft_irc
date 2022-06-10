@@ -17,7 +17,7 @@ class Channel
 		std::string			_modes;
 		std::string			_ban_list;
 		size_t				_user_nb;
-		size_t				_user_limit;
+		//size_t				_user_limit;
 		
 	public:
 

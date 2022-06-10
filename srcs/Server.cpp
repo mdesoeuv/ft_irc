@@ -2,7 +2,8 @@
 #include "../inc/CommandHandler.hpp"
 
 Server::Server(const std::string port, const std::string password)
-		: _running(1), _host("127.0.0.1"), _name("ft_irc"), _port(port), _password(password), _commandHandler(this) {
+	: _host("127.0.0.1"), _name("ft_irc"), _port(port), _password(password), _commandHandler(this)
+{
 
 	_sock = newSocket();
 }
@@ -18,7 +19,7 @@ void Server::start()
 	_pollfds.push_back(server_fd);
 
 	// Le server écoute désormais les POLL IN
-	while (_running)
+	while (g_ServerRunning)
 	{
 		time_t actualTime = time(NULL);
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
@@ -81,6 +82,12 @@ void Server::start()
 		}
 		_fdToDelete.clear();
 	}
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+	{
+		close (it->second.getSocketfd());
+	}
+	close(_sock);
+	std::cout << "Server has been turned down. Goodbye !" << std::endl;
 }
 
 int Server::newSocket()
@@ -303,6 +310,7 @@ void Server::addClientToDelete(int fd)
 	_fdToDelete.push_back(fd);
 }
 
-std::string		Server::getServerPrefix() const {
+std::string Server::getServerPrefix() const
+{
 	return (_name + "@" + _host);
 }

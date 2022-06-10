@@ -1,6 +1,8 @@
 #include "../inc/Server.hpp"
 #include "../inc/utils.hpp"
 
+int g_ServerRunning = 1;
+
 int main(int ac, char **av)
 {
 	signal(SIGINT, &sig_quit);
