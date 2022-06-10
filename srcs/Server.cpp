@@ -65,7 +65,7 @@ void Server::start()
 					onClientMessage(it->fd);
 			}
 
-			// POLLOUT
+			// POLLOUT for Clients
 			if ((it->fd != _sock) && (it->revents & POLLOUT))
 			{
 				sendMessage(_clients[it->fd]);
