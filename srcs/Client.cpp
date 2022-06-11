@@ -20,6 +20,7 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_isRegistered(other.isRegistered()),
 										_port(other.getPort()),
 										_chanPrefix(other.getChanPrefix()),
+										_modes(other.getModes()),
 										_clientOnServer(other._clientOnServer) {
 
 	_lastPingTime = time(NULL);
@@ -40,6 +41,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
 	_chanPrefix = rhs.getChanPrefix();
+	_modes = rhs.getModes();
 	_clientOnServer = rhs._clientOnServer;
 	_lastPingTime = rhs._lastPingTime;
 
@@ -110,6 +112,10 @@ const std::string&	Client::getChanPrefix() const {
 	return _chanPrefix;
 }
 
+const std::string&	Client::getModes() const {
+	return _modes;
+}
+
 time_t		Client::getLastPingTime() {
 	return _lastPingTime;
 }
@@ -178,11 +184,11 @@ void				Client::addSendQueue(const std::string message) {
 
 void				Client::addUserMode(char mode) {
 	_modes += mode;
-	std::cout << "user mode string :" + _modes;
+	std::cout << "user mode string :" + _modes << std::endl;
 }
 
 void				Client::removeUserMode(char mode) {
 	size_t pos = _modes.find(mode);
 	_modes.erase(pos);
-	std::cout << "user mode string :" + _modes;
+	std::cout << "user mode string :" + _modes << std::endl;
 }

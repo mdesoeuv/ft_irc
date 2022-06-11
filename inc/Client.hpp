@@ -26,6 +26,7 @@ class Client
 		const std::string&	getPassword() const;
 		const std::string&	getHostname() const;
 		const std::string&	getChanPrefix() const;
+		const std::string&	getModes() const;
 		bool 				isAuthentified() const;
 		bool 				isRegistered() const;
 		int					getSocketfd() const;

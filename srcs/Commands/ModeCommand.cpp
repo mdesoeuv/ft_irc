@@ -84,6 +84,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 				break;
 			}
 
+			// operator mode: @ before nickname 
 			case 'o': {
 				std::cout << "active :" << active << std::endl;
 				if (splited_args.size() != 3)
@@ -100,7 +101,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 				{
 					try {
 						Client&	target_client = channel.getChanClient(splited_args[2]);
-						target_client.addUserMode('o');
+						target_client.addUserMode('@');
 						std::cout << "added channel op" << std::endl;
 						channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
 					}
@@ -114,7 +115,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 					std::cout << "nick :" + splited_args[2] + "//" << std::endl;
 					try {
 						Client&	target_client = channel.getChanClient(splited_args[2]);
-						target_client.removeUserMode('o');
+						target_client.removeUserMode('@');
 						std::cout << "removed channel op" << std::endl;
 						channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
 					}
@@ -142,6 +143,13 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 				p += active ? 1 : 0;
 				break;
 			}
+
+			// voice mode on channel: '+' before nick
+			// case 'v': {
+			// 	channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+k" : "-k"), (active ? splited_args[p] : "")));
+			// 	p += active ? 1 : 0;
+			// 	break;
+			// }
 
 			default:
 				break;

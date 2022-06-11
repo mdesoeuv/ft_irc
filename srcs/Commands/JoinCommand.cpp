@@ -34,7 +34,7 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	Client	client_copy = client;
 	client_copy.setPtr(&client);
 	client_copy.setChanPrefix("@");
-	client_copy.addUserMode('o');
+	client_copy.addUserMode('@');
 	new_channel.addUser(client_copy);
 	// new_channel.addOp(client);
 	_server->addChannel(new_channel);

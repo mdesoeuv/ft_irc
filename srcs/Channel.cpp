@@ -48,6 +48,7 @@ size_t		Channel::getUserNb() const {
 Client&		Channel::getChanClient(const std::string& client_name) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
+		std::cout << "present on channel :" + it->getNickname() << std::endl;
 		if (it->getNickname() == client_name)
 			return *it;
 	}
@@ -82,7 +83,8 @@ bool	Channel::isOp(const std::string op) const {
 	{
 		if (it->getNickname() == op)
 		{
-			if (it->getChanPrefix().find("@") < it->getChanPrefix().size())
+			if (it->getModes().find("@") < it->getModes().size())
+			// if (it->getChanPrefix().find("@") < it->getChanPrefix().size())
 				return true;
 			else
 				return false;
@@ -108,7 +110,7 @@ void	Channel::addUser(Client user) {
 // 			return ;
 // 	}
 // 	_op_list.push_back(op);
-}
+// }
 
 void	Channel::delUser(Client user) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
@@ -139,7 +141,7 @@ std::string	Channel::getUserList() const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		result += " ";
-		result += it->getChanPrefix();
+		result += it->getModes();
 		result += it->getNickname();
 	}
 	return result;
