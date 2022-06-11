@@ -58,6 +58,7 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 
 }
 
+//TODO: faire des sous fonctions pour chaque cas du switch
 void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std::string> splited_args) {
 
 	//DEBUG display 
