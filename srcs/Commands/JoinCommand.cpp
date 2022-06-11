@@ -4,7 +4,7 @@ JoinCommand::JoinCommand(Server *server) : Command(server) {}
 
 JoinCommand::~JoinCommand() {}
 
-//TODO: verifier comportement si deja join
+//TODO: JOIN 0 = leave all channels
 void JoinCommand::execute(Client& client, std::string arguments) {
 	
 	//check if Channel exist
