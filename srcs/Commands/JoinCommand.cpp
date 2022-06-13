@@ -4,42 +4,44 @@ JoinCommand::JoinCommand(Server *server) : Command(server) {}
 
 JoinCommand::~JoinCommand() {}
 
-//TODO: JOIN 0 = leave all channels
-void JoinCommand::execute(Client& client, std::string arguments) {
-	
-	//check if Channel exist
+// TODO: JOIN 0 = leave all channels
+void JoinCommand::execute(Client &client, std::string arguments)
+{
+
+	// check if Channel exist
 	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);
 	if (result.first)
 	{
-	// checks if client is already on channel
-	if (result.second->isUser(client.getNickname()))
-	{
-		client.reply(ERR_USERONCHANNEL(client.getNickname(), client.getNickname(), result.second->getName()));
-		return ;
-	}
-			
+		// checks if client is already on channel
+		if (result.second->isUser(client.getNickname()))
+		{
+			client.reply(ERR_USERONCHANNEL(client.getNickname(), client.getNickname(), result.second->getName()));
+			return;
+		}
 
-	if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()))
-	{
-		client.reply(ERR_CLIENTNOTINVITED(client.getNickname(), result.second->getName()));
-		return ;
-	}
-	
-	// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre => ban
+		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()))
+		{
+			client.reply(ERR_CLIENTNOTINVITED(client.getNickname(), result.second->getName()));
+			return;
+		}
 
-	// TODO: verifier la limite d'utilisateurs du channel
+		// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre => ban
 
-	//client join le channel
+		// TODO: verifier la limite d'utilisateurs du channel
+
+		// client join le channel
 		result.second->addUser(client);
 		sendJoinNotif(client, *result.second);
-		return ;
+		return;
 	}
 	// check if channel_name is not valid
 	if (invalidChannelName(arguments))
-		return ;
-	//TODO : error messages pour les differents cas d'erreur
-	Channel	new_channel(arguments);
-	Client	client_copy = client;
+	{
+		client.reply(ERR_INVALIDCHANNELNAME(client.getNickname(), arguments));
+		return;
+	}
+	Channel new_channel(arguments);
+	Client client_copy = client;
 	client_copy.setPtr(&client);
 	client_copy.setChanPrefix("@");
 	client_copy.addUserMode('@');
@@ -49,7 +51,8 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	sendJoinNotif(client, new_channel);
 }
 
-void JoinCommand::sendJoinNotif(Client& client, Channel channel) {
+void JoinCommand::sendJoinNotif(Client &client, Channel channel)
+{
 	channel.broadcastMessage(":" + client.getPrefix() + " JOIN " + channel.getName());
 	if (!channel.getTopic().empty())
 		client.reply(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic()));
@@ -59,7 +62,8 @@ void JoinCommand::sendJoinNotif(Client& client, Channel channel) {
 	client.reply(RPL_ENDOFNAMES(client.getNickname(), channel.getName()));
 }
 
-bool JoinCommand::invalidChannelName(const std::string& channel_name) {
+bool JoinCommand::invalidChannelName(const std::string &channel_name)
+{
 	if (channel_name.empty())
 		return true;
 	if (channel_name.size() > 50 || channel_name.size() < 2)

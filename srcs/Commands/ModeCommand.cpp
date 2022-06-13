@@ -80,7 +80,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 
 		switch (c) {
 
-			case 'b': {
+			case 'b': {// to do
 				if (active)
 				{
 					if (!channel.addMode('b'))

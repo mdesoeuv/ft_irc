@@ -23,6 +23,7 @@
 #define RPL_INVITING(myclient, nickToInvite, mychannel)	":" + myclient + nickToInvite + mychannel
 #define ERR_ALREADYINVITED(myclient, nickToInvite, mychannel)	": USER " + nickToInvite + "already invited to channel " + mychannel 
 #define ERR_CLIENTNOTINVITED(myclient, mychannel)		": USER " + myclient + "not invited on channel " + mychannel 
+#define ERR_INVALIDCHANNELNAME(myclient, mychannel)		":" + myclient + " Invalid channel name: " + mychannel
 
 /* Error Messages */
 
