@@ -96,13 +96,31 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 			}
 
 			case 'n': {
-				//channel.setNoExt(active);
+				if (active)
+				{
+					if (!channel.addMode('n'))
+						break;
+				}
+				else
+				{
+					if (!channel.removeMode('n'))
+						break;
+				}
 				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+n" : "-n"), ""));
 				break;
 			}
 
 			case 'i': {
-				//channel.setInviteOnly(active);
+				if (active)
+				{
+					if (!channel.addMode('i'))
+						break;
+				}
+				else
+				{
+					if (!channel.removeMode('i'))
+						break;
+				}
 				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+i" : "-i"), ""));
 				break;
 			}
