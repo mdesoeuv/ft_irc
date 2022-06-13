@@ -4,8 +4,8 @@ Client::Client() {
 
 }
 
-Client::Client(int fd, const std::string hostname, int port, const std::string chan_prefix)
-		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port), _chanPrefix(chan_prefix), _clientOnServer(this) {
+Client::Client(int fd, const std::string hostname, int port, const std::string serverPrefix)
+		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port), _serverPrefix(serverPrefix), _clientOnServer(this) {
 	
 	_lastPingTime = time(NULL);
 }
@@ -19,6 +19,7 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_isAuthentified(other.isAuthentified()),
 										_isRegistered(other.isRegistered()),
 										_port(other.getPort()),
+										_serverPrefix(other.getServerPrefix()),
 										_chanPrefix(other.getChanPrefix()),
 										_modes(other.getModes()),
 										_clientOnServer(other._clientOnServer) {
@@ -41,6 +42,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
 	_chanPrefix = rhs.getChanPrefix();
+	_serverPrefix = rhs.getServerPrefix();
 	_modes = rhs.getModes();
 	_clientOnServer = rhs._clientOnServer;
 	_lastPingTime = rhs._lastPingTime;
@@ -57,7 +59,7 @@ void Client::write(const std::string &message) const {
 }
 
 void Client::reply(const std::string &reply) {
-	addSendQueue(_serverPrefix + " "+ reply);
+	addSendQueue(":" + _serverPrefix + " " + reply);
 }
 
 void Client::welcome() {
@@ -115,6 +117,11 @@ const std::string&	Client::getChanPrefix() const {
 const std::string&	Client::getModes() const {
 	return _modes;
 }
+
+const std::string&	Client::getServerPrefix() const {
+	return _serverPrefix;
+}
+
 
 time_t		Client::getLastPingTime() {
 	return _lastPingTime;

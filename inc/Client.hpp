@@ -27,6 +27,7 @@ class Client
 		const std::string&	getHostname() const;
 		const std::string&	getChanPrefix() const;
 		const std::string&	getModes() const;
+		const std::string&	getServerPrefix() const;
 		bool 				isAuthentified() const;
 		bool 				isRegistered() const;
 		int					getSocketfd() const;
@@ -60,10 +61,10 @@ class Client
 		std::string _realName;
 		std::string _password;
 		std::string	_hostname;
-		std::string	_serverPrefix;
 		bool 		_isAuthentified;
 		bool 		_isRegistered;
 		int 		_port;
+		std::string	_serverPrefix;
 		std::string	_chanPrefix;
 		std::string _modes;
 		std::string _messageBuffer;
