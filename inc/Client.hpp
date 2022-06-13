@@ -51,8 +51,8 @@ class Client
 		void				setPassword(const std::string& new_password);
 		void				setChanPrefix(const std::string new_prefix);
 		void				setPtr(Client* client);
-		void				addUserMode(char mode);
-		void				removeUserMode(char mode);
+		bool				addUserMode(char mode);
+		bool				removeUserMode(char mode);
 
 	private:
 

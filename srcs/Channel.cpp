@@ -67,6 +67,21 @@ void	Channel::setModes(const std::string new_modes) {
 	_modes = new_modes;
 }
 
+bool	Channel::addMode(char mode) {
+	if (isMode(mode))
+		return false;
+	_modes += mode;
+	return true;
+}
+
+bool	Channel::removeMode(char mode) {
+	if (!isMode(mode))
+		return false;
+	size_t pos = _modes.find(mode);
+	_modes.erase(pos);
+	return true;
+}
+
 bool	Channel::isUser(const std::string nick) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
@@ -82,14 +97,16 @@ bool	Channel::isOp(const std::string op) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == op)
-		{
-			if (it->getModes().find("@") < it->getModes().size())
-				return true;
-			else
-				return false;
-		}
+			return (it->getModes().find("@") < it->getModes().size());
 	}
 	return false;
+}
+
+bool	Channel::isMode(char mode) const {
+	if (getModes().find(mode) < getModes().size())
+		return true;
+	else
+		return false;
 }
 
 void	Channel::addUser(Client user) {
@@ -102,14 +119,6 @@ void	Channel::addUser(Client user) {
 	_user_nb++;
 }
 
-// void	Channel::addOp(Client op) {
-// 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-// 	{
-// 		if (it->getNickname() == op.getNickname())
-// 			return ;
-// 	}
-// 	_op_list.push_back(op);
-// }
 
 void	Channel::delUser(Client user) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
@@ -124,15 +133,6 @@ void	Channel::delUser(Client user) {
 	// Error message if user is not on channel
 	user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
 }
-
-// void	Channel::delOp(Client op) {
-// 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-// 	{
-// 		if (it->getNickname() == op.getNickname())
-// 			_op_list.erase(it);
-// 		return ;
-// 	}
-// }
 
 std::string	Channel::getUserList() const {
 	std::string result;

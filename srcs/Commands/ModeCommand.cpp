@@ -154,7 +154,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 					if (active)
 					{
 						if (target_client.isMode('+'))
-							return ;
+							break ;
 						target_client.addUserMode('+');
 						std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
 					}
@@ -168,7 +168,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 				catch (std::out_of_range& e)
 				{
 					std::cout << "Client not found" << std::endl;
-					return ;
+					break ;
 				}
 				p += active ? 1 : 0;
 				break;
