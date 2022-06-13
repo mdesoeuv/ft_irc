@@ -77,14 +77,13 @@ bool	Channel::isUser(const std::string nick) const {
 }
 
 
-//TODO: rework with modes string
+//TODO: rework with modes string and isMode() bool from client
 bool	Channel::isOp(const std::string op) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == op)
 		{
 			if (it->getModes().find("@") < it->getModes().size())
-			// if (it->getChanPrefix().find("@") < it->getChanPrefix().size())
 				return true;
 			else
 				return false;

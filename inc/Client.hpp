@@ -30,6 +30,7 @@ class Client
 		const std::string&	getServerPrefix() const;
 		bool 				isAuthentified() const;
 		bool 				isRegistered() const;
+		bool				isMode(char mode) const;
 		int					getSocketfd() const;
 		int					getPort() const;
 		std::string 		getPrefix() const;

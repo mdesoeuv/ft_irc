@@ -82,6 +82,14 @@ bool	Client::isRegistered() const {
 	return _isRegistered;
 }
 
+bool	Client::isMode(char mode) const {
+	if (getModes().find(mode) < getModes().size())
+		return true;
+	else
+		return false;
+}
+
+
 const std::string&	Client::getNickname() const {
 	return _nickname;
 }
