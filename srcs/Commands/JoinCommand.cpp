@@ -8,8 +8,16 @@ JoinCommand::~JoinCommand() {}
 void JoinCommand::execute(Client &client, std::string arguments)
 {
 
+	std::vector<std::string> splited_args;
+	split_args(arguments, " ", splited_args);
+
+	if (splited_args.size() < 1 || splited_args[0].empty())
+	{
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "JOIN"));
+		return;
+	}
 	// check if Channel exist
-	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);
+	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(splited_args[0]);
 	if (result.first)
 	{
 		// checks if client is already on channel
@@ -22,6 +30,12 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()))
 		{
 			client.reply(ERR_INVITEONLYCHAN(client.getNickname(), result.second->getName()));
+			return;
+		}
+
+		if (result.second->isMode('k') && splited_args.size() > 1 && !splited_args[1].empty() && !result.second->isPassword(splited_args[1]))
+		{
+			client.reply(ERR_BADCHANNELKEY(client.getNickname(), result.second->getName()));
 			return;
 		}
 
@@ -43,12 +57,12 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		return;
 	}
 	// check if channel_name is not valid
-	if (invalidChannelName(arguments))
+	if (invalidChannelName(splited_args[0]))
 	{
-		client.reply(ERR_INVALIDCHANNELNAME(client.getNickname(), arguments));
+		client.reply(ERR_INVALIDCHANNELNAME(client.getNickname(), splited_args[0]));
 		return;
 	}
-	Channel new_channel(arguments);
+	Channel new_channel(splited_args[0]);
 	Client client_copy = client;
 	client_copy.setPtr(&client);
 	client_copy.setChanPrefix("@");

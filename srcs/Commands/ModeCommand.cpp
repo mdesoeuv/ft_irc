@@ -135,7 +135,30 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 			break;
 		}
 
-		case 'n':
+		case 'k':
+		{
+			if (splited_args[2].empty())
+			{
+				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "CHANNEL PASSWORD"));
+				break;
+			}
+			if (active)
+			{
+				if (!channel.addMode('k'))
+					break;
+				channel.setPassword(splited_args[2]);
+			}
+			else
+			{
+				if (!channel.removeMode('k'))
+					break;
+			}
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+k" : "-k"), (active ? splited_args[p] : "")));
+			p += active ? 1 : 0;
+			break;
+		}
+
+				case 'n':
 		{
 			if (active)
 			{
@@ -220,14 +243,6 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 		{
 			channel.setChannelLimit(active ? std::stol(splited_args[p]) : 0);
 			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+l" : "-l"), (active ? splited_args[p] : "")));
-			p += active ? 1 : 0;
-			break;
-		}
-
-		case 'k':
-		{
-			// channel.setPassword(active ? splited_args[p] : "");
-			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+k" : "-k"), (active ? splited_args[p] : "")));
 			p += active ? 1 : 0;
 			break;
 		}

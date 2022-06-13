@@ -95,6 +95,11 @@ void Channel::setSymbol(const std::string& new_symbol)
 	_symbol = new_symbol;
 }
 
+void Channel::setPassword(const std::string new_password)
+{
+	_password = new_password;
+}
+
 bool Channel::addMode(char mode)
 {
 	if (isMode(mode))
@@ -120,6 +125,11 @@ bool Channel::isUser(const std::string nick) const
 			return true;
 	}
 	return false;
+}
+
+bool Channel::isPassword(const std::string password) const
+{
+	return (password == _password);
 }
 
 // TODO: rework with modes string and isMode() bool from client MEHDI
