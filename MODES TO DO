@@ -10,7 +10,7 @@
         s - toggle the secret channel flag; ?
         t - toggle the topic settable by channel operator only flag; OK MEHDI
 
-        k - set/remove the channel key (password); PENDING VIC
+        k - set/remove the channel key (password); OK, TO TEST VIC
         l - set/remove the user limit to channel; OK, TO TEST VIC
 
         b - set/remove ban mask to keep users out; OK MEHDI
