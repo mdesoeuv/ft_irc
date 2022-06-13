@@ -101,6 +101,15 @@ public:
 	void execute(Client& client, std::string arguments);
 };
 
+class NamesCommand : public Command
+{
+public:
+	NamesCommand(Server *server);
+	~NamesCommand();
+
+	void execute(Client& client, std::string arguments);
+};
+
 class PingCommand : public Command
 {
 public:

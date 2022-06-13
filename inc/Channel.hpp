@@ -20,6 +20,7 @@ class Channel
 		std::vector<std::string> _user_invited_list;
 		std::vector<std::string> _user_banned_list;
 		size_t				_user_limit;
+		std::string				_symbol;
 		
 	public:
 
@@ -34,10 +35,12 @@ class Channel
 		std::string	getTopic() const;
 		std::string	getModes() const;
 		size_t		getUserNb() const;
+		std::string	getSymbol() const;
 		Client&		getChanClient(const std::string& client_name);
 		void		setName(const std::string new_name);
 		void		setTopic(const std::string new_topic);
 		void		setModes(const std::string new_modes);
+		void		setSymbol(const std::string& new_symbol);
 		bool		isUser(const std::string nick) const;
 		bool		isOp(const std::string nick) const;
 		bool		isMode(char mode) const;

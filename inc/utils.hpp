@@ -15,7 +15,7 @@
 #define RPL_CHANNELMODEIS(myclient, mychannel, mode_string, mode_args)	"324 " + myclient + " " + mychannel + " " + mode_string + mode_args
 #define RPL_NOTOPIC(myclient, mychannel)				"331 " + myclient + " " + mychannel + " :No topic is set"
 #define RPL_TOPIC(myclient, mychannel, channel_topic)	"332 " + myclient + " " + mychannel + " :" + channel_topic
-#define RPL_NAMEREPLY(myclient, channel, users)  	 	"353 " + myclient + " = " + channel + " :" + users
+#define RPL_NAMEREPLY(myclient, channel_symbol, channel, users)  	 	"353 " + myclient + " " + channel_symbol + " "  + channel + " :" + users
 #define RPL_ENDOFNAMES(myclient, mychannel)				"366 " + myclient + " " + mychannel + " :End of /NAMES list"
 #define RPL_PRIVMSG(myclient, target, message)			":" + myclient + " PRIVMSG " + target + " :" + message
 #define RPL_NOTICE(myclient, target, message)			":" + myclient + " NOTICE " + target + " :" + message

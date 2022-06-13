@@ -4,7 +4,7 @@ Channel::Channel(void)
 {
 }
 
-Channel::Channel(const std::string &chan_name) : _name(chan_name), _topic(""), _modes("+nt"), _user_nb(0)
+Channel::Channel(const std::string &chan_name) : _name(chan_name), _topic(""), _modes("+nt"), _user_nb(0), _symbol("=")
 {
 }
 
@@ -13,7 +13,8 @@ Channel::Channel(const Channel &other) : _user_list(other._user_list),
 										 _name(other._name),
 										 _topic(other._topic),
 										 _modes(other._modes),
-										 _user_nb(other._user_nb)
+										 _user_nb(other._user_nb),
+										 _symbol(other._symbol)
 {
 }
 
@@ -29,6 +30,7 @@ Channel &Channel::operator=(const Channel &rhs)
 	_topic = rhs._topic;
 	_modes = rhs._modes;
 	_user_nb = rhs._user_nb;
+	_symbol = rhs._symbol;
 
 	return *this;
 }
@@ -51,6 +53,11 @@ std::string Channel::getModes() const
 size_t Channel::getUserNb() const
 {
 	return _user_nb;
+}
+
+std::string	Channel::getSymbol() const
+{
+	return _symbol;
 }
 
 Client &Channel::getChanClient(const std::string &client_name)
@@ -81,6 +88,11 @@ void Channel::setModes(const std::string new_modes)
 void Channel::setChannelLimit(const size_t new_channel_limit)
 {
 	_user_limit = new_channel_limit;
+}
+
+void Channel::setSymbol(const std::string& new_symbol)
+{
+	_symbol = new_symbol;
 }
 
 bool Channel::addMode(char mode)
