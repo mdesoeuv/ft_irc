@@ -38,7 +38,7 @@ class Channel
 		void		setModes(const std::string new_modes);
 		bool		isUser(const std::string nick) const;
 		bool		isOp(const std::string nick) const;
-		bool		isMode(char mode);
+		bool		isMode(char mode) const;
 		bool		addMode(char mode);
 		bool		removeMode(char mode);
 		void		addUser(Client user);
