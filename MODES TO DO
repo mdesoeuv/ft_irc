@@ -1,0 +1,21 @@
+        o - give/take channel operator privilege; OK MEHDI
+        v - give/take the voice privilege; PENDING MEHDI
+
+        a - toggle the anonymous channel flag;
+        i - toggle the invite-only channel flag; OK, TO TEST VIC
+        m - toggle the moderated channel;
+        n - toggle the no messages to channel from clients on the
+            outside;
+        q - toggle the quiet channel flag;
+        p - toggle the private channel flag;
+        s - toggle the secret channel flag;
+        r - toggle the server reop channel flag;
+        t - toggle the topic settable by channel operator only flag;
+
+        k - set/remove the channel key (password); PENDING VIC
+        l - set/remove the user limit to channel; OK, TO TEST VIC
+
+        b - set/remove ban mask to keep users out;
+        e - set/remove an exception mask to override a ban mask;
+        I - set/remove an invitation mask to automatically override
+            the invite-only flag;

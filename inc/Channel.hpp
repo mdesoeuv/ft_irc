@@ -18,7 +18,8 @@ class Channel
 		std::string			_ban_list;
 		size_t				_user_nb;
 		std::vector<std::string> _user_invited_list;
-		//size_t				_user_limit;
+		std::vector<std::string> _user_banned_list;
+		size_t				_user_limit;
 		
 	public:
 
@@ -52,4 +53,9 @@ class Channel
 		void		broadcastExceptSource(std::string message, const std::string& source_nick);
 		bool		isInvited(const std::string nickname) const;
 		void		addInvitation(const std::string nickname);
+		bool		isBanned(const std::string nickname) const;
+		void		addBan(const std::string nickname);
+		void		removeBan(const std::string nickname);
+		bool		hasReachedClientsLimit() const;
+		void		setChannelLimit(const size_t new_channel_limit);
 };

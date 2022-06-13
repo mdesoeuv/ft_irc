@@ -22,7 +22,9 @@
 #define RPL_MODE(myclient, channel, modes, args)		":" + myclient + " MODE " + channel + " " + modes + " " + args
 #define RPL_INVITING(myclient, nickToInvite, mychannel)	":" + myclient + nickToInvite + mychannel
 #define ERR_ALREADYINVITED(myclient, nickToInvite, mychannel)	": USER " + nickToInvite + "already invited to channel " + mychannel 
-#define ERR_CLIENTNOTINVITED(myclient, mychannel)		": USER " + myclient + "not invited on channel " + mychannel 
+#define	RPL_UNBANNED(myclient, nickToBan, mychannel)	":" + myclient + " " + mychannel + " :"+ nickToBan + " has been banned"
+#define	RPL_BANNED(myclient, nickToBan, mychannel)		":" + myclient + " " + mychannel + " :"+ nickToBan + " has been unbanned"
+#define ERR_INVALIDCHANNELNAME(myclient, mychannel)		":" + myclient + " Invalid channel name: " + mychannel
 
 /* Error Messages */
 
@@ -37,7 +39,9 @@
 #define ERR_WRONGPASSWORD(myclient)							"464 " + myclient + " :Password incorrect"
 #define ERR_ALREADYREGISTERED(myclient)						"462 " + myclient + " :You may not reregister"
 #define ERR_CHANOPRIVSNEEDED(myclient, mychannel)			"482 " + myclient + " " + mychannel + " :You're not channel operator"
-#define ERR_USERONCHANNEL(myclient, nickToInvite, mychannel) "443 " + myclient + nickToInvite + mychannel + " :is already on channel"
+#define ERR_USERONCHANNEL(myclient, nickToInvite, mychannel) "443 " + myclient + " " + mychannel + " :" + nickToInvite + " is already on channel"
+#define	ERR_ALREADYBANNED(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already banned"
+#define	ERR_ALREADYUNBANNED(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already unbanned"
 #define ERR_NOSUCHNICK(myclient, nickname)					"401 " + myclient + " " + nickname + " :No such nickname"
 #define ERR_CANNOTSENDTOCHAN(myclient, channel)				"404 " + myclient + " " + channel + " :Cannot send to channel"
 #define	ERR_CHANNELISFULL(myclient, channel)				"471 " + myclient + " " + channel + " :Cannot join channel (+l)"

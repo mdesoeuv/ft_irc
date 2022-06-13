@@ -18,7 +18,7 @@
 #include "Channel.hpp"
 
 #define BUFFER_SIZE 100
-#define MAX_CONNECTIONS 100
+#define MAX_CONNECTIONS 1000
 
 extern bool g_ServerRunning;
 
