@@ -157,10 +157,10 @@ void Channel::addInvitation(const std::string nickname)
 	_user_invited_list.push_back(nickname);
 }
 
-<<<<<<< HEAD
 bool	Channel::isMode(char mode) const {
 	return (getModes().find(mode) < getModes().size());
-=======
+}
+
 void Channel::addBan(const std::string nickname)
 {
 	Client kicked_user;
@@ -183,15 +183,6 @@ void Channel::removeBan(const std::string nickname)
 			return;
 		}
 	}
-}
-
-bool Channel::isMode(char mode) const
-{
-	if (getModes().find(mode) < getModes().size())
-		return true;
-	else
-		return false;
->>>>>>> 261f364e27a16b39af9aee9b77e79cb6a8a92350
 }
 
 bool Channel::hasReachedClientsLimit() const

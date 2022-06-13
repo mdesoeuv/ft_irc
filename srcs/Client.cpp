@@ -213,8 +213,8 @@ bool				Client::removeUserMode(char mode) {
 		return false;
 	}
 	size_t pos = _modes.find(mode);
+	_modes.erase(pos, 1);
 	std::cout << "removed mode :" << mode << std::endl;
 	std::cout << "mode string is now :" << getModes() << std::endl;
-	_modes.erase(pos);
 	return true;
 }

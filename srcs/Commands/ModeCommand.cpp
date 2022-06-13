@@ -263,20 +263,13 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 
 					channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), target_client.getNickname()));
 				}
-				else
+				catch (std::out_of_range &e)
 				{
-					target_client.addUserMode('+');
-					std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
+					std::cout << "Client not found" << std::endl;
+					break;
 				}
-				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), (active ? splited_args[p] : "")));
-			}
-			catch (std::out_of_range &e)
-			{
-				std::cout << "Client not found" << std::endl;
+				p += active ? 1 : 0;
 				break;
-			}
-			p += active ? 1 : 0;
-			break;
 		}
 
 		default:
