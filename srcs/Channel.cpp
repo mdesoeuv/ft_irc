@@ -76,7 +76,6 @@ bool	Channel::isUser(const std::string nick) const {
 	return false;
 }
 
-
 //TODO: rework with modes string
 bool	Channel::isOp(const std::string op) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
@@ -93,6 +92,19 @@ bool	Channel::isOp(const std::string op) const {
 	return false;
 }
 
+bool	Channel::isInvited(const std::string nickname) const {
+	for (std::vector<std::string>::const_iterator it = _user_invited_list.begin(); it != _user_invited_list.end(); ++it)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
+}
+
+void	Channel::addInvitation(const std::string nickname) {
+	_user_invited_list.push_back(nickname);
+}
+
 void	Channel::addUser(Client user) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
@@ -102,15 +114,6 @@ void	Channel::addUser(Client user) {
 	_user_list.push_back(user);
 	_user_nb++;
 }
-
-// void	Channel::addOp(Client op) {
-// 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-// 	{
-// 		if (it->getNickname() == op.getNickname())
-// 			return ;
-// 	}
-// 	_op_list.push_back(op);
-// }
 
 void	Channel::delUser(Client user) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
@@ -125,15 +128,6 @@ void	Channel::delUser(Client user) {
 	// Error message if user is not on channel
 	user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
 }
-
-// void	Channel::delOp(Client op) {
-// 	for (std::vector<Client>::iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-// 	{
-// 		if (it->getNickname() == op.getNickname())
-// 			_op_list.erase(it);
-// 		return ;
-// 	}
-// }
 
 std::string	Channel::getUserList() const {
 	std::string result;

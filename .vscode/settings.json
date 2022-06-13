@@ -71,6 +71,7 @@
 		"deque": "cpp",
 		"numeric": "cpp",
 		"regex": "cpp",
-		"thread": "cpp"
+		"thread": "cpp",
+		"__functional_03": "cpp"
 	}
 }

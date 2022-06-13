@@ -11,13 +11,21 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(arguments);
 	if (result.first)
 	{
-	//si oui:
-
 	// checks if client is already on channel
 	if (result.second->isUser(client.getNickname()))
+	{
+		client.reply(ERR_USERONCHANNEL(client.getNickname(), client.getNickname(), channel.getName()));
 		return ;
+	}
+			
+
+	if (result.second->getModes('i') && !result.second->isInvited(client.getNickname()))
+	{
+		client.reply(ERR_CLIENTNOTINVITED(client.getNickname(), channel.getName()));
+		return ;
+	}
 	
-	// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre => invite only || ban
+	// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre => ban
 
 	// TODO: verifier la limite d'utilisateurs du channel
 
