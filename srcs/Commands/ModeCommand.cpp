@@ -13,7 +13,7 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 	// TODO: reply de la commande MODE #channel
 	
 	// checks if a target and a parameter are present
-	if (splited_args.size() < 2 || splited_args[0].empty() || splited_args[1].empty())
+	if (splited_args.size() < 1 || splited_args[0].empty())
 	{
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "PRIVMSG")); //TODO: verifier si PRIVMSG ou MODE
 		return;
@@ -21,7 +21,7 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 
 	std::string target = splited_args[0];
 	
-	std::cout << "target :" + target + "//" << std::endl;
+	std::cout << "target of mode command:" + target + "//" << std::endl;
 	// check if target is a channel then if client is op and then execute operation
 	if (target[0] == '#')
 	{
@@ -29,7 +29,13 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 		try
 		{
 			Channel& channel = _server->getChannel(target);
-			std::cout << "channel found" << std::endl;
+			// processing MODE #channel command without parameters
+			if (splited_args.size() == 1)
+			{
+				client.reply(RPL_CHANNELMODEIS(client.getNickname(), channel.getName(), channel.getModes(), ""));
+				return ;
+			}
+			// verify if client is op to process other types of MODE cmd
 			if (!channel.isOp(client.getNickname()))
 			{
 				client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
@@ -47,7 +53,6 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 	else
 	{
 		// checks if user exists and execute operation
-
 		Client* target_client = _server->getClient(target);
 		if (target_client != nullptr)
 			mode_client(target_client, splited_args);

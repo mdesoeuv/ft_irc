@@ -57,7 +57,7 @@ void Client::write(const std::string &message) const {
 }
 
 void Client::reply(const std::string &reply) {
-	addSendQueue(_serverPrefix + reply);
+	addSendQueue(_serverPrefix + " "+ reply);
 }
 
 void Client::welcome() {
