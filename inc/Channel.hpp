@@ -19,7 +19,7 @@ class Channel
 		size_t				_user_nb;
 		std::vector<std::string> _user_invited_list;
 		std::vector<std::string> _user_banned_list;
-		//size_t				_user_limit;
+		size_t				_user_limit;
 		
 	public:
 
@@ -55,4 +55,5 @@ class Channel
 		bool		isBanned(const std::string nickname) const;
 		void		addBan(const std::string nickname);
 		void		removeBan(const std::string nickname);
+		bool		hasReachedClientsLimit() const;
 };

@@ -21,7 +21,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 
 		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()))
 		{
-			client.reply(ERR_CLIENTNOTINVITED(client.getNickname(), result.second->getName()));
+			client.reply(ERR_INVITEONLYCHAN(client.getNickname(), result.second->getName()));
 			return;
 		}
 
@@ -31,7 +31,11 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		// TODO: verifier la limite d'utilisateurs du channel
+		if (result.second->isMode('l') && !result.second->hasReachedClientsLimit())
+		{
+			client.reply(ERR_CHANNELISFULL(client.getNickname(), result.second->getName()));
+			return;
+		}
 
 		// client join le channel
 		result.second->addUser(client);

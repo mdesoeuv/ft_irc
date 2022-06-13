@@ -22,11 +22,9 @@
 #define RPL_MODE(myclient, channel, modes, args)		":" + myclient + " MODE " + channel + " " + modes + " " + args
 #define RPL_INVITING(myclient, nickToInvite, mychannel)	":" + myclient + nickToInvite + mychannel
 #define ERR_ALREADYINVITED(myclient, nickToInvite, mychannel)	": USER " + nickToInvite + "already invited to channel " + mychannel 
-#define ERR_CLIENTNOTINVITED(myclient, mychannel)		": USER " + myclient + "not invited on channel " + mychannel 
 #define	RPL_UNBANNED(myclient, nickToBan, mychannel)	":" + myclient + " " + mychannel + " :"+ nickToBan + " has been banned"
 #define	RPL_BANNED(myclient, nickToBan, mychannel)		":" + myclient + " " + mychannel + " :"+ nickToBan + " has been unbanned"
 #define ERR_INVALIDCHANNELNAME(myclient, mychannel)		":" + myclient + " Invalid channel name: " + mychannel
-#define ERR_BANNEDFROMCHAN(myclient, mychannel)			":" + myclient + " " + mychannel + " :Cannot join channel (+b)"
 
 /* Error Messages */
 

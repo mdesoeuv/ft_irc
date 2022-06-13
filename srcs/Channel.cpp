@@ -149,6 +149,7 @@ void Channel::addBan(const std::string nickname)
 	{
 		kicked_user = getChanClient(nickname);
 		delUser(kicked_user);
+		_user_nb--;
 	}
 	_user_banned_list.push_back(nickname);
 }
@@ -171,6 +172,11 @@ bool Channel::isMode(char mode) const
 		return true;
 	else
 		return false;
+}
+
+bool Channel::hasReachedClientsLimit() const
+{
+	return (_user_nb > _user_limit);
 }
 
 void Channel::addUser(Client user)
