@@ -66,7 +66,7 @@ void JoinCommand::sendJoinNotif(Client &client, Channel channel)
 		client.reply(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic()));
 	else
 		client.reply(RPL_NOTOPIC(client.getNickname(), channel.getName()));
-	client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getSymbol(), channel.getName(), channel.getUserList()));
+	client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getSymbol(), channel.getName(), channel.getUserList(true)));
 	client.reply(RPL_ENDOFNAMES(client.getNickname(), channel.getName()));
 }
 

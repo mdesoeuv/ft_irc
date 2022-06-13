@@ -27,7 +27,8 @@ void InviteCommand::execute(Client &client, std::string arguments)
 		return;
 	}
 
-	if (channel.getUserList().find(client.getNickname()) > channel.getUserList().size())
+    // TODO: rework with channel.isUser(nick)
+	if (channel.getUserList(true).find(client.getNickname()) > channel.getUserList(true).size())
 	{
 		client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel.getName()));
 		return;

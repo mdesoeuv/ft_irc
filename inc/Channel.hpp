@@ -51,7 +51,7 @@ class Channel
 		void		addOp(Client op);
 		void		delUser(Client user);
 		void		delOp(Client op);
-		std::string getUserList() const;
+		std::string getUserList(bool show_invisible) const;
 		void		broadcastMessage(std::string message);
 		void		broadcastExceptSource(std::string message, const std::string& source_nick);
 		bool		isInvited(const std::string nickname) const;

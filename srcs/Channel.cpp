@@ -228,12 +228,14 @@ void Channel::delUser(Client user)
 	user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
 }
 
-std::string Channel::getUserList() const
+std::string Channel::getUserList(bool show_invisible) const
 {
 	std::string result;
 
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
+		if (!show_invisible && it->isMode('i'))
+			continue ;
 		result += " ";
 		result += it->getModes();
 		result += it->getNickname();
