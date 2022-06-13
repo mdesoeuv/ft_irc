@@ -22,7 +22,6 @@ void ModeCommand::execute(Client& client, std::string arguments) {
 	// check if target is a channel then if client is op and then execute operation
 	if (target[0] == '#')
 	{
-		
 		try
 		{
 			Channel& channel = _server->getChannel(target);
@@ -88,7 +87,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 			}
 
 			// operator mode: @ before nickname 
-			case 'o': {
+			case 'o': { // OK
 				std::cout << "active :" << active << std::endl;
 				if (splited_args.size() != 3)
 				{
@@ -165,7 +164,7 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 void	ModeCommand::mode_client(Client* client, std::vector<std::string> splited_args) {
 	
 	(void)client;
-	std::cout << "executing Mode command :";
+	std::cout << "Client Modes not supported :";
 	for (std::vector<std::string>::iterator it = splited_args.begin(); it != splited_args.end(); ++it) {
 		std::cout << *it + " ";
 	}
