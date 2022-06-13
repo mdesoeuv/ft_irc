@@ -38,7 +38,7 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		// TODO: rework with channel.isMode()
+		// TODO: rework with channel.isMode() MEHDI
 		if (channel.isMode('n'))
 		{ // external msg option == false
 			if (!(channel.isUser(client.getNickname())))

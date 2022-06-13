@@ -110,7 +110,7 @@ bool Channel::isUser(const std::string nick) const
 	return false;
 }
 
-// TODO: rework with modes string and isMode() bool from client
+// TODO: rework with modes string and isMode() bool from client MEHDI
 bool Channel::isOp(const std::string op) const
 {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
