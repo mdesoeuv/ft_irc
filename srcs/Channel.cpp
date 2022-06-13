@@ -79,6 +79,11 @@ void Channel::setModes(const std::string new_modes)
 	_modes = new_modes;
 }
 
+void Channel::setChannelLimit(const size_t new_channel_limit)
+{
+	_user_limit = new_channel_limit;
+}
+
 bool Channel::addMode(char mode)
 {
 	if (isMode(mode))

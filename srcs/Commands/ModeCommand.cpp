@@ -218,7 +218,7 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 
 		case 'l':
 		{
-			// channel.setMaxClients(active ? std::stol(splited_args[p]) : 0);
+			channel.setChannelLimit(active ? std::stol(splited_args[p]) : 0);
 			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+l" : "-l"), (active ? splited_args[p] : "")));
 			p += active ? 1 : 0;
 			break;

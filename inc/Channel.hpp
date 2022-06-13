@@ -56,4 +56,5 @@ class Channel
 		void		addBan(const std::string nickname);
 		void		removeBan(const std::string nickname);
 		bool		hasReachedClientsLimit() const;
+		void		setChannelLimit(const size_t new_channel_limit);
 };
