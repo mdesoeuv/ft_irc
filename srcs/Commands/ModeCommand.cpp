@@ -80,6 +80,21 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 
 		switch (c) {
 
+			case 'b': {
+				if (active)
+				{
+					if (!channel.addMode('b'))
+						break;
+				}
+				else
+				{
+					if (!channel.removeMode('b'))
+						break;
+				}
+				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+m" : "-m"), ""));
+				break;
+			}
+
 			case 'm': {
 				if (active)
 				{

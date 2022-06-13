@@ -111,6 +111,15 @@ bool	Channel::isInvited(const std::string nickname) const {
 	return false;
 }
 
+bool	Channel::isBanned(const std::string nickname) const {
+	for (std::vector<std::string>::const_iterator it = _user_banned_list.begin(); it != _user_banned_list.end(); ++it)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
+}
+
 void	Channel::addInvitation(const std::string nickname) {
 	_user_invited_list.push_back(nickname);
 }
