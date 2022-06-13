@@ -25,7 +25,11 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		// TODO: verifier si le mode du channel permet aux utilisateurs de le rejoindre => ban
+		if (result.second->isMode('b') && !result.second->isBanned(client.getNickname()))
+		{
+			client.reply(ERR_BANNEDFROMCHAN(client.getNickname(), result.second->getName()));
+			return;
+		}
 
 		// TODO: verifier la limite d'utilisateurs du channel
 

@@ -26,6 +26,7 @@
 #define	RPL_UNBANNED(myclient, nickToBan, mychannel)	":" + myclient + " " + mychannel + " :"+ nickToBan + " has been banned"
 #define	RPL_BANNED(myclient, nickToBan, mychannel)		":" + myclient + " " + mychannel + " :"+ nickToBan + " has been unbanned"
 #define ERR_INVALIDCHANNELNAME(myclient, mychannel)		":" + myclient + " Invalid channel name: " + mychannel
+#define ERR_BANNEDFROMCHAN(myclient, mychannel)			":" + myclient + " " + mychannel + " :Cannot join channel (+b)"
 
 /* Error Messages */
 
