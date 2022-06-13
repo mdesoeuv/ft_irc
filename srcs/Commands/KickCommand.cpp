@@ -55,7 +55,7 @@ void KickCommand::execute(Client& client, std::string arguments) {
 		kicked_user = channel.getChanClient(user_to_kick);
 		channel.broadcastMessage(":" + user.getPrefix() + " KICK " + arguments);
 		channel.delUser(kicked_user);
-		if (channel.getUserList().empty())
+		if (channel.getUserList(true).empty())
       		_server->removeChannel(_server->searchChannel(channel_name).second);
 		std::cout << kicked_user.getNickname() + " kicked !!!" << std::endl;
 	}

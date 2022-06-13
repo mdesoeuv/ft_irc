@@ -18,12 +18,12 @@ void NamesCommand::execute(Client& client, std::string arguments) {
     // reply userlist without invisible users
     else if (!channel.isUser(client.getNickname()))
     {
-      client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getSymbol(), channel.getName(), channel.getUserList()));
+      client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getSymbol(), channel.getName(), channel.getUserList(false)));
     }
     
     // reply full userlist
     else
-      client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getSymbol(), channel.getName(), channel.getUserList()));
+      client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getSymbol(), channel.getName(), channel.getUserList(true)));
   }
   catch(const std::exception& e)
   {

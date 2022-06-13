@@ -15,7 +15,8 @@ void PartCommand::execute(Client& client, std::string arguments) {
   if (result.first)
 	{
     // check if user is not on channel
-    if (result.second->getUserList().find(client.getNickname()) > result.second->getUserList().size())
+    // TODO: rework with channel.isUser(nick)
+    if (result.second->getUserList(true).find(client.getNickname()) > result.second->getUserList(true).size())
     {
       client.reply(ERR_NOTONCHANNEL(client.getNickname(), result.second->getName()));
       return ;
@@ -23,7 +24,7 @@ void PartCommand::execute(Client& client, std::string arguments) {
     // delete user and delete channel if last user
     result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
     result.second->delUser(client);
-    if (result.second->getUserList().empty())
+    if (result.second->getUserList(true).empty())
       _server->removeChannel(result.second);
 	}
   else
