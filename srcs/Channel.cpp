@@ -1,24 +1,28 @@
 #include "../inc/Channel.hpp"
 
-Channel::Channel(void) {
+Channel::Channel(void)
+{
 }
 
-Channel::Channel(const std::string& chan_name) : 
-					_name(chan_name), _topic(""), _modes("+nt"), _user_nb(0) {
+Channel::Channel(const std::string &chan_name) : _name(chan_name), _topic(""), _modes("+nt"), _user_nb(0)
+{
 }
 
-Channel::Channel(const Channel& other) :	_user_list(other._user_list),
-											_op_list(other._op_list),
-											_name(other._name),
-											_topic(other._topic),
-											_modes(other._modes),
-											_user_nb(other._user_nb) {
+Channel::Channel(const Channel &other) : _user_list(other._user_list),
+										 _op_list(other._op_list),
+										 _name(other._name),
+										 _topic(other._topic),
+										 _modes(other._modes),
+										 _user_nb(other._user_nb)
+{
 }
 
-Channel::~Channel(void) {
+Channel::~Channel(void)
+{
 }
 
-Channel&	Channel::operator=(const Channel& rhs) {
+Channel &Channel::operator=(const Channel &rhs)
+{
 	_user_list = rhs._user_list;
 	_op_list = rhs._op_list;
 	_name = rhs._name;
@@ -29,23 +33,28 @@ Channel&	Channel::operator=(const Channel& rhs) {
 	return *this;
 }
 
-std::string	Channel::getName() const {
+std::string Channel::getName() const
+{
 	return _name;
 }
 
-std::string	Channel::getTopic() const {
+std::string Channel::getTopic() const
+{
 	return _topic;
 }
 
-std::string Channel::getModes() const {
+std::string Channel::getModes() const
+{
 	return _modes;
 }
 
-size_t		Channel::getUserNb() const {
+size_t Channel::getUserNb() const
+{
 	return _user_nb;
 }
 
-Client&		Channel::getChanClient(const std::string& client_name) {
+Client &Channel::getChanClient(const std::string &client_name)
+{
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		std::cout << "present on channel :" + it->getNickname() << std::endl;
@@ -55,26 +64,31 @@ Client&		Channel::getChanClient(const std::string& client_name) {
 	throw std::out_of_range("client not found");
 }
 
-void	Channel::setName(const std::string new_name) {
+void Channel::setName(const std::string new_name)
+{
 	_name = new_name;
 }
 
-void	Channel::setTopic(const std::string new_topic) {
+void Channel::setTopic(const std::string new_topic)
+{
 	_topic = new_topic;
 }
 
-void	Channel::setModes(const std::string new_modes) {
+void Channel::setModes(const std::string new_modes)
+{
 	_modes = new_modes;
 }
 
-bool	Channel::addMode(char mode) {
+bool Channel::addMode(char mode)
+{
 	if (isMode(mode))
 		return false;
 	_modes += mode;
 	return true;
 }
 
-bool	Channel::removeMode(char mode) {
+bool Channel::removeMode(char mode)
+{
 	if (!isMode(mode))
 		return false;
 	size_t pos = _modes.find(mode);
@@ -82,7 +96,8 @@ bool	Channel::removeMode(char mode) {
 	return true;
 }
 
-bool	Channel::isUser(const std::string nick) const {
+bool Channel::isUser(const std::string nick) const
+{
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == nick)
@@ -91,9 +106,9 @@ bool	Channel::isUser(const std::string nick) const {
 	return false;
 }
 
-
-//TODO: rework with modes string and isMode() bool from client
-bool	Channel::isOp(const std::string op) const {
+// TODO: rework with modes string and isMode() bool from client
+bool Channel::isOp(const std::string op) const
+{
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == op)
@@ -102,7 +117,8 @@ bool	Channel::isOp(const std::string op) const {
 	return false;
 }
 
-bool	Channel::isInvited(const std::string nickname) const {
+bool Channel::isInvited(const std::string nickname) const
+{
 	for (std::vector<std::string>::const_iterator it = _user_invited_list.begin(); it != _user_invited_list.end(); ++it)
 	{
 		if (*it == nickname)
@@ -111,7 +127,8 @@ bool	Channel::isInvited(const std::string nickname) const {
 	return false;
 }
 
-bool	Channel::isBanned(const std::string nickname) const {
+bool Channel::isBanned(const std::string nickname) const
+{
 	for (std::vector<std::string>::const_iterator it = _user_banned_list.begin(); it != _user_banned_list.end(); ++it)
 	{
 		if (*it == nickname)
@@ -120,44 +137,72 @@ bool	Channel::isBanned(const std::string nickname) const {
 	return false;
 }
 
-void	Channel::addInvitation(const std::string nickname) {
+void Channel::addInvitation(const std::string nickname)
+{
 	_user_invited_list.push_back(nickname);
 }
 
-bool	Channel::isMode(char mode) const {
+void Channel::addBan(const std::string nickname)
+{
+	Client kicked_user;
+	if (isUser(nickname))
+	{
+		kicked_user = getChanClient(nickname);
+		delUser(kicked_user);
+	}
+	_user_banned_list.push_back(nickname);
+}
+
+void Channel::removeBan(const std::string nickname)
+{
+	for (std::vector<std::string>::const_iterator it = _user_banned_list.begin(); it != _user_banned_list.end(); ++it)
+	{
+		if (*it == nickname)
+		{
+			_user_banned_list.erase(it);
+			return;
+		}
+	}
+}
+
+bool Channel::isMode(char mode) const
+{
 	if (getModes().find(mode) < getModes().size())
 		return true;
 	else
 		return false;
 }
 
-void	Channel::addUser(Client user) {
+void Channel::addUser(Client user)
+{
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == user.getNickname())
-			return ;
+			return;
 	}
 	_user_list.push_back(user);
 	_user_nb++;
 }
 
-void	Channel::delUser(Client user) {
+void Channel::delUser(Client user)
+{
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == user.getNickname())
 		{
 			_user_list.erase(it);
 			_user_nb--;
-			return ;
+			return;
 		}
 	}
 	// Error message if user is not on channel
 	user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
 }
 
-std::string	Channel::getUserList() const {
+std::string Channel::getUserList() const
+{
 	std::string result;
-	
+
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		result += " ";
@@ -167,14 +212,16 @@ std::string	Channel::getUserList() const {
 	return result;
 }
 
-void	Channel::broadcastMessage(std::string message) {
+void Channel::broadcastMessage(std::string message)
+{
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		it->write(message);
 	}
 }
 
-void	Channel::broadcastExceptSource(std::string message, const std::string& source_nick) {
+void Channel::broadcastExceptSource(std::string message, const std::string &source_nick)
+{
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() != source_nick)
