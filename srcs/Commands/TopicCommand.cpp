@@ -22,8 +22,6 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 		bool found_channel = result.first;
 		std::vector<Channel>::iterator chan_iter = result.second;
 
-		// TODO: verifier si le channel autorise le changement de topic MEHDI
-
 		// checks if user is on channel
 		if (!found_channel || !chan_iter->isUser(client.getNickname()))
 		{
@@ -31,8 +29,8 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 			return ;
 		}
 
-		// checks if user has rights to change topic
-		if (chan_iter->isOp(client.getNickname()) == false)
+		// checks if 't mode is enabled' and if user has rights to change topic
+		if (chan_iter->isMode('t') && !chan_iter->isClientMode(client.getNickname(), '@'))
 		{
 			client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), channel_name));
 			return ;

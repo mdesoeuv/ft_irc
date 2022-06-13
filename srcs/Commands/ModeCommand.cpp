@@ -169,7 +169,7 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 
 		// operator mode: @ before nickname
 		case 'o':
-		{ // OK
+		{
 			std::cout << "active :" << active << std::endl;
 			if (splited_args.size() != 3)
 			{
@@ -232,44 +232,61 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 			break;
 		}
 
-			// voice mode on channel: '+' before nick
-			case 'v': {
-				if (splited_args.size() < 3)
-				{
-					client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
-					return ;
-				}
-				if (!channel.isUser(splited_args[2]))
-				{
-					client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
-					return ;
-				}
-				try
-				{
-					Client&	target_client = channel.getChanClient(splited_args[2]);
-					if (active)
-					{
-						if (target_client.isMode('+'))
-							break ;
-						target_client.addUserMode('+');
-						std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
-					}
-					else
-					{
-						target_client.removeUserMode('+');
-						std::cout << "removed voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
-					}
-					std::cout << "is voice ok ? " << channel.isClientMode(target_client.getNickname(), '+') << std::endl;
-
-					channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), target_client.getNickname()));
-				}
-				catch (std::out_of_range &e)
-				{
-					std::cout << "Client not found" << std::endl;
+		case 't':
+		{
+			if (active)
+			{
+				if (!channel.addMode('t'))
 					break;
+			}
+			else
+			{
+				if (!channel.removeMode('t'))
+					break;
+			}
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+t" : "-t"), ""));
+			break;
+		}
+
+		// voice mode on channel: '+' before nick
+		case 'v':
+		{
+			if (splited_args.size() < 3)
+			{
+				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
+				return ;
+			}
+			if (!channel.isUser(splited_args[2]))
+			{
+				client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
+				return ;
+			}
+			try
+			{
+				Client&	target_client = channel.getChanClient(splited_args[2]);
+				if (active)
+				{
+					if (target_client.isMode('+'))
+						break ;
+					target_client.addUserMode('+');
+					std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
 				}
-				p += active ? 1 : 0;
+				else
+				{
+					target_client.removeUserMode('+');
+					std::cout << "removed voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
+				}
+				std::cout << "is voice ok ? " << channel.isClientMode(target_client.getNickname(), '+') << std::endl;
+
+				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), target_client.getNickname()));
+			}
+			catch (std::out_of_range &e)
+			{
+				std::cout << "Client not found" << std::endl;
 				break;
+			}
+			p += active ? 1 : 0;
+			break;
 		}
 
 		default:
