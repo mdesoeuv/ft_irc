@@ -1,9 +1,8 @@
-		O - give "channel creator" status; NOT TO DO
-        o - give/take channel operator privilege; OK
-        v - give/take the voice privilege; PENDING
+        o - give/take channel operator privilege; OK MEHDI
+        v - give/take the voice privilege; PENDING MEHDI
 
         a - toggle the anonymous channel flag;
-        i - toggle the invite-only channel flag; OK, TO TEST
+        i - toggle the invite-only channel flag; OK, TO TEST VIC
         m - toggle the moderated channel;
         n - toggle the no messages to channel from clients on the
             outside;
@@ -13,8 +12,8 @@
         r - toggle the server reop channel flag;
         t - toggle the topic settable by channel operator only flag;
 
-        k - set/remove the channel key (password);
-        l - set/remove the user limit to channel; OK, TO TEST
+        k - set/remove the channel key (password); PENDING VIC
+        l - set/remove the user limit to channel; OK, TO TEST VIC
 
         b - set/remove ban mask to keep users out;
         e - set/remove an exception mask to override a ban mask;
