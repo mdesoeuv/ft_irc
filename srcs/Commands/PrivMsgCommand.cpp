@@ -38,13 +38,20 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		if (channel.getModes().find("n") < channel.getModes().size())
+		// TODO: rework with channel.isMode()
+		if (channel.isMode('n'))
 		{ // external msg option == false
 			if (!(channel.isUser(client.getNickname())))
 			{
 				client.reply(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
 				return;
 			}
+		}
+		if (channel.isMode('m') && (!channel.isOp(client.getNickname()) && !channel.isClientMode(client.getNickname(), '+')))
+		{
+			std::cout << "channel +m :" << channel.isMode('m') << std::endl << "is op :" << channel.isOp(client.getNickname()) << std::endl << "has voice :" << channel.isClientMode(client.getNickname(), '+') << std::endl;
+			client.reply(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
+			return;
 		}
 		channel.broadcastExceptSource(RPL_PRIVMSG(client.getPrefix(), target, message), client.getNickname());
 		return;

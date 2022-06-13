@@ -169,6 +169,16 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 
 			// voice mode on channel: '+' before nick
 			case 'v': {
+				if (splited_args.size() < 3)
+				{
+					client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
+					return ;
+				}
+				if (!channel.isUser(splited_args[2]))
+				{
+					client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
+					return ;
+				}
 				try
 				{
 					Client&	target_client = channel.getChanClient(splited_args[2]);
@@ -181,10 +191,12 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 					}
 					else
 					{
-						target_client.addUserMode('+');
-						std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
+						target_client.removeUserMode('+');
+						std::cout << "removed voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
 					}
-					channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), (active ? splited_args[p] : "")));
+					std::cout << "is voice ok ? " << channel.isClientMode(target_client.getNickname(), '+') << std::endl;
+
+					channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), target_client.getNickname()));
 				}
 				catch (std::out_of_range& e)
 				{

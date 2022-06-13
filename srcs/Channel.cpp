@@ -48,7 +48,6 @@ size_t		Channel::getUserNb() const {
 Client&		Channel::getChanClient(const std::string& client_name) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		std::cout << "present on channel :" + it->getNickname() << std::endl;
 		if (it->getNickname() == client_name)
 			return *it;
 	}
@@ -102,6 +101,18 @@ bool	Channel::isOp(const std::string op) const {
 	return false;
 }
 
+bool	Channel::isClientMode(const std::string nick, char mode) const {
+	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	{
+		std::cout << it->getNickname() + "is mode " << mode << " ? " << it->isMode(mode) << std::endl;
+		std::cout << "client modes string :" + it->getModes() << std::endl;
+
+		if (it->getNickname() == nick)
+			return (it->isMode(mode));
+	}
+	return false;
+}
+
 bool	Channel::isInvited(const std::string nickname) const {
 	for (std::vector<std::string>::const_iterator it = _user_invited_list.begin(); it != _user_invited_list.end(); ++it)
 	{
@@ -116,10 +127,7 @@ void	Channel::addInvitation(const std::string nickname) {
 }
 
 bool	Channel::isMode(char mode) const {
-	if (getModes().find(mode) < getModes().size())
-		return true;
-	else
-		return false;
+	return (getModes().find(mode) < getModes().size());
 }
 
 void	Channel::addUser(Client user) {

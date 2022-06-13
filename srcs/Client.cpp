@@ -83,10 +83,7 @@ bool	Client::isRegistered() const {
 }
 
 bool	Client::isMode(char mode) const {
-	if (getModes().find(mode) < getModes().size())
-		return true;
-	else
-		return false;
+	return (getModes().find(mode) < getModes().size());
 }
 
 
@@ -199,15 +196,25 @@ void				Client::addSendQueue(const std::string message) {
 
 bool				Client::addUserMode(char mode) {
 	if (isMode(mode))
+	{
+		std::cout << "could not add mode :" << mode << std::endl;
 		return false;
+	}
 	_modes += mode;
+	std::cout << "added mode :" << mode << std::endl;
+	std::cout << "mode string is now :" << getModes() << std::endl;
 	return true;
 }
 
 bool				Client::removeUserMode(char mode) {
 	if (!isMode(mode))
+	{
+		std::cout << "could not remove mode :" << mode << std::endl;
 		return false;
+	}
 	size_t pos = _modes.find(mode);
+	std::cout << "removed mode :" << mode << std::endl;
+	std::cout << "mode string is now :" << getModes() << std::endl;
 	_modes.erase(pos);
 	return true;
 }

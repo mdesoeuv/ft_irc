@@ -40,6 +40,7 @@ class Channel
 		bool		isUser(const std::string nick) const;
 		bool		isOp(const std::string nick) const;
 		bool		isMode(char mode) const;
+		bool		isClientMode(const std::string client, char mode) const;
 		bool		addMode(char mode);
 		bool		removeMode(char mode);
 		void		addUser(Client user);
