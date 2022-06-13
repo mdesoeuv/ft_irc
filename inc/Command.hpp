@@ -145,3 +145,12 @@ public:
 
 	void execute(Client& client, std::string arguments);
 };
+
+class InviteCommand : public Command
+{
+public:
+	InviteCommand(Server *server);
+	~InviteCommand();
+
+	void execute(Client& client, std::string arguments);
+};

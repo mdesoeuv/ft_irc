@@ -35,6 +35,7 @@ SRCS			:=	main.cpp \
 					Commands/PrivMsgCommand.cpp \
 					Commands/NoticeCommand.cpp \
 					Commands/KickCommand.cpp \
+					Commands/InviteCommand.cpp \
 					Channel.cpp \
 					utils.cpp
 

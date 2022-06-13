@@ -101,6 +101,12 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 				break;
 			}
 
+			case 'i': {
+				//channel.setInviteOnly(active);
+				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+i" : "-i"), ""));
+				break;
+			}
+
 			// operator mode: @ before nickname 
 			case 'o': { // OK
 				std::cout << "active :" << active << std::endl;

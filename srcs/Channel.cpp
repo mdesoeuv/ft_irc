@@ -102,6 +102,19 @@ bool	Channel::isOp(const std::string op) const {
 	return false;
 }
 
+bool	Channel::isInvited(const std::string nickname) const {
+	for (std::vector<std::string>::const_iterator it = _user_invited_list.begin(); it != _user_invited_list.end(); ++it)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
+}
+
+void	Channel::addInvitation(const std::string nickname) {
+	_user_invited_list.push_back(nickname);
+}
+
 bool	Channel::isMode(char mode) const {
 	if (getModes().find(mode) < getModes().size())
 		return true;
@@ -118,7 +131,6 @@ void	Channel::addUser(Client user) {
 	_user_list.push_back(user);
 	_user_nb++;
 }
-
 
 void	Channel::delUser(Client user) {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
