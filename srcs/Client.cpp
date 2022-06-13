@@ -82,6 +82,14 @@ bool	Client::isRegistered() const {
 	return _isRegistered;
 }
 
+bool	Client::isMode(char mode) const {
+	if (getModes().find(mode) < getModes().size())
+		return true;
+	else
+		return false;
+}
+
+
 const std::string&	Client::getNickname() const {
 	return _nickname;
 }
@@ -189,13 +197,17 @@ void				Client::addSendQueue(const std::string message) {
 	_sendQueue += "\r\n";
 }
 
-void				Client::addUserMode(char mode) {
+bool				Client::addUserMode(char mode) {
+	if (isMode(mode))
+		return false;
 	_modes += mode;
-	std::cout << "user mode string :" + _modes << std::endl;
+	return true;
 }
 
-void				Client::removeUserMode(char mode) {
+bool				Client::removeUserMode(char mode) {
+	if (!isMode(mode))
+		return false;
 	size_t pos = _modes.find(mode);
 	_modes.erase(pos);
-	std::cout << "user mode string :" + _modes << std::endl;
+	return true;
 }

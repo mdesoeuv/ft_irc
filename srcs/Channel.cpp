@@ -67,6 +67,21 @@ void	Channel::setModes(const std::string new_modes) {
 	_modes = new_modes;
 }
 
+bool	Channel::addMode(char mode) {
+	if (isMode(mode))
+		return false;
+	_modes += mode;
+	return true;
+}
+
+bool	Channel::removeMode(char mode) {
+	if (!isMode(mode))
+		return false;
+	size_t pos = _modes.find(mode);
+	_modes.erase(pos);
+	return true;
+}
+
 bool	Channel::isUser(const std::string nick) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
@@ -76,18 +91,13 @@ bool	Channel::isUser(const std::string nick) const {
 	return false;
 }
 
-//TODO: rework with modes string
+
+//TODO: rework with modes string and isMode() bool from client
 bool	Channel::isOp(const std::string op) const {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == op)
-		{
-			if (it->getModes().find("@") < it->getModes().size())
-			// if (it->getChanPrefix().find("@") < it->getChanPrefix().size())
-				return true;
-			else
-				return false;
-		}
+			return (it->getModes().find("@") < it->getModes().size());
 	}
 	return false;
 }
@@ -103,6 +113,13 @@ bool	Channel::isInvited(const std::string nickname) const {
 
 void	Channel::addInvitation(const std::string nickname) {
 	_user_invited_list.push_back(nickname);
+}
+
+bool	Channel::isMode(char mode) const {
+	if (getModes().find(mode) < getModes().size())
+		return true;
+	else
+		return false;
 }
 
 void	Channel::addUser(Client user) {

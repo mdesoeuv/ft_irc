@@ -30,6 +30,7 @@ class Client
 		const std::string&	getServerPrefix() const;
 		bool 				isAuthentified() const;
 		bool 				isRegistered() const;
+		bool				isMode(char mode) const;
 		int					getSocketfd() const;
 		int					getPort() const;
 		std::string 		getPrefix() const;
@@ -50,8 +51,8 @@ class Client
 		void				setPassword(const std::string& new_password);
 		void				setChanPrefix(const std::string new_prefix);
 		void				setPtr(Client* client);
-		void				addUserMode(char mode);
-		void				removeUserMode(char mode);
+		bool				addUserMode(char mode);
+		bool				removeUserMode(char mode);
 
 	private:
 

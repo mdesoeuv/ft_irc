@@ -153,11 +153,32 @@ void	ModeCommand::mode_channel(Channel& channel, Client& client, std::vector<std
 			}
 
 			// voice mode on channel: '+' before nick
-			// case 'v': {
-			// 	channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+k" : "-k"), (active ? splited_args[p] : "")));
-			// 	p += active ? 1 : 0;
-			// 	break;
-			// }
+			case 'v': {
+				try
+				{
+					Client&	target_client = channel.getChanClient(splited_args[2]);
+					if (active)
+					{
+						if (target_client.isMode('+'))
+							break ;
+						target_client.addUserMode('+');
+						std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
+					}
+					else
+					{
+						target_client.addUserMode('+');
+						std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
+					}
+					channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), (active ? splited_args[p] : "")));
+				}
+				catch (std::out_of_range& e)
+				{
+					std::cout << "Client not found" << std::endl;
+					break ;
+				}
+				p += active ? 1 : 0;
+				break;
+			}
 
 			default:
 				break;
@@ -176,3 +197,5 @@ void	ModeCommand::mode_client(Client* client, std::vector<std::string> splited_a
 	}
 	std::cout << std::endl;
 }
+
+// void	ModeCommand::voice_mode(Client)
