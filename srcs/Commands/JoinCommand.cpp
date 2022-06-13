@@ -14,14 +14,14 @@ void JoinCommand::execute(Client& client, std::string arguments) {
 	// checks if client is already on channel
 	if (result.second->isUser(client.getNickname()))
 	{
-		client.reply(ERR_USERONCHANNEL(client.getNickname(), client.getNickname(), channel.getName()));
+		client.reply(ERR_USERONCHANNEL(client.getNickname(), client.getNickname(), result.second->getName()));
 		return ;
 	}
 			
 
-	if (result.second->getModes('i') && !result.second->isInvited(client.getNickname()))
+	if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()))
 	{
-		client.reply(ERR_CLIENTNOTINVITED(client.getNickname(), channel.getName()));
+		client.reply(ERR_CLIENTNOTINVITED(client.getNickname(), result.second->getName()));
 		return ;
 	}
 	
