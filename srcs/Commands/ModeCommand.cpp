@@ -4,14 +4,11 @@ ModeCommand::ModeCommand(Server *server) : Command(server) {}
 
 ModeCommand::~ModeCommand() {}
 
-// uniquement channel mode pour le moment 
 void ModeCommand::execute(Client& client, std::string arguments) {
 
 	std::vector<std::string> splited_args;
 	split_args(arguments, " ", splited_args);
 
-	// TODO: reply de la commande MODE #channel
-	
 	// checks if a target and a parameter are present
 	if (splited_args.size() < 1 || splited_args[0].empty())
 	{
