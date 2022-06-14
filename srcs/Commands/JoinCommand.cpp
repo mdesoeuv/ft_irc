@@ -4,7 +4,6 @@ JoinCommand::JoinCommand(Server *server) : Command(server) {}
 
 JoinCommand::~JoinCommand() {}
 
-// TODO: JOIN 0 = leave all channels MEHDI
 void JoinCommand::execute(Client &client, std::string arguments)
 {
 

@@ -38,8 +38,7 @@ void ModeCommand::execute(Client &client, std::string arguments)
 				client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
 				return;
 			}
-		    // TODO: rework with channel.isUser(nick) MEHDI	
-			if (channel.getUserList(true).find(client.getNickname()) > channel.getUserList(true).size())
+			if (!channel.isUser(client.getNickname()))
 			{
 				client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel.getName()));
 				return;

@@ -15,14 +15,12 @@ void PartCommand::execute(Client& client, std::string arguments) {
   if (result.first)
 	{
     // check if user is not on channel
-    // TODO: rework with channel.isUser(nick)
-    if (result.second->getUserList(true).find(client.getNickname()) > result.second->getUserList(true).size())
+    if (!result.second->isUser(client.getNickname()))
     {
       client.reply(ERR_NOTONCHANNEL(client.getNickname(), result.second->getName()));
       return ;
     }
     // delete user and delete channel if last user
-    //TODO: anonymise if channel.isMode('a')
     std::string prefix = result.second->isMode('a') ? "anonymous!anonymous@anonymous." : client.getPrefix();
     result.second->broadcastMessage(":" + prefix + " PART " + arguments);
     client.getJoinedChannelNb()--;

@@ -142,13 +142,12 @@ bool Channel::isPassword(const std::string password) const
 	return (password == _password);
 }
 
-// TODO: rework with modes string and isMode() bool from client MEHDI
 bool Channel::isOp(const std::string op) const
 {
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (it->getNickname() == op)
-			return (it->getModes().find("@") < it->getModes().size());
+			return (it->isMode('@'));
 	}
 	return false;
 }
