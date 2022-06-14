@@ -8,7 +8,18 @@ void NamesCommand::execute(Client& client, std::string arguments) {
 
   std::cout << "arguments to parse :" + arguments << std::endl;
 
-  //TODO: no argument => list all channel and thier users + list of visibles user on channel '*'
+
+  // no argument : lists all channel and their users
+  if (arguments.empty())
+  {
+    for (std::vector<Channel>::iterator it = _server->getChannelBegin(); it != _server->getChannelEnd(); ++it)
+    {
+      if (!it->isMode('s') || it->isUser(client.getNickname()))
+        it->sendUserList(client, false);
+    }
+    _server->sendUnjoinedUserList(client);
+    return ;
+  }
 
   try
   {
@@ -27,6 +38,7 @@ void NamesCommand::execute(Client& client, std::string arguments) {
     // reply full userlist
     else
       client.reply(RPL_NAMEREPLY(client.getNickname(), channel.getSymbol(), channel.getName(), channel.getUserList(true)));
+      client.reply(RPL_ENDOFNAMES(client.getNickname(), arguments));
   }
   catch(const std::exception& e)
   {

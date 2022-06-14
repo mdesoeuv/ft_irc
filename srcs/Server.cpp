@@ -93,7 +93,7 @@ void Server::start()
 	}
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
-		close (it->second.getSocketfd());
+		close(it->second.getSocketfd());
 	}
 	close(_sock);
 	std::cout << "Server has been turned down. Goodbye !" << std::endl;
@@ -332,4 +332,16 @@ std::vector<Channel>::iterator	Server::getChannelBegin() {
 
 std::vector<Channel>::iterator	Server::getChannelEnd() {
 	return _channels.end();
+}
+
+void							Server::sendUnjoinedUserList(Client& client) {
+
+	for (clients_iterator it = _clients.begin(); it != _clients.end(); ++it)
+	{
+		if (it->second.getJoinedChannelNb() == 0 && !it->second.isMode('i'))
+		{
+			client.reply(RPL_NAMEREPLY(client.getNickname(), std::string("*"), std::string("channel"), it->second.getNickname()));
+		}
+	}
+	client.reply(RPL_ENDOFNAMES(client.getNickname(), std::string("channel")));
 }

@@ -311,12 +311,18 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 			if (active)
 			{
 				if (!channel.addMode('s'))
+				{
+					channel.setSymbol("@");
 					break;
+				}
 			}
 			else
 			{
 				if (!channel.removeMode('s'))
+				{
+					channel.setSymbol("=");
 					break;
+				}
 			}
 			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+s" : "-s"), ""));
 			break;

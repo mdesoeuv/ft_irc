@@ -69,6 +69,6 @@ public:
 	void				sendMessage(Client& client);
 	chan_it_pair		searchChannel(const std::string channel_name);
 	void				allChannelLeave(Client& client, std::string broadcast_message);
-
+	void				sendUnjoinedUserList(Client& client);
 };
 

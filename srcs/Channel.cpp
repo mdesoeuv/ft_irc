@@ -331,6 +331,18 @@ std::string Channel::getUserList(bool show_invisible) const
 	return result;
 }
 
+void		Channel::sendUserList(Client& client, bool show_invisible)
+{
+	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	{
+		if (!show_invisible && it->isMode('i'))
+			continue ;
+		client.reply(RPL_NAMEREPLY(client.getNickname(), getSymbol(), getName(), it->getModes() + it->getNickname()));
+	}
+	client.reply(RPL_ENDOFNAMES(client.getNickname(), getName()));
+}
+
+
 void Channel::broadcastMessage(std::string message)
 {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
