@@ -52,6 +52,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		}
 
 		// client join le channel
+		client.getJoinedChannelNb()++;
 		result.second->addUser(client);
 		sendJoinNotif(client, *result.second);
 		return;
@@ -63,6 +64,8 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		return;
 	}
 	Channel new_channel(splited_args[0]);
+	client.getJoinedChannelNb()++;
+	std::cout << "joined channels :" << client.getJoinedChannelNb() << std::endl;
 	Client client_copy = client;
 	client_copy.setPtr(&client);
 	client_copy.setChanPrefix("@");

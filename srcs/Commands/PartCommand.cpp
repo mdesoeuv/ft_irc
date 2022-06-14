@@ -23,6 +23,8 @@ void PartCommand::execute(Client& client, std::string arguments) {
     }
     // delete user and delete channel if last user
     result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
+    client.getJoinedChannelNb()--;
+  	std::cout << "joined channels :" << client.getJoinedChannelNb() << std::endl;
     result.second->delUser(client);
     if (result.second->getUserList(true).empty())
       _server->removeChannel(result.second);

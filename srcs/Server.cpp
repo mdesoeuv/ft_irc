@@ -290,7 +290,7 @@ std::pair<bool, std::vector<Channel>::iterator> Server::searchChannel(const std:
 	return std::make_pair(false, iter);
 }
 
-void Server::allChannelLeave(Client client, std::string broadcast_message)
+void Server::allChannelLeave(Client& client, std::string broadcast_message)
 {
 
 	std::vector<std::string> channels_to_remove;
@@ -309,6 +309,7 @@ void Server::allChannelLeave(Client client, std::string broadcast_message)
 	{
 		removeChannel(this->searchChannel(*iter).second);
 	}
+	client.getJoinedChannelNb() = 0;
 }
 
 void Server::addClientToDelete(int fd)
