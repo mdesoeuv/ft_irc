@@ -42,6 +42,8 @@
 #define ERR_USERONCHANNEL(myclient, nickToInvite, mychannel) "443 " + myclient + " " + mychannel + " :" + nickToInvite + " is already on channel"
 #define	ERR_ALREADYBANNED(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already banned"
 #define	ERR_ALREADYUNBANNED(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already unbanned"
+#define	ERR_ALREADYEXCEPTEDFROMBAN(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already excepted from ban"
+#define	ERR_ALREADYUNEXCEPTEDFROMBAN(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already unexcepted from ban"
 #define ERR_NOSUCHNICK(myclient, nickname)					"401 " + myclient + " " + nickname + " :No such nickname"
 #define ERR_CANNOTSENDTOCHAN(myclient, channel)				"404 " + myclient + " " + channel + " :Cannot send to channel"
 #define	ERR_CHANNELISFULL(myclient, channel)				"471 " + myclient + " " + channel + " :Cannot join channel (+l)"

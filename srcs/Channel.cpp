@@ -164,6 +164,15 @@ bool	Channel::isInvited(const std::string nickname) const {
 	return false;
 }
 
+void Channel::addInvitation(const std::string nickname)
+{
+	_user_invited_list.push_back(nickname);
+}
+
+bool	Channel::isMode(char mode) const {
+	return (getModes().find(mode) < getModes().size());
+}
+
 bool Channel::isBanned(const std::string nickname) const
 {
 	for (std::vector<std::string>::const_iterator it = _user_banned_list.begin(); it != _user_banned_list.end(); ++it)
@@ -174,13 +183,38 @@ bool Channel::isBanned(const std::string nickname) const
 	return false;
 }
 
-void Channel::addInvitation(const std::string nickname)
+bool Channel::isExceptedFromBan(const std::string nickname) const
 {
-	_user_invited_list.push_back(nickname);
+	for (std::vector<std::string>::const_iterator it = _user_excepted_from_ban_list.begin(); it != _user_excepted_from_ban_list.end(); ++it)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
 }
 
-bool	Channel::isMode(char mode) const {
-	return (getModes().find(mode) < getModes().size());
+void Channel::addExceptionBan(const std::string nickname)
+{
+	_user_excepted_from_ban_list.push_back(nickname);
+}
+
+void Channel::removeExceptionBan(const std::string nickname)
+{
+	for (std::vector<std::string>::const_iterator it = _user_excepted_from_ban_list.begin(); it != _user_excepted_from_ban_list.end(); ++it)
+	{
+		if (*it == nickname)
+		{
+			_user_excepted_from_ban_list.erase(it);
+			return;
+		}
+	}
+	Client to_kick_user;
+	if (isUser(nickname) && isBanned(nickname))
+	{
+		to_kick_user = getChanClient(nickname);
+		delUser(to_kick_user);
+		_user_nb--;
+	}
 }
 
 void Channel::addBan(const std::string nickname)
