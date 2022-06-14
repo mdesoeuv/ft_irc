@@ -26,10 +26,7 @@ void Server::start()
 		{
 			// ping all clients at interval PING_INTERVAL
 			if (actualTime > (lastPingTime + PING_INTERVAL))
-			{
 				it->second.addSendQueue(RPL_PING(getServerPrefix(), std::string("check if client is still connected")));
-				lastPingTime = actualTime;
-			}
 			// Check that clients have answered to ping
 			if (it->second.getLastPingTime() + PING_INTERVAL + TIMEOUT < actualTime)
 			{
@@ -40,6 +37,9 @@ void Server::start()
 			}
 		}
 
+		if (actualTime > (lastPingTime + PING_INTERVAL))
+			lastPingTime = actualTime;
+			
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
 			throw std::runtime_error("Error while polling from fd.");
