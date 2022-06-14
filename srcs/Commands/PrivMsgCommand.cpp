@@ -55,8 +55,8 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 			client.reply(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
 			return;
 		}
-		//TODO: anonymise if channel.isMode('a')
-		channel.broadcastExceptSource(RPL_PRIVMSG(client.getPrefix(), target, message), client.getNickname());
+		std::string	prefix = channel.isMode('a') ? "anonymous!anonymous@anonymous." : client.getPrefix();
+		channel.broadcastExceptSource(RPL_PRIVMSG(prefix, target, message), client.getNickname());
 		return;
 	}
 

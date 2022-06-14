@@ -96,7 +96,7 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 				}
 				else
 				{
-					if (!channel.removeMode('s'))
+					if (!channel.removeMode('a'))
 						break;
 				}
 				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+a" : "-a"), ""));
