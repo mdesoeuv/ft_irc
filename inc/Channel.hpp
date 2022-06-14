@@ -20,6 +20,7 @@ class Channel
 		size_t				_user_nb;
 		std::vector<std::string> _user_invited_list;
 		std::vector<std::string> _user_banned_list;
+		std::vector<std::string> _user_excepted_from_ban_list;
 		size_t				_user_limit;
 		std::string			_symbol;
 		std::string			_password;
@@ -66,5 +67,9 @@ class Channel
 		bool		isPassword(const std::string password) const;
 		void		setChannelLimit(const size_t new_channel_limit);
 		void		setPassword(const std::string new_password);
+		void		addExceptionBan(const std::string nickname);
+		void		removeExceptionBan(const std::string nickname);
+		bool		isExceptedFromBan(const std::string nickname) const;
+
 
 };

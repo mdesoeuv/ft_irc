@@ -39,13 +39,13 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		if (result.second->isMode('b') && !result.second->isBanned(client.getNickname()))
+		if (result.second->isMode('b') && result.second->isBanned(client.getNickname()) && !result.second->isExceptedFromBan(client.getNickname()))
 		{
 			client.reply(ERR_BANNEDFROMCHAN(client.getNickname(), result.second->getName()));
 			return;
 		}
 
-		if (result.second->isMode('l') && !result.second->hasReachedClientsLimit())
+		if (result.second->isMode('l') && result.second->hasReachedClientsLimit())
 		{
 			client.reply(ERR_CHANNELISFULL(client.getNickname(), result.second->getName()));
 			return;

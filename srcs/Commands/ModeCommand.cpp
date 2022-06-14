@@ -120,6 +120,37 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 			break;
 		}
 
+		case 'e':
+		{
+			if (splited_args[2].empty())
+			{
+				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE BAN"));
+				break;
+			}
+			if (active)
+			{
+				if (channel.isExceptedFromBan(splited_args[2]))
+				{
+					client.reply(ERR_ALREADYEXCEPTEDFROMBAN(client.getNickname(), splited_args[2], channel.getName()));
+					return;
+				}
+				channel.addExceptionBan(splited_args[2]);
+				channel.broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel.getName()));
+			}
+			else
+			{
+				if (!channel.isExceptedFromBan(splited_args[2]))
+				{
+					client.reply(ERR_ALREADYUNEXCEPTEDFROMBAN(client.getNickname(), splited_args[2], channel.getName()));
+					return;
+				}
+				channel.removeExceptionBan(splited_args[2]);
+				channel.broadcastMessage(RPL_UNBANNED(client.getNickname(), splited_args[0], channel.getName()));
+			}
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+b" : "-b"), splited_args[2]));
+			break;
+		}
+
 		case 'm':
 		{
 			if (active)
