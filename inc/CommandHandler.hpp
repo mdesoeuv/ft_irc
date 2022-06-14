@@ -24,8 +24,10 @@ private:
 
 public:
 
-	typedef std::map<std::string, Command *>::iterator commands_iterator;
+	typedef std::map<std::string, Command *>::iterator 		commands_iterator;
+	typedef std::vector<Channel>::iterator					channel_iterator;
 	typedef std::pair<bool, std::vector<Channel>::iterator> channel_search_res;
+
 	
 	CommandHandler(Server *server);
 

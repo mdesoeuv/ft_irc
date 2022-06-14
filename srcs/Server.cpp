@@ -321,3 +321,11 @@ std::string Server::getServerPrefix() const
 {
 	return (_name + "@" + _host);
 }
+
+std::vector<Channel>::iterator	Server::getChannelBegin() {
+	return _channels.begin();
+}
+
+std::vector<Channel>::iterator	Server::getChannelEnd() {
+	return _channels.end();
+}

@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdlib.h>
 
+
 /* replies Message */
 
 #define RPL_WELCOME(myclient)							"001 " + myclient + " :Welcome " + myclient + " to the ft_irc network"
@@ -12,6 +13,9 @@
 #define RPL_PING(myclient, token)						":" + myclient + " PING :" + token
 #define RPL_PONG(myclient, token)						":" + myclient + " PONG :" + token
 #define RPL_CLOSECLIENT									": ERROR : you should be conected "
+#define RPL_LISTSTART(myclient)							"321 " + myclient + " Channel :Users Name"
+#define RPL_LIST(myclient, mychannel, client_count, topic) "322 " + myclient + " " + mychannel + " " + client_count + " :" + topic
+#define RPL_LISTEND(myclient)							"323 " + myclient + " :End of /LIST"
 #define RPL_CHANNELMODEIS(myclient, mychannel, mode_string, mode_args)	"324 " + myclient + " " + mychannel + " " + mode_string + mode_args
 #define RPL_NOTOPIC(myclient, mychannel)				"331 " + myclient + " " + mychannel + " :No topic is set"
 #define RPL_TOPIC(myclient, mychannel, channel_topic)	"332 " + myclient + " " + mychannel + " :" + channel_topic
