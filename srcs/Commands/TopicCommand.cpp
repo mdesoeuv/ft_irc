@@ -23,7 +23,13 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 		std::vector<Channel>::iterator chan_iter = result.second;
 
 		// checks if user is on channel
-		if (!found_channel || !chan_iter->isUser(client.getNickname()))
+		if (!found_channel)
+		{
+			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), channel_name));
+			return ;
+		}
+
+		if(!chan_iter->isUser(client.getNickname()))
 		{
 			client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel_name));
 			return ;
@@ -45,12 +51,11 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 		// single argument case : send topic subject
 		channel_name = arguments;
 		result = _server->searchChannel(channel_name);
-		if (!result.first || !result.second->isUser(client.getNickname()))
-		{
+		if (!result.first || result.second->isMode('s'))
+			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), channel_name));
+		else if(!result.second->isUser(client.getNickname()))
 			client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel_name));
-			return ;
-		}
-		if (result.second->getTopic().empty())
+		else if (result.second->getTopic().empty())
 			client.reply(RPL_NOTOPIC(client.getNickname(), channel_name));
 		else
 			client.reply(RPL_TOPIC(client.getNickname(), channel_name, result.second->getTopic()));
