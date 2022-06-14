@@ -183,6 +183,40 @@ bool Channel::isBanned(const std::string nickname) const
 	return false;
 }
 
+bool Channel::isExceptedFromInvite(const std::string nickname) const
+{
+	for (std::vector<std::string>::const_iterator it = _user_excepted_from_invited_list.begin(); it != _user_excepted_from_invited_list.end(); ++it)
+	{
+		if (*it == nickname)
+			return true;
+	}
+	return false;
+}
+
+void Channel::addExceptionInvite(const std::string nickname)
+{
+	_user_excepted_from_invited_list.push_back(nickname);
+}
+
+void Channel::removeExceptionInvite(const std::string nickname)
+{
+	for (std::vector<std::string>::const_iterator it = _user_excepted_from_invited_list.begin(); it != _user_excepted_from_invited_list.end(); ++it)
+	{
+		if (*it == nickname)
+		{
+			_user_excepted_from_invited_list.erase(it);
+			return;
+		}
+	}
+	Client to_kick_user;
+	if (isUser(nickname) && !isInvited(nickname))
+	{
+		to_kick_user = getChanClient(nickname);
+		delUser(to_kick_user);
+		_user_nb--;
+	}
+}
+
 bool Channel::isExceptedFromBan(const std::string nickname) const
 {
 	for (std::vector<std::string>::const_iterator it = _user_excepted_from_ban_list.begin(); it != _user_excepted_from_ban_list.end(); ++it)

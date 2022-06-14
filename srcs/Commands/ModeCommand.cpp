@@ -135,7 +135,6 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 					return;
 				}
 				channel.addExceptionBan(splited_args[2]);
-				channel.broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel.getName()));
 			}
 			else
 			{
@@ -145,9 +144,37 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 					return;
 				}
 				channel.removeExceptionBan(splited_args[2]);
-				channel.broadcastMessage(RPL_UNBANNED(client.getNickname(), splited_args[0], channel.getName()));
 			}
-			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+b" : "-b"), splited_args[2]));
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+e" : "-e"), splited_args[2]));
+			break;
+		}
+
+		case 'I':
+		{
+			if (splited_args[2].empty())
+			{
+				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE INVITE ONLY"));
+				break;
+			}
+			if (active)
+			{
+				if (channel.isExceptedFromInvite(splited_args[2]))
+				{
+					client.reply(ERR_ALREADYEXCEPTEDFROMINVITE(client.getNickname(), splited_args[2], channel.getName()));
+					return;
+				}
+				channel.addExceptionInvite(splited_args[2]);
+			}
+			else
+			{
+				if (!channel.isExceptedFromInvite(splited_args[2]))
+				{
+					client.reply(ERR_ALREADYUNEXCEPTEDFROMINVITE(client.getNickname(), splited_args[2], channel.getName()));
+					return;
+				}
+				channel.removeExceptionInvite(splited_args[2]);
+			}
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+I" : "-I"), splited_args[2]));
 			break;
 		}
 

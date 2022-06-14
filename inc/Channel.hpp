@@ -20,6 +20,7 @@ class Channel
 		std::vector<std::string> _user_invited_list;
 		std::vector<std::string> _user_banned_list;
 		std::vector<std::string> _user_excepted_from_ban_list;
+		std::vector<std::string> _user_excepted_from_invited_list;
 		size_t				_user_limit;
 		std::string			_symbol;
 		std::string			_password;
@@ -68,6 +69,9 @@ class Channel
 		void		addExceptionBan(const std::string nickname);
 		void		removeExceptionBan(const std::string nickname);
 		bool		isExceptedFromBan(const std::string nickname) const;
+		bool		isExceptedFromInvite(const std::string nickname) const;
+		void		addExceptionInvite(const std::string nickname);
+		void		removeExceptionInvite(const std::string nickname);
 
 
 };
