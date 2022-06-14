@@ -1,7 +1,7 @@
         o - give/take channel operator privilege; OK MEHDI
         v - give/take the voice privilege; OK MEHDI
 
-        a - toggle the anonymous channel flag; TO DO MEHDI
+        a - toggle the anonymous channel flag; OK MEHDI
         i - toggle the invite-only channel flag; OK, TO TEST VIC
         m - toggle the moderated channel; OK MEHDI
         n - toggle the no messages to channel from clients on the outside; OK MEHDI
@@ -17,4 +17,5 @@
         e - set/remove an exception mask to override a ban mask; OK, TO TEST VIC
         I - set/remove an invitation mask to automatically override the invite-only flag; OK, TO TEST VIC
 
-        user invisibility PENDING MEHDI
+        user invisibility TO DO MEHDI
+        half op status TO DO MEHDI
