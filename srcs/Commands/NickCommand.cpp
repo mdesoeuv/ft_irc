@@ -2,6 +2,7 @@
 
 NickCommand::NickCommand(Server *server) : Command(server) {}
 
+//TODO: broadcast nick changes in accordance to anonymous channel flag
 NickCommand::~NickCommand() {}
 
 void NickCommand::execute(Client& client, std::string arguments) {
@@ -15,6 +16,6 @@ void NickCommand::execute(Client& client, std::string arguments) {
 		return;
 	}
 	client.setNickname(arguments);
-	std::cout <<"Client Nickname set : " << client.getNickname() << std::endl;
+	std::cout << "Client Nickname set : " << client.getNickname() << std::endl;
 	client.welcome();
 }

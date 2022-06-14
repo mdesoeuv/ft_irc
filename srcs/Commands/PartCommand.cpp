@@ -22,6 +22,7 @@ void PartCommand::execute(Client& client, std::string arguments) {
       return ;
     }
     // delete user and delete channel if last user
+    //TODO: anonymise if channel.isMode('a')
     result.second->broadcastMessage(":" + client.getPrefix() + " PART " + arguments);
     client.getJoinedChannelNb()--;
   	std::cout << "joined channels :" << client.getJoinedChannelNb() << std::endl;

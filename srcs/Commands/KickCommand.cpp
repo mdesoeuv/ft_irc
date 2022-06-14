@@ -53,6 +53,7 @@ void KickCommand::execute(Client& client, std::string arguments) {
 	try
 	{
 		kicked_user = channel.getChanClient(user_to_kick);
+		//TODO: anonymise if channel.isMode('a')
 		channel.broadcastMessage(":" + user.getPrefix() + " KICK " + arguments);
 		channel.delUser(kicked_user);
 		if (channel.getUserList(true).empty())

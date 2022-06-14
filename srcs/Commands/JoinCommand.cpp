@@ -57,10 +57,10 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		// client join le channel
+		// client actually join the channel and warn other users
 		client.getJoinedChannelNb()++;
 		result.second->addUser(client);
-		sendJoinNotif(client, *result.second);
+		sendJoinNotif(client, *result.second); //TODO: anonymise if channel isMode('a')
 		return;
 	}
 	// check if channel_name is not valid
@@ -79,7 +79,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 	new_channel.addUser(client_copy);
 	// new_channel.addOp(client);
 	_server->addChannel(new_channel);
-	sendJoinNotif(client, new_channel);
+	sendJoinNotif(client, new_channel); //TODO: anonymise if channel isMode('a')
 }
 
 void JoinCommand::sendJoinNotif(Client &client, Channel channel)
