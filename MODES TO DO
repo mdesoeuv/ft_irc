@@ -6,7 +6,7 @@
         m - toggle the moderated channel; OK MEHDI
         n - toggle the no messages to channel from clients on the outside; OK MEHDI
         q - toggle the quiet channel flag; ?
-        p - toggle the private channel flag; ?
+        p - toggle the private channel flag; PENDING MEHDI
         s - toggle the secret channel flag; PENDING MEHDI
         t - toggle the topic settable by channel operator only flag; OK MEHDI
 

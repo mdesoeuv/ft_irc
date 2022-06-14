@@ -7,6 +7,9 @@ NamesCommand::~NamesCommand() {}
 void NamesCommand::execute(Client& client, std::string arguments) {
 
   std::cout << "arguments to parse :" + arguments << std::endl;
+
+  //TODO: no argument => list all channel and thier users + list of visibles user on channel '*'
+
   try
   {
     Channel& channel = _server->getChannel(arguments);
