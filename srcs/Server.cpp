@@ -303,7 +303,7 @@ void Server::allChannelLeave(Client& client, std::string broadcast_message)
 			chan_iter->delUser(client);
 			if (chan_iter->getUserList(true).empty())
 				channels_to_remove.push_back(chan_iter->getName());
-			if (broadcast_message.empty())
+			if (broadcast_message.empty() || chan_iter->isMode('a'))
 				message = ":" + client.getPrefix() + " PART " + chan_iter->getName();
 			chan_iter->broadcastMessage(message);
 		}

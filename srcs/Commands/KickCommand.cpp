@@ -5,7 +5,8 @@ KickCommand::KickCommand(Server *server) : Command(server) {}
 KickCommand::~KickCommand() {}
 
 void KickCommand::execute(Client& client, std::string arguments) {
-	
+
+	std::cout << "arguments to parse :" + arguments << std::endl;
 	// checks if channel exists and get a ref to it
 	size_t pos = arguments.find(" ");
 	std::string channel_name = arguments.substr(0, pos);
@@ -20,15 +21,14 @@ void KickCommand::execute(Client& client, std::string arguments) {
 		client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), channel_name));
 		return ;
 	}
-
 	// checks if user has privileges to kick
 	Client	user;
 	try
 	{
 		user = channel.getChanClient(client.getNickname());
-		if (user.getChanPrefix().find("@") > user.getChanPrefix().size())
+		if (!user.isMode('@'))
 		{
-			user.reply(ERR_CHANOPRIVSNEEDED(user.getNickname(), channel_name));
+			client.reply(ERR_CHANOPRIVSNEEDED(user.getNickname(), channel_name));
 			return ;
 		}
 	}
@@ -37,7 +37,6 @@ void KickCommand::execute(Client& client, std::string arguments) {
 		client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel_name));
 		return ;
 	}
-
 
 	// parseExecute user_to_kick nickname
 	size_t colon_pos = arguments.find(":");
@@ -53,8 +52,12 @@ void KickCommand::execute(Client& client, std::string arguments) {
 	try
 	{
 		kicked_user = channel.getChanClient(user_to_kick);
-		//TODO: anonymise if channel.isMode('a')
-		channel.broadcastMessage(":" + user.getPrefix() + " KICK " + arguments);
+		std::string	prefix;
+		if (channel.isMode('a'))
+			prefix = "anonymous!anonymous@anonymous.";
+		else
+			prefix = user.getPrefix();
+		channel.broadcastMessage(":" + prefix + " KICK " + arguments);
 		channel.delUser(kicked_user);
 		if (channel.getUserList(true).empty())
       		_server->removeChannel(_server->searchChannel(channel_name).second);

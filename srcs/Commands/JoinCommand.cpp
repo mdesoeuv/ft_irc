@@ -60,7 +60,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		// client actually join the channel and warn other users
 		client.getJoinedChannelNb()++;
 		result.second->addUser(client);
-		sendJoinNotif(client, *result.second); //TODO: anonymise if channel isMode('a')
+		sendJoinNotif(client, *result.second, result.second->isMode('a'));
 		return;
 	}
 	// check if channel_name is not valid
@@ -71,20 +71,22 @@ void JoinCommand::execute(Client &client, std::string arguments)
 	}
 	Channel new_channel(splited_args[0]);
 	client.getJoinedChannelNb()++;
-	std::cout << "joined channels :" << client.getJoinedChannelNb() << std::endl;
 	Client client_copy = client;
 	client_copy.setPtr(&client);
-	client_copy.setChanPrefix("@");
 	client_copy.addUserMode('@');
 	new_channel.addUser(client_copy);
-	// new_channel.addOp(client);
 	_server->addChannel(new_channel);
-	sendJoinNotif(client, new_channel); //TODO: anonymise if channel isMode('a')
+	sendJoinNotif(client, new_channel, new_channel.isMode('a'));
 }
 
-void JoinCommand::sendJoinNotif(Client &client, Channel channel)
+void JoinCommand::sendJoinNotif(Client &client, Channel channel, bool anonymous)
 {
-	channel.broadcastMessage(":" + client.getPrefix() + " JOIN " + channel.getName());
+	std::string	prefix;
+	if (anonymous)
+		prefix = "anonymous!anonymous@anonymous.";
+	else
+		prefix = client.getPrefix();
+	channel.broadcastMessage(":" + prefix + " JOIN " + channel.getName());
 	if (!channel.getTopic().empty())
 		client.reply(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic()));
 	else

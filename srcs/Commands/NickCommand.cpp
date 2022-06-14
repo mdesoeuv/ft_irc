@@ -15,7 +15,9 @@ void NickCommand::execute(Client& client, std::string arguments) {
 		client.reply(ERR_NICKNAMEALREADYUSED(client.getNickname()));
 		return;
 	}
+	//TODO: interdire le nickname 'anonymous'
 	client.setNickname(arguments);
 	std::cout << "Client Nickname set : " << client.getNickname() << std::endl;
+	//TODO: separer le welcome() de la command NICK et broadcast le changement de nick avec l'ancien nickname en source 
 	client.welcome();
 }

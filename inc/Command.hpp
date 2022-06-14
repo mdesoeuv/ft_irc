@@ -37,7 +37,7 @@ public:
 	JoinCommand(Server *server);
 	~JoinCommand();
 
-	void sendJoinNotif(Client& client, Channel channel);
+	void sendJoinNotif(Client& client, Channel channel, bool anonynous);
 	bool invalidChannelName(const std::string& channel_name);
 
 	void execute(Client& client, std::string arguments);
