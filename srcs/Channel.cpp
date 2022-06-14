@@ -55,6 +55,16 @@ size_t Channel::getUserNb() const
 	return _user_nb;
 }
 
+std::string Channel::getUserNbStr() const
+{
+	std::string 		result;
+	std::stringstream	out;
+
+	out << _user_nb;
+	result = out.str();
+	return std::string(result);
+}
+
 std::string	Channel::getSymbol() const
 {
 	return _symbol;

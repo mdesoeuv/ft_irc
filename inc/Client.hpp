@@ -37,6 +37,7 @@ class Client
 		std::string&		getMessageBuffer();
 		std::string&		getSendQueue();
 		time_t				getLastPingTime();
+		int&				getJoinedChannelNb();
 		void				setLastPingTime(time_t new_lastPingTime);
 		void				addSendQueue(const std::string message);
 		void 				write(const std::string &message) const;
@@ -65,6 +66,7 @@ class Client
 		bool 		_isAuthentified;
 		bool 		_isRegistered;
 		int 		_port;
+		int			_joinedChannels;
 		std::string	_serverPrefix;
 		std::string	_chanPrefix;
 		std::string _modes;

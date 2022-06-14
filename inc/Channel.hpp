@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "Client.hpp"
+#include <sstream>
 
 class Client;
 
@@ -38,6 +39,7 @@ class Channel
 		std::string	getTopic() const;
 		std::string	getModes() const;
 		size_t		getUserNb() const;
+		std::string	getUserNbStr() const;
 		std::string	getSymbol() const;
 		Client&		getChanClient(const std::string& client_name);
 		void		setName(const std::string new_name);

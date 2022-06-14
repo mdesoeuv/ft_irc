@@ -16,6 +16,12 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "JOIN"));
 		return;
 	}
+
+	if (arguments == "0")
+	{
+		_server->allChannelLeave(client, "");
+		return ;
+	}
 	// check if Channel exist
 	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(splited_args[0]);
 	if (result.first)
@@ -52,6 +58,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		}
 
 		// client join le channel
+		client.getJoinedChannelNb()++;
 		result.second->addUser(client);
 		sendJoinNotif(client, *result.second);
 		return;
@@ -63,6 +70,8 @@ void JoinCommand::execute(Client &client, std::string arguments)
 		return;
 	}
 	Channel new_channel(splited_args[0]);
+	client.getJoinedChannelNb()++;
+	std::cout << "joined channels :" << client.getJoinedChannelNb() << std::endl;
 	Client client_copy = client;
 	client_copy.setPtr(&client);
 	client_copy.setChanPrefix("@");

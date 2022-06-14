@@ -29,11 +29,6 @@ class Channel;
 
 class Server
 {
-
-	typedef std::vector<pollfd>::iterator pollfds_iterator;
-	typedef std::map<int, Client >::iterator clients_iterator;
-	typedef std::pair<bool, std::vector<Channel>::iterator> chan_it_pair;
-
 	int							_sock;
 	const std::string			_host;
 	const std::string			_name;
@@ -47,26 +42,33 @@ class Server
 
 public:
 
+	typedef std::vector<pollfd>::iterator 					pollfds_iterator;
+	typedef std::map<int, Client>::iterator 				clients_iterator;
+	typedef std::vector<Channel>::iterator					channel_iterator;
+	typedef std::pair<bool, std::vector<Channel>::iterator> chan_it_pair;
+	
 	Server(const std::string port, const std::string password);
 	~Server();
 
-	void 			start();
-	std::string 	getPassword() const { return _password; };
-	Client*			getClient(const std::string nickname);
-	Channel&		getChannel(const std::string& channel_name);
-	std::string		getServerPrefix() const;
-	void			addClientToDelete(int fd);
-	int				newSocket();
-	void			onClientConnect();
-	void			onClientMessage(int fd);
-	void			onClientDisconnect(int fd);
-	void			deleteClient(int fd);
-	void			addChannel(Channel channel);
-	void			removeChannel(std::vector<Channel>::iterator pos);
-	void		 	readMessage(int fd);
-	void			sendMessage(Client& client);
-	chan_it_pair	searchChannel(const std::string channel_name);
-	void			allChannelLeave(Client client, std::string broadcast_message);
+	void 				start();
+	std::string 		getPassword() const { return _password; };
+	Client*				getClient(const std::string nickname);
+	Channel&			getChannel(const std::string& channel_name);
+	std::vector<Channel>::iterator	getChannelBegin();
+	std::vector<Channel>::iterator	getChannelEnd();
+	std::string			getServerPrefix() const;
+	void				addClientToDelete(int fd);
+	int					newSocket();
+	void				onClientConnect();
+	void				onClientMessage(int fd);
+	void				onClientDisconnect(int fd);
+	void				deleteClient(int fd);
+	void				addChannel(Channel channel);
+	void				removeChannel(std::vector<Channel>::iterator pos);
+	void		 		readMessage(int fd);
+	void				sendMessage(Client& client);
+	chan_it_pair		searchChannel(const std::string channel_name);
+	void				allChannelLeave(Client& client, std::string broadcast_message);
 
 };
 

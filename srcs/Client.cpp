@@ -5,7 +5,14 @@ Client::Client() {
 }
 
 Client::Client(int fd, const std::string hostname, int port, const std::string serverPrefix)
-		: _socketfd(fd), _hostname(hostname), _isAuthentified(false), _isRegistered(false), _port(port), _serverPrefix(serverPrefix), _clientOnServer(this) {
+		:	_socketfd(fd),
+			_hostname(hostname),
+			_isAuthentified(false),
+			_isRegistered(false),
+			_port(port),
+			_joinedChannels(0),
+			_serverPrefix(serverPrefix),
+			_clientOnServer(this) {
 	
 	_lastPingTime = time(NULL);
 }
@@ -19,6 +26,7 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_isAuthentified(other.isAuthentified()),
 										_isRegistered(other.isRegistered()),
 										_port(other.getPort()),
+										_joinedChannels(other._joinedChannels),
 										_serverPrefix(other.getServerPrefix()),
 										_chanPrefix(other.getChanPrefix()),
 										_modes(other.getModes()),
@@ -41,6 +49,7 @@ Client&	Client::operator=(const Client& rhs) {
 	_isRegistered = rhs.isRegistered();
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
+	_joinedChannels = rhs._joinedChannels;
 	_chanPrefix = rhs.getChanPrefix();
 	_serverPrefix = rhs.getServerPrefix();
 	_modes = rhs.getModes();
@@ -217,4 +226,8 @@ bool				Client::removeUserMode(char mode) {
 	std::cout << "removed mode :" << mode << std::endl;
 	std::cout << "mode string is now :" << getModes() << std::endl;
 	return true;
+}
+
+int&				Client::getJoinedChannelNb() {
+	return _joinedChannels;
 }

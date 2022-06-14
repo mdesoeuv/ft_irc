@@ -37,6 +37,7 @@ SRCS			:=	main.cpp \
 					Commands/KickCommand.cpp \
 					Commands/InviteCommand.cpp \
 					Commands/NamesCommand.cpp \
+					Commands/ListCommand.cpp \
 					Channel.cpp \
 					utils.cpp
 

@@ -290,10 +290,11 @@ std::pair<bool, std::vector<Channel>::iterator> Server::searchChannel(const std:
 	return std::make_pair(false, iter);
 }
 
-void Server::allChannelLeave(Client client, std::string broadcast_message)
+void Server::allChannelLeave(Client& client, std::string broadcast_message)
 {
 
-	std::vector<std::string> channels_to_remove;
+	std::vector<std::string>	channels_to_remove;
+	std::string					message = broadcast_message;
 
 	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
@@ -302,13 +303,16 @@ void Server::allChannelLeave(Client client, std::string broadcast_message)
 			chan_iter->delUser(client);
 			if (chan_iter->getUserList(true).empty())
 				channels_to_remove.push_back(chan_iter->getName());
-			chan_iter->broadcastMessage(broadcast_message);
+			if (broadcast_message.empty())
+				message = ":" + client.getPrefix() + " PART " + chan_iter->getName();
+			chan_iter->broadcastMessage(message);
 		}
 	}
 	for (std::vector<std::string>::iterator iter = channels_to_remove.begin(); iter != channels_to_remove.end(); ++iter)
 	{
 		removeChannel(this->searchChannel(*iter).second);
 	}
+	client.getJoinedChannelNb() = 0;
 }
 
 void Server::addClientToDelete(int fd)
@@ -320,4 +324,12 @@ void Server::addClientToDelete(int fd)
 std::string Server::getServerPrefix() const
 {
 	return (_name + "@" + _host);
+}
+
+std::vector<Channel>::iterator	Server::getChannelBegin() {
+	return _channels.begin();
+}
+
+std::vector<Channel>::iterator	Server::getChannelEnd() {
+	return _channels.end();
 }

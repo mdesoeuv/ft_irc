@@ -110,6 +110,15 @@ public:
 	void execute(Client& client, std::string arguments);
 };
 
+class ListCommand : public Command
+{
+public:
+	ListCommand(Server *server);
+	~ListCommand();
+
+	void execute(Client& client, std::string arguments);
+};
+
 class PingCommand : public Command
 {
 public:
