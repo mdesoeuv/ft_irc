@@ -72,10 +72,6 @@ void Client::reply(const std::string &reply) {
 }
 
 void Client::welcome() {
-	std::cout << "_isAuthentified"  << _isAuthentified << std::endl;
-	std::cout << "_username"  << _username << std::endl;
-	std::cout << "_realName"  << _realName << std::endl;
-	std::cout << "_nickname"  << _nickname << std::endl;
 	if (_isAuthentified == false || _username.empty() || _realName.empty() || _nickname.empty())
 		return;
 	setIsRegistered(true);
