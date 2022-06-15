@@ -64,8 +64,6 @@ void ModeCommand::execute(Client &client, std::string arguments)
 }
 
 // TODO: faire des sous fonctions pour chaque cas du switch
-// TODO: half op status +h
-// Give a user Half-Op status in the channel - usually indicated with nick prefixed with a %: /mode $chan +h nick
 void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std::string> splited_args)
 {
 
@@ -411,7 +409,6 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 // TODO: user mode invisibility MEHDI
 void ModeCommand::mode_client(Client *client, std::vector<std::string> splited_args)
 {
-
 	(void)client;
 	std::cout << "Client Modes not supported :";
 	for (std::vector<std::string>::iterator it = splited_args.begin(); it != splited_args.end(); ++it)
