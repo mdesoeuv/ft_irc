@@ -70,6 +70,7 @@ public:
 	chan_it_pair		searchChannel(const std::string channel_name);
 	void				allChannelLeave(Client& client, std::string broadcast_message);
 	void				allChannelBroadcast(const std::string& nick, const std::string& message);
+	void				allChannelChangeNickname(const std::string& old_nick, const std::string& new_nick);
 	void				sendUnjoinedUserList(Client& client);
 };
 

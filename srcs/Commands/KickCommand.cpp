@@ -64,5 +64,4 @@ void KickCommand::execute(Client& client, std::string arguments) {
 		client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), user_to_kick, channel_name));
 		return ;
 	}
-
 }

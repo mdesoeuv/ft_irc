@@ -326,15 +326,23 @@ void Server::allChannelBroadcast(const std::string& nick, const std::string& mes
 	}
 }
 
-
-void Server::addClientToDelete(int fd)
+void Server::allChannelChangeNickname(const std::string& old_nick, const std::string& new_nick)
 {
+	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
+	{
+		if (chan_iter->isUser(old_nick))
+		{
+			Client& client = chan_iter->getChanClient(old_nick);
+			client.setNickname(new_nick);
+		}
+	}
+}
 
+void Server::addClientToDelete(int fd) {
 	_fdToDelete.push_back(fd);
 }
 
-std::string Server::getServerPrefix() const
-{
+std::string Server::getServerPrefix() const {
 	return (_name + "@" + _host);
 }
 
