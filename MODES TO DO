@@ -6,7 +6,7 @@
         m - toggle the moderated channel; OK MEHDI
         n - toggle the no messages to channel from clients on the outside; OK MEHDI
         q - toggle the quiet channel flag; OK, TO TEST VIC
-        p - toggle the private channel flag; PENDING MEHDI
+        p - toggle the private channel flag; OK MEHDI
         s - toggle the secret channel flag; OK MEHDI
         t - toggle the topic settable by channel operator only flag; OK MEHDI
 
@@ -17,6 +17,6 @@
         e - set/remove an exception mask to override a ban mask; OK, TO TEST VIC
         I - set/remove an invitation mask to automatically override the invite-only flag; OK, TO TEST VIC
 
-        user invisibility TO DO MEHDI
-        message size limit
-        argument number limit RPL
+        user invisibility TODO MEHDI
+        message size limit TODO MEHDI
+        argument number limit RPL TODO MEHDI

@@ -11,11 +11,17 @@ void NickCommand::execute(Client& client, std::string arguments) {
 	}
 
 	if (_server->getClient(arguments)) {
-		client.reply(ERR_NICKNAMEALREADYUSED(client.getNickname()));
+		client.reply(ERR_NICKNAMEALREADYUSED(client.getNickname(), arguments));
 		return;
 	}
-	//TODO: interdire le nickname 'anonymous' et autre noms impossibles VICTOR
-	//if (arguments.compare(anonymous) && arguments[0] == '$' && arguments[0] == ':' && arguments[0] == '+' && arguments[0] == '=')
+	//Check non conform Nicknames
+	if (arguments.find(' ') != std::string::npos || arguments.find('.') != std::string::npos || arguments.find(',') != std::string::npos 
+	|| arguments.find('*') != std::string::npos || arguments.find('?') != std::string::npos || arguments.find('!') != std::string::npos 
+	|| arguments.find('@') != std::string::npos || arguments[0] == '$' || arguments[0] == ':' || arguments[0] == '+' || arguments[0] == '='|| !arguments.compare("anonymous") )
+	{
+		client.reply(ERR_ERRONEUSNICKNAME(client.getNickname(), arguments));
+		return;
+	}
 	_server->allChannelBroadcast(client.getNickname(), CHANGEDNICKNAME(client.getPrefix(), arguments));
 	_server->allChannelChangeNickname(client.getNickname(), arguments);
 	client.setNickname(arguments);
