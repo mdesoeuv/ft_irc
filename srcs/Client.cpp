@@ -72,8 +72,14 @@ void Client::reply(const std::string &reply) {
 }
 
 void Client::welcome() {
-	if (_isAuthentified == false || _isRegistered == true || _username.empty() || _realName.empty() || _nickname.empty())
+	if (_isAuthentified == false || _username.empty() || _realName.empty() || _nickname.empty())
 		return;
+	if (_isRegistered == true)
+	{
+		reply(RPL_CHANGENICK(_nickname));
+		std::cout << "Nickname changed to "  << _nickname << std::endl;
+		return;
+	}
 	setIsRegistered(true);
 	reply(RPL_WELCOME(_nickname));
 	std::cout << "welcome messsage sent to "  << _nickname << std::endl;

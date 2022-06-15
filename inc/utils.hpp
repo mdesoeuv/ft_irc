@@ -9,6 +9,7 @@
 /* replies Message */
 
 #define RPL_WELCOME(myclient)							"001 " + myclient + " :Welcome " + myclient + " to the ft_irc network"
+#define RPL_CHANGENICK(myclient)						"001 " + myclient + " :You are now known as " + myclient
 #define RPL_QUIT(myclient, message)						":" + myclient + " QUIT :Quit: " + message
 #define RPL_PING(myclient, token)						":" + myclient + " PING :" + token
 #define RPL_PONG(myclient, token)						":" + myclient + " PONG :" + token
