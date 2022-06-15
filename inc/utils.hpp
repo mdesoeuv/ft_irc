@@ -29,10 +29,12 @@
 #define ERR_ALREADYINVITED(myclient, nickToInvite, mychannel)	": USER " + nickToInvite + "already invited to channel " + mychannel 
 #define	RPL_UNBANNED(myclient, nickToBan, mychannel)	":" + myclient + " " + mychannel + " :"+ nickToBan + " has been banned"
 #define	RPL_BANNED(myclient, nickToBan, mychannel)		":" + myclient + " " + mychannel + " :"+ nickToBan + " has been unbanned"
-#define ERR_INVALIDCHANNELNAME(myclient, mychannel)		":" + myclient + " Invalid channel name: " + mychannel
+#define	RPL_BANNED(myclient, nickToBan, mychannel)		":" + myclient + " " + mychannel + " :"+ nickToBan + " has been unbanned"
+#define	CHANGEDNICKNAME(myclient, newNickname)			":" +  myclient + " NICK " + newNickname
 
 /* Error Messages */
 
+#define ERR_INVALIDCHANNELNAME(myclient, mychannel)		":" + myclient + " Invalid channel name: " + mychannel
 #define ERR_NOSUCHCHANNEL(myclient, mychannel)				"403 " + myclient + " " + mychannel + " :No such channel"
 #define ERR_USERNOTINCHANNEL(myclient, target, mychannel) 	"441 " + myclient + " " + target + " " + mychannel + " :They aren't on that channel"
 #define ERR_NOTONCHANNEL(myclient, mychannel)				"442 " + myclient + " " + mychannel + " :You're not on that channel"
