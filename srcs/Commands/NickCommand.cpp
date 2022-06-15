@@ -2,7 +2,6 @@
 
 NickCommand::NickCommand(Server *server) : Command(server) {}
 
-//TODO: broadcast nick changes in accordance to anonymous channel flag
 NickCommand::~NickCommand() {}
 
 void NickCommand::execute(Client& client, std::string arguments) {
@@ -15,7 +14,8 @@ void NickCommand::execute(Client& client, std::string arguments) {
 		client.reply(ERR_NICKNAMEALREADYUSED(client.getNickname()));
 		return;
 	}
-	//TODO: interdire le nickname 'anonymous' et autre noms impossibles
+	//TODO: interdire le nickname 'anonymous' et autre noms impossibles VICTOR
+	//if (arguments.compare(anonymous) && arguments[0] == '$' && arguments[0] == ':' && arguments[0] == '+' && arguments[0] == '=')
 	_server->allChannelBroadcast(client.getNickname(), CHANGEDNICKNAME(client.getPrefix(), arguments));
 	client.setNickname(arguments);
 	std::cout << "Client Nickname set : " << client.getNickname() << std::endl;
