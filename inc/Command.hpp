@@ -51,6 +51,7 @@ public:
 
 	void execute(Client& client, std::string arguments);
 
+	bool applyMode(Channel &channel, Client &client, bool active, char c, std::string arg);
 	void mode_channel(Channel& channel, Client& client, std::vector<std::string> splited_args);
 	void mode_client(Client* client,  std::vector<std::string> splited_args);
 
