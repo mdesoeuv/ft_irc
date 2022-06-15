@@ -16,7 +16,7 @@ void NickCommand::execute(Client& client, std::string arguments) {
 		return;
 	}
 	//TODO: interdire le nickname 'anonymous' et autre noms impossibles
-	// _server.broadcatAll(client.getNickname(), CHANGEDNICKNAME(client.getNickname(), arguments), true);
+	_server.allChannelBroadcast(client.getNickname(), CHANGEDNICKNAME(client.getNickname(), arguments), true);
 	client.setNickname(arguments);
 	std::cout << "Client Nickname set : " << client.getNickname() << std::endl;
 	client.welcome();

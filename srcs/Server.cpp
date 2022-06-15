@@ -319,7 +319,7 @@ void Server::allChannelBroadcast(const std::string& nick, const std::string& mes
 {
 	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
-		if (chan_iter->isUser(nick))
+		if (chan_iter->isUser(nick) && !chan_iter->isMode('q'))
 		{
 			chan_iter->broadcastMessage(message);
 		}

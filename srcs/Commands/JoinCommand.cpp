@@ -85,7 +85,8 @@ void JoinCommand::sendJoinNotif(Client &client, Channel channel, bool anonymous)
 		prefix = "anonymous!anonymous@anonymous.";
 	else
 		prefix = client.getPrefix();
-	channel.broadcastMessage(":" + prefix + " JOIN " + channel.getName());
+	if (!channel.isMode('q'))
+		channel.broadcastMessage(":" + prefix + " JOIN " + channel.getName());
 	if (!channel.getTopic().empty())
 		client.reply(RPL_TOPIC(client.getNickname(), channel.getName(), channel.getTopic()));
 	else
