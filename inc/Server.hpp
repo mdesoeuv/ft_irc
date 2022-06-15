@@ -53,6 +53,7 @@ public:
 	void 				start();
 	std::string 		getPassword() const { return _password; };
 	Client*				getClient(const std::string nickname);
+	Client*				getClientByUsername(const std::string username);
 	Channel&			getChannel(const std::string& channel_name);
 	std::vector<Channel>::iterator	getChannelBegin();
 	std::vector<Channel>::iterator	getChannelEnd();
