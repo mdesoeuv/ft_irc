@@ -240,12 +240,12 @@ Client *Server::getClient(const std::string nickname)
 	return nullptr;
 }
 
-Channel &Server::getChannel(const std::string &channel_name)
+Channel* Server::getChannel(const std::string &channel_name)
 {
 	for (std::vector<Channel>::iterator it = _channels.begin(); it != _channels.end(); ++it)
 	{
 		if (it->getName() == channel_name)
-			return *it;
+			return &(*it);
 	}
 	throw std::out_of_range("channel does not exist");
 }

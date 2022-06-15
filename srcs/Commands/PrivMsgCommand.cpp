@@ -27,21 +27,18 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 	message = message.at(0) == ':' ? message.substr(1) : message;
 	if (target.at(0) == '#')
 	{
-		Channel channel;
-		try
-		{
-			channel = _server->getChannel(target);
-		}
-		catch (const std::out_of_range &e)
+		Channel* channel;
+		channel = _server->getChannel(target);
+		if (!channel)
 		{
 			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), target));
 			return;
 		}
 
 		// checks if 'no external msg mode' is enabled
-		if (channel.isMode('n'))
+		if (channel->isMode('n'))
 		{
-			if (!(channel.isUser(client.getNickname())))
+			if (!(channel->isUser(client.getNickname())))
 			{
 				client.reply(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
 				return;
@@ -49,14 +46,14 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 		}
 
 		// checks if 'moderated mode' is enabled
-		if (channel.isMode('m') && (!channel.isOp(client.getNickname()) && !channel.isClientMode(client.getNickname(), '+')))
+		if (channel->isMode('m') && (!channel->isOp(client.getNickname()) && !channel->isClientMode(client.getNickname(), '+')))
 		{
-			std::cout << "channel +m :" << channel.isMode('m') << std::endl << "is op :" << channel.isOp(client.getNickname()) << std::endl << "has voice :" << channel.isClientMode(client.getNickname(), '+') << std::endl;
+			std::cout << "channel +m :" << channel->isMode('m') << std::endl << "is op :" << channel->isOp(client.getNickname()) << std::endl << "has voice :" << channel->isClientMode(client.getNickname(), '+') << std::endl;
 			client.reply(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
 			return;
 		}
-		std::string	prefix = channel.isMode('a') ? "anonymous!anonymous@anonymous." : client.getPrefix();
-		channel.broadcastExceptSource(RPL_PRIVMSG(prefix, target, message), client.getNickname());
+		std::string	prefix = channel->isMode('a') ? "anonymous!anonymous@anonymous." : client.getPrefix();
+		channel->broadcastExceptSource(RPL_PRIVMSG(prefix, target, message), client.getNickname());
 		return;
 	}
 

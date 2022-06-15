@@ -23,34 +23,30 @@ void ModeCommand::execute(Client &client, std::string arguments)
 	// check if target is a channel then if client is op and then execute operation
 	if (target[0] == '#')
 	{
-		try
+		Channel* channel = _server->getChannel(target);
+		if (!channel)
 		{
-			Channel &channel = _server->getChannel(target);
-			// processing MODE #channel command without parameters
-			if (splited_args.size() == 1)
-			{
-				client.reply(RPL_CHANNELMODEIS(client.getNickname(), channel.getName(), channel.getModes(), ""));
-				return;
-			}
-			// verify if client is op to process other types of MODE cmd
-			if (!channel.isOp(client.getNickname()))
-			{
-				client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
-				return;
-			}
-			if (!channel.isUser(client.getNickname()))
-			{
-				client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel.getName()));
-				return;
-			}
-			mode_channel(channel, client, splited_args);
-		}
-		catch (const std::out_of_range &e)
-		{
-			std::cout << e.what() << std::endl;
 			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), target));
 			return;
 		}
+		// processing MODE #channel command without parameters
+		if (splited_args.size() == 1)
+		{
+			client.reply(RPL_CHANNELMODEIS(client.getNickname(), channel->getName(), channel->getModes(), ""));
+			return;
+		}
+		// verify if client is op to process other types of MODE cmd
+		if (!channel->isOp(client.getNickname()))
+		{
+			client.reply(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
+			return;
+		}
+		if (!channel->isUser(client.getNickname()))
+		{
+			client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel->getName()));
+			return;
+		}
+		mode_channel(*channel, client, splited_args);
 	}
 	else
 	{
@@ -63,7 +59,7 @@ void ModeCommand::execute(Client &client, std::string arguments)
 	}
 }
 
-bool ModeCommand::applyMode(Channel &channel, Client &client, bool active, char c, std::string arg)
+bool ModeCommand::applyMode(Channel& channel, Client &client, bool active, char c, std::string arg)
 {
 	if (active)
 	{

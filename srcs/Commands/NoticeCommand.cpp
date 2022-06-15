@@ -26,24 +26,19 @@ void NoticeCommand::execute(Client &client, std::string arguments) {
 
 	if (target.at(0) == '#') {
 
-		Channel channel;
-		try
-		{
-			channel = _server->getChannel(target.substr(1));
-		}
-		catch (const std::out_of_range &e)
-		{
+		Channel* channel;
+		channel = _server->getChannel(target.substr(1));
+		if (!channel)
 			return;
-		}
 
-		if (channel.getModes().find("n") < channel.getModes().size())
+		if (channel->getModes().find("n") < channel->getModes().size())
 		{ // external msg option == false
-			if (!(channel.isUser(client.getNickname())))
+			if (!(channel->isUser(client.getNickname())))
 			{
 				return;
 			}
 		}
-		channel.broadcastMessage(RPL_NOTICE(client.getPrefix(), target, message));
+		channel->broadcastMessage(RPL_NOTICE(client.getPrefix(), target, message));
 		return;
 	}
 
