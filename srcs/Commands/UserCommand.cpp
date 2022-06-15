@@ -13,8 +13,8 @@ void UserCommand::execute(Client& client, std::string arguments) {
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), std::string("USER")));
 		return;
 	}
-	
-	if (client.isRegistered() || _server->getClient(splited_args[0])) {
+	 
+	if (client.isRegistered() || _server->getClientByUsername(splited_args[0])) {
 		client.reply(ERR_ALREADYREGISTERED(client.getNickname()));
 		return;
 	}

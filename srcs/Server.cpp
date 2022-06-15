@@ -231,10 +231,19 @@ void Server::sendMessage(Client &client)
 
 Client *Server::getClient(const std::string nickname)
 {
-
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
 		if (!nickname.compare(it->second.getNickname()))
+			return &it->second;
+	}
+	return nullptr;
+}
+
+Client *Server::getClientByUsername(const std::string username)
+{
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+	{
+		if (!username.compare(it->second.getUsername()))
 			return &it->second;
 	}
 	return nullptr;
@@ -247,12 +256,13 @@ Channel* Server::getChannel(const std::string &channel_name)
 		if (it->getName() == channel_name)
 			return &(*it);
 	}
-	throw std::out_of_range("channel does not exist");
+	return nullptr;
 }
 
 void Server::deleteClient(int fd)
 {
 	_clients.erase(fd);
+	
 	for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it)
 	{
 		if (it->fd == fd)
