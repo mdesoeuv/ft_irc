@@ -44,7 +44,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		if (result.second->isMode('b') && result.second->isBanned(client.getNickname()) && !result.second->isExceptedFromBan(client.getNickname()))
+		if (client.isMode('b') && result.second->isBanned(client.getNickname()) && !result.second->isExceptedFromBan(client.getNickname()))
 		{
 			client.reply(ERR_BANNEDFROMCHAN(client.getNickname(), result.second->getName()));
 			return;

@@ -184,8 +184,10 @@ bool	Channel::isMode(char mode) const {
 
 bool Channel::isBanned(const std::string nickname) const
 {
+	std::cout << "user ban list size :" << _user_banned_list.size() << std::endl;
 	for (std::vector<std::string>::const_iterator it = _user_banned_list.begin(); it != _user_banned_list.end(); ++it)
 	{
+		std::cout << "banned :" + *it << std::endl;
 		if (*it == nickname)
 			return true;
 	}
@@ -254,6 +256,8 @@ void Channel::removeExceptionBan(const std::string nickname)
 	Client to_kick_user;
 	if (isUser(nickname) && isBanned(nickname))
 	{
+		// TODO: reply kick 
+
 		to_kick_user = getChanClient(nickname);
 		delUser(to_kick_user);
 		_user_nb--;
@@ -265,6 +269,7 @@ void Channel::addBan(const std::string nickname)
 	Client kicked_user;
 	if (isUser(nickname))
 	{
+		// TODO: reply kick 
 		kicked_user = getChanClient(nickname);
 		delUser(kicked_user);
 		_user_nb--;

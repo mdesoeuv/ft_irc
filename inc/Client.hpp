@@ -25,7 +25,6 @@ class Client
 		const std::string&	getRealName() const;
 		const std::string&	getPassword() const;
 		const std::string&	getHostname() const;
-		const std::string&	getChanPrefix() const;
 		const std::string&	getModes() const;
 		const std::string&	getServerPrefix() const;
 		bool 				isAuthentified() const;
@@ -50,7 +49,6 @@ class Client
 		void				setRealName(const std::string& new_nickname);
 		void				setUsername(const std::string& new_username);
 		void				setPassword(const std::string& new_password);
-		void				setChanPrefix(const std::string new_prefix);
 		void				setPtr(Client* client);
 		bool				addUserMode(char mode);
 		bool				removeUserMode(char mode);
@@ -66,13 +64,12 @@ class Client
 		bool 		_isAuthentified;
 		bool 		_isRegistered;
 		int 		_port;
-		int			_joinedChannels;
+		int			_joinedChannels; // server only
 		std::string	_serverPrefix;
-		std::string	_chanPrefix;
-		std::string _modes;
-		std::string _messageBuffer;
-		time_t		_lastPingTime;
-		std::string	_sendQueue;
+		std::string _modes; // channel only
+		std::string _messageBuffer; // server only
+		time_t		_lastPingTime; // server only
+		std::string	_sendQueue; // server only
 		Client*		_clientOnServer;
 
 };

@@ -28,7 +28,6 @@ Client::Client(const Client& other) :	_socketfd(other.getSocketfd()),
 										_port(other.getPort()),
 										_joinedChannels(other._joinedChannels),
 										_serverPrefix(other.getServerPrefix()),
-										_chanPrefix(other.getChanPrefix()),
 										_modes(other.getModes()),
 										_clientOnServer(other._clientOnServer) {
 
@@ -50,7 +49,6 @@ Client&	Client::operator=(const Client& rhs) {
 	_hostname = rhs._hostname ;
 	_port = rhs.getPort();
 	_joinedChannels = rhs._joinedChannels;
-	_chanPrefix = rhs.getChanPrefix();
 	_serverPrefix = rhs.getServerPrefix();
 	_modes = rhs.getModes();
 	_clientOnServer = rhs._clientOnServer;
@@ -126,10 +124,6 @@ const std::string&	Client::getHostname() const {
 	return _hostname;
 }
 
-const std::string&	Client::getChanPrefix() const {
-	return _chanPrefix;
-}
-
 const std::string&	Client::getModes() const {
 	return _modes;
 }
@@ -174,10 +168,6 @@ void				Client::setIsAuthentified(bool is_Authentified) {
 
 void				Client::setIsRegistered(bool is_Registered) {
 	_isRegistered = is_Registered;
-}
-
-void				Client::setChanPrefix(const std::string new_prefix) {
-	_chanPrefix += new_prefix;
 }
 
 void				Client::setLastPingTime(time_t new_lastPingTime) {
