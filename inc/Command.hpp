@@ -46,6 +46,7 @@ public:
 class ModeCommand : public Command
 {
 public:
+
 	ModeCommand(Server *server);
 	~ModeCommand();
 
@@ -54,6 +55,11 @@ public:
 	bool applyMode(Channel &channel, Client &client, bool active, char c, std::string arg);
 	void mode_channel(Channel& channel, Client& client, std::vector<std::string> splited_args);
 	void mode_client(Client* client,  std::vector<std::string> splited_args);
+	void mode_ban(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args);
+	void mode_voice(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args);
+	void mode_operator(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args);
+	void mode_invite(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args);
+	void mode_exception(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args);
 
 };
 
