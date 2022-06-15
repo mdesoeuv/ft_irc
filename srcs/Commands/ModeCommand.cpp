@@ -109,90 +109,19 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 		}
 		case 'b':
 		{
-			if (splited_args[2].empty())
-			{
-				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "BAN"));
-				break;
-			}
-			if (active)
-			{
-				if (channel.isBanned(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYBANNED(client.getNickname(), splited_args[2], channel.getName()));
-					return;
-				}
-				channel.addBan(splited_args[2]);
-				channel.broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel.getName()));
-			}
-			else
-			{
-				if (!channel.isBanned(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYUNBANNED(client.getNickname(), splited_args[2], channel.getName()));
-					return;
-				}
-				channel.removeBan(splited_args[2]);
-				channel.broadcastMessage(RPL_UNBANNED(client.getNickname(), splited_args[0], channel.getName()));
-			}
-			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+b" : "-b"), splited_args[2]));
+			mode_ban(channel, client, active, splited_args);
 			break;
 		}
 
 		case 'e':
 		{
-			if (splited_args[2].empty())
-			{
-				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE BAN"));
-				break;
-			}
-			if (active)
-			{
-				if (channel.isExceptedFromBan(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYEXCEPTEDFROMBAN(client.getNickname(), splited_args[2], channel.getName()));
-					return;
-				}
-				channel.addExceptionBan(splited_args[2]);
-			}
-			else
-			{
-				if (!channel.isExceptedFromBan(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYUNEXCEPTEDFROMBAN(client.getNickname(), splited_args[2], channel.getName()));
-					return;
-				}
-				channel.removeExceptionBan(splited_args[2]);
-			}
-			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+e" : "-e"), splited_args[2]));
+			mode_exception(channel, client, active, splited_args);
 			break;
 		}
 
 		case 'I':
 		{
-			if (splited_args[2].empty())
-			{
-				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE INVITE ONLY"));
-				break;
-			}
-			if (active)
-			{
-				if (channel.isExceptedFromInvite(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYEXCEPTEDFROMINVITE(client.getNickname(), splited_args[2], channel.getName()));
-					return;
-				}
-				channel.addExceptionInvite(splited_args[2]);
-			}
-			else
-			{
-				if (!channel.isExceptedFromInvite(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYUNEXCEPTEDFROMINVITE(client.getNickname(), splited_args[2], channel.getName()));
-					return;
-				}
-				channel.removeExceptionInvite(splited_args[2]);
-			}
-			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+I" : "-I"), splited_args[2]));
+			mode_invite(channel, client, active, splited_args);
 			break;
 		}
 
@@ -235,48 +164,7 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 		// operator mode: @ before nickname
 		case 'o':
 		{
-			std::cout << "active :" << active << std::endl;
-			if (splited_args.size() != 3)
-			{
-				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
-				return;
-			}
-			if (!channel.isUser(splited_args[2]))
-			{
-				client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
-				return;
-			}
-			if (active && !channel.isOp(splited_args[2]))
-			{
-				try
-				{
-					Client &target_client = channel.getChanClient(splited_args[2]);
-					target_client.addUserMode('@');
-					std::cout << "added channel op" << std::endl;
-					channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
-				}
-				catch (std::out_of_range &e)
-				{
-					std::cout << "client not found" << std::endl;
-				}
-			}
-			else if (!active && channel.isOp(splited_args[2]))
-			{
-				std::cout << "nick :" + splited_args[2] + "//" << std::endl;
-				try
-				{
-					Client &target_client = channel.getChanClient(splited_args[2]);
-					target_client.removeUserMode('@');
-					std::cout << "removed channel op" << std::endl;
-					channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
-				}
-				catch (std::out_of_range &e)
-				{
-					std::cout << "client not found" << std::endl;
-				}
-			}
-			else
-				return;
+			mode_operator(channel, client, active, splited_args);
 			break;
 		}
 
@@ -315,40 +203,7 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 		// voice mode on channel: '+' before nick
 		case 'v':
 		{
-			if (splited_args.size() < 3)
-			{
-				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
-				return;
-			}
-			if (!channel.isUser(splited_args[2]))
-			{
-				client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
-				return;
-			}
-			try
-			{
-				Client &target_client = channel.getChanClient(splited_args[2]);
-				if (active)
-				{
-					if (target_client.isMode('+'))
-						break;
-					target_client.addUserMode('+');
-					std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
-				}
-				else
-				{
-					target_client.removeUserMode('+');
-					std::cout << "removed voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
-				}
-				std::cout << "is voice ok ? " << channel.isClientMode(target_client.getNickname(), '+') << std::endl;
-
-				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), target_client.getNickname()));
-			}
-			catch (std::out_of_range &e)
-			{
-				std::cout << "Client not found" << std::endl;
-				break;
-			}
+			mode_voice(channel, client, active, splited_args);
 			p += active ? 1 : 0;
 			break;
 		}
@@ -360,6 +215,176 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 		i++;
 	}
 }
+
+void	ModeCommand::mode_ban(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args)
+{
+	if (splited_args[2].empty())
+			{
+				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "BAN"));
+				return;
+			}
+			if (active)
+			{
+				if (channel.isBanned(splited_args[2]))
+				{
+					client.reply(ERR_ALREADYBANNED(client.getNickname(), splited_args[2], channel.getName()));
+					return;
+				}
+				channel.addBan(splited_args[2]);
+				channel.broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel.getName()));
+			}
+			else
+			{
+				if (!channel.isBanned(splited_args[2]))
+				{
+					client.reply(ERR_ALREADYUNBANNED(client.getNickname(), splited_args[2], channel.getName()));
+					return;
+				}
+				channel.removeBan(splited_args[2]);
+				channel.broadcastMessage(RPL_UNBANNED(client.getNickname(), splited_args[0], channel.getName()));
+			}
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+b" : "-b"), splited_args[2]));
+}
+
+void	ModeCommand::mode_voice(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args)
+{
+	if (splited_args.size() < 3)
+	{
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
+		return;
+	}
+	if (!channel.isUser(splited_args[2]))
+	{
+		client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
+		return;
+	}
+	try
+	{
+		Client &target_client = channel.getChanClient(splited_args[2]);
+		if (active)
+		{
+			if (target_client.isMode('+'))
+				return;
+			target_client.addUserMode('+');
+			std::cout << "added voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
+		}
+		else
+		{
+			target_client.removeUserMode('+');
+			std::cout << "removed voice mode to " + target_client.getNickname() + " for channel " + channel.getName() << std::endl;
+		}
+		std::cout << "is voice ok ? " << channel.isClientMode(target_client.getNickname(), '+') << std::endl;
+
+		channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+v" : "-v"), target_client.getNickname()));
+	}
+	catch (std::out_of_range &e)
+	{
+		std::cout << "Client not found" << std::endl;
+		return;
+	}
+}
+
+void	ModeCommand::mode_operator(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args)
+{
+	std::cout << "active :" << active << std::endl;
+	if (splited_args.size() != 3)
+	{
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
+		return;
+	}
+	if (!channel.isUser(splited_args[2]))
+	{
+		client.reply(ERR_USERNOTINCHANNEL(client.getNickname(), splited_args[2], channel.getName()));
+		return;
+	}
+	if (active && !channel.isOp(splited_args[2]))
+	{
+		try
+		{
+			Client &target_client = channel.getChanClient(splited_args[2]);
+			target_client.addUserMode('@');
+			std::cout << "added channel op" << std::endl;
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
+		}
+		catch (std::out_of_range &e)
+		{
+			std::cout << "client not found" << std::endl;
+		}
+	}
+	else if (!active && channel.isOp(splited_args[2]))
+	{
+		std::cout << "nick :" + splited_args[2] + "//" << std::endl;
+		try
+		{
+			Client &target_client = channel.getChanClient(splited_args[2]);
+			target_client.removeUserMode('@');
+			std::cout << "removed channel op" << std::endl;
+			channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+o" : "-o"), splited_args[2]));
+		}
+		catch (std::out_of_range &e)
+		{
+			std::cout << "client not found" << std::endl;
+		}
+	}
+}
+
+void	ModeCommand::mode_invite(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args)
+{
+	if (splited_args[2].empty())
+	{
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE INVITE ONLY"));
+		return;
+	}
+	if (active)
+	{
+		if (channel.isExceptedFromInvite(splited_args[2]))
+		{
+			client.reply(ERR_ALREADYEXCEPTEDFROMINVITE(client.getNickname(), splited_args[2], channel.getName()));
+			return;
+		}
+		channel.addExceptionInvite(splited_args[2]);
+	}
+	else
+	{
+		if (!channel.isExceptedFromInvite(splited_args[2]))
+		{
+			client.reply(ERR_ALREADYUNEXCEPTEDFROMINVITE(client.getNickname(), splited_args[2], channel.getName()));
+			return;
+		}
+		channel.removeExceptionInvite(splited_args[2]);
+	}
+	channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+I" : "-I"), splited_args[2]));
+}
+
+void	ModeCommand::mode_exception(Channel& channel, Client& client, bool active, std::vector<std::string> splited_args)
+{
+	if (splited_args[2].empty())
+	{
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE BAN"));
+		return;
+	}
+	if (active)
+	{
+		if (channel.isExceptedFromBan(splited_args[2]))
+		{
+			client.reply(ERR_ALREADYEXCEPTEDFROMBAN(client.getNickname(), splited_args[2], channel.getName()));
+			return;
+		}
+		channel.addExceptionBan(splited_args[2]);
+	}
+	else
+	{
+		if (!channel.isExceptedFromBan(splited_args[2]))
+		{
+			client.reply(ERR_ALREADYUNEXCEPTEDFROMBAN(client.getNickname(), splited_args[2], channel.getName()));
+			return;
+		}
+		channel.removeExceptionBan(splited_args[2]);
+	}
+	channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+e" : "-e"), splited_args[2]));
+}
+
+
 
 // TODO: user mode invisibility MEHDI
 void ModeCommand::mode_client(Client *client, std::vector<std::string> splited_args)
