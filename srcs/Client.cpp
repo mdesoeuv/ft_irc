@@ -72,7 +72,7 @@ void Client::reply(const std::string &reply) {
 }
 
 void Client::welcome() {
-	if (_isAuthentified == false || _username.empty() || _realName.empty() || _nickname.empty())
+	if (_isAuthentified == false || _isRegistered == true || _username.empty() || _realName.empty() || _nickname.empty())
 		return;
 	setIsRegistered(true);
 	reply(RPL_WELCOME(_nickname));
