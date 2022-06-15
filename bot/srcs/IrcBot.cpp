@@ -38,8 +38,9 @@ int IrcBot::newSocket() {
 
 void IrcBot::start() {
 	authenticate("BotDePaille");
-
-	//Listen for incoming messages from server
+	while (1)
+	{
+//Listen for incoming messages from server
 	char buffer[256];
 	int length;
 
@@ -47,12 +48,6 @@ void IrcBot::start() {
 		buffer[length] = 0;
 		onMessageReceived(std::string(buffer, length));
 	}
-
-	//End the bot manually by typing exit in the shell (On devrait peut être faire la même chose pour le prgrm irc server ?)
-	std::string input;
-	getline(std::cin, input);
-	while (input != "exit") {
-		getline(std::cin, input);
 	}
 	close(_sock);
 	sendMessageToServer("QUIT :Bye !");
