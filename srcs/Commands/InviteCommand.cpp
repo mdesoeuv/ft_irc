@@ -26,9 +26,7 @@ void InviteCommand::execute(Client &client, std::string arguments)
 		client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), splited_args[1]));
 		return;
 	}
-
-    // TODO: rework with channel.isUser(nick)
-	if (channel.getUserList(true).find(client.getNickname()) > channel.getUserList(true).size())
+	if (!channel.isUser(client.getNickname()))
 	{
 		client.reply(ERR_NOTONCHANNEL(client.getNickname(), channel.getName()));
 		return;
@@ -46,8 +44,8 @@ void InviteCommand::execute(Client &client, std::string arguments)
 		return;
 	}
 
-	if(channel.isInvited(splited_args[0]))
-		{
+	if (channel.isInvited(splited_args[0]))
+	{
 		client.reply(ERR_ALREADYINVITED(client.getNickname(), splited_args[0], channel.getName()));
 		return;
 	}
