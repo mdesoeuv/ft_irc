@@ -319,6 +319,22 @@ void ModeCommand::mode_channel(Channel &channel, Client &client, std::vector<std
 				break;
 			}
 
+			case 'p':
+			{
+				if (active)
+				{
+					if (!channel.addMode('p'))
+						break;
+				}
+				else
+				{
+					if (!channel.removeMode('p'))
+						break;
+				}
+				channel.broadcastMessage(RPL_MODE(client.getPrefix(), channel.getName(), (active ? "+p" : "-p"), ""));
+				break;
+			}
+
 			case 's':
 			{
 				if (active)

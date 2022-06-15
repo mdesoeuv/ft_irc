@@ -13,7 +13,7 @@ void ListCommand::execute(Client& client, std::string arguments) {
   {
     for (std::vector<Channel>::iterator it = _server->getChannelBegin(); it != _server->getChannelEnd(); ++it)
     {
-      if (!it->isMode('s') || it->isUser(client.getNickname()))
+      if ((!it->isMode('p') && !it->isMode('s')) || it->isUser(client.getNickname()))
         client.reply(RPL_LIST(client.getNickname(), it->getName(), it->getUserNbStr(), it->getTopic()));
     }
   }
