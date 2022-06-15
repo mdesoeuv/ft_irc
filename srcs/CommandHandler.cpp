@@ -21,9 +21,7 @@ CommandHandler::CommandHandler(Server *server) : _server(server)
 	_commands["TOPIC"] = new TopicCommand(_server);
 	_commands["KICK"] = new KickCommand(_server);
 	_commands["PRIVMSG"] = new PrivMsgCommand(_server);
-
-	//TODO: verifier si c'est normal que ce soit toujours commenté VICTOR
-	// _commands["NOTICE"] = new NoticeCommand(_server);
+	_commands["NOTICE"] = new NoticeCommand(_server);
 }
 
 CommandHandler::~CommandHandler()
