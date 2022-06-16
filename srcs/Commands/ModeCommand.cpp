@@ -80,14 +80,6 @@ bool ModeCommand::applyMode(Channel* channel, Client &client, bool active, char 
 void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std::string> splited_args)
 {
 
-	// DEBUG display
-	std::cout << "executing Mode command :";
-	for (std::vector<std::string>::iterator it = splited_args.begin(); it != splited_args.end(); ++it)
-	{
-		std::cout << *it + " ";
-	}
-	std::cout << std::endl;
-
 	int i = 0;
 	int p = 2;
 	char c;
@@ -159,7 +151,6 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 			break;
 		}
 
-		// operator mode: @ before nickname
 		case 'o':
 		{
 			mode_operator(channel, client, active, splited_args);
@@ -198,7 +189,6 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 			break;
 		}
 
-		// voice mode on channel: '+' before nick
 		case 'v':
 		{
 			mode_voice(channel, client, active, splited_args);
@@ -246,6 +236,8 @@ void	ModeCommand::mode_ban(Channel* channel, Client& client, bool active, std::v
 
 void	ModeCommand::mode_voice(Channel* channel, Client& client, bool active, std::vector<std::string> splited_args)
 {
+	// voice mode on channel: '+' before nick
+
 	if (splited_args.size() < 3)
 	{
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
@@ -284,6 +276,7 @@ void	ModeCommand::mode_voice(Channel* channel, Client& client, bool active, std:
 
 void	ModeCommand::mode_operator(Channel* channel, Client& client, bool active, std::vector<std::string> splited_args)
 {
+	// operator mode: @ before nickname
 	std::cout << "active :" << active << std::endl;
 	if (splited_args.size() != 3)
 	{
@@ -384,12 +377,14 @@ void	ModeCommand::mode_exception(Channel* channel, Client& client, bool active, 
 
 void ModeCommand::mode_client(Client *client, std::vector<std::string> splited_args)
 {
+	// single argument : reply modestring to user
 	if (splited_args.size() < 2)
 	{
 		std::string modes = client->getClientOnServer()->getModes().empty() ? std::string("") : "+" + client->getClientOnServer()->getModes();
 		client->reply(RPL_UMODEIS(client->getNickname(), modes));
 		return;
 	}
+
 	// invisibility mode
 	if (splited_args[1] == "+i")
 	{
@@ -401,6 +396,8 @@ void ModeCommand::mode_client(Client *client, std::vector<std::string> splited_a
 		client->getClientOnServer()->removeUserMode('i');
 		client->write(":" + client->getPrefix() + " MODE " + client->getNickname() + " -i");
 	}
+
+	// unrecognized mode
 	else
 		client->reply(ERR_UMODEUNKNOWNFLAG(client->getNickname()));
 
