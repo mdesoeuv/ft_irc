@@ -38,12 +38,18 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
+				std::cout << "hey" << std::endl;
+		std::cout << client.isMode('k') << std::endl;
+		std::cout << splited_args.size() << std::endl;
+		std::cout << !splited_args[1].empty() << std::endl;
+		std::cout << !result.second->isPassword(splited_args[1]) << std::endl;
+
 		if (result.second->isMode('k') && splited_args.size() > 1 && !splited_args[1].empty() && !result.second->isPassword(splited_args[1]))
 		{
 			client.reply(ERR_BADCHANNELKEY(client.getNickname(), result.second->getName()));
 			return;
 		}
-		
+
 		if (result.second->isBanned(client.getNickname()) && !result.second->isExceptedFromBan(client.getNickname()))
 		{
 			client.reply(ERR_BANNEDFROMCHAN(client.getNickname(), result.second->getName()));
