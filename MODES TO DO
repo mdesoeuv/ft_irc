@@ -24,3 +24,4 @@
         hostname max length 63 char => if > 63 use ip address TODO VICTOR ? MEHDI ?
 
         CAP reply : TODO MEHDI
+        Quit message a Verfier : TODO MEHDI
