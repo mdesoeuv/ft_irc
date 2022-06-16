@@ -31,6 +31,15 @@ public:
 	void execute(Client& client, std::string arguments);
 };
 
+class CapCommand : public Command
+{
+public:
+	CapCommand(Server *server);
+	~CapCommand();
+
+	void execute(Client& client, std::string arguments);
+};
+
 class JoinCommand : public Command
 {
 public:
