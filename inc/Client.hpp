@@ -6,6 +6,8 @@
 #include "utils.hpp"
 #include <ctime>
 
+#define MSG_SIZE_LIMIT 500
+
 class Client
 {
 	public:

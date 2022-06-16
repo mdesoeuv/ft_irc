@@ -203,8 +203,12 @@ std::string			Client::extractMessage() {
 }
 
 void				Client::addSendQueue(const std::string message) {
-	_sendQueue += message;
-	_sendQueue += "\r\n";
+	
+	std::string full_message = message;
+	if (full_message.size() > MSG_SIZE_LIMIT)
+		full_message.resize(MSG_SIZE_LIMIT);
+	full_message += "\r\n";
+	_sendQueue += full_message;
 }
 
 bool				Client::addUserMode(char mode) {
