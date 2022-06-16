@@ -17,6 +17,6 @@
         e - set/remove an exception mask to override a ban mask; OK, TO TEST VIC
         I - set/remove an invitation mask to automatically override the invite-only flag; OK, TO TEST VIC
 
-        user invisibility TODO MEHDI
+        user invisibility OK MEHDI
         message size limit TODO MEHDI
         argument number limit RPL TODO MEHDI
