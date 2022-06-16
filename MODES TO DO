@@ -10,7 +10,7 @@
         s - toggle the secret channel flag; OK MEHDI
         t - toggle the topic settable by channel operator only flag; OK MEHDI
 
-        k - set/remove the channel key (password); OK, TO TEST VIC
+        k - set/remove the channel key (password); OK VIC
         l - set/remove the user limit to channel; OK, TO TEST VIC
 
         b - set/remove ban mask to keep users out; OK MEHDI
@@ -21,7 +21,7 @@
         message size limit OK MEHDI
         err pollfd OK MEHDI
 
-        hostname max length 63 char => if > 63 use ip address TODO VICTOR ? MEHDI ?
+        hostname max length 63 char => if > 63 use ip address OK MEHDI
 
         CAP reply : OK MEHDI
-        Quit message a Verfier : TODO MEHDI
+        Quit message a Verfier : OK VICTOR

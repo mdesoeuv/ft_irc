@@ -6,7 +6,6 @@ QuitCommand::~QuitCommand() {}
 
 void QuitCommand::execute(Client& client, std::string arguments) {
 	(void)client;
-	arguments = arguments.substr(1, arguments.size());
 	std::string reason = arguments.empty() ? "Quit for unknown reason !" : arguments;
 	std::cout << "Client has Quit " << std::endl;
 }
