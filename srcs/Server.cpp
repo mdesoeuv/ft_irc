@@ -368,7 +368,7 @@ void							Server::sendUnjoinedUserList(Client& client) {
 
 	for (clients_iterator it = _clients.begin(); it != _clients.end(); ++it)
 	{
-		if (it->second.getJoinedChannelNb() == 0 && !it->second.isMode('i'))
+		if (it->second.getJoinedChannelNb() == 0 && !it->second.getClientOnServer()->isMode('i'))
 		{
 			client.reply(RPL_NAMEREPLY(client.getNickname(), std::string("*"), std::string("channel"), it->second.getNickname()));
 		}

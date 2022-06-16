@@ -72,6 +72,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 	client.getJoinedChannelNb()++;
 	Client client_copy = client;
 	client_copy.setPtr(&client);
+	client_copy.resetUserModes();
 	client_copy.addUserMode('@');
 	new_channel.addUser(client_copy);
 	_server->addChannel(new_channel);

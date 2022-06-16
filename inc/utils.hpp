@@ -14,6 +14,7 @@
 #define RPL_PING(myclient, token)						":" + myclient + " PING :" + token
 #define RPL_PONG(myclient, token)						":" + myclient + " PONG :" + token
 #define RPL_CLOSECLIENT									": ERROR : you should be conected "
+#define RPL_UMODEIS(myclient, modes)					"221 " + myclient + " :" + modes		
 #define RPL_LISTSTART(myclient)							"321 " + myclient + " Channel :Users Name"
 #define RPL_LIST(myclient, mychannel, client_count, topic) "322 " + myclient + " " + mychannel + " " + client_count + " :" + topic
 #define RPL_LISTEND(myclient)							"323 " + myclient + " :End of /LIST"
@@ -59,6 +60,8 @@
 #define	ERR_INVITEONLYCHAN(myclient, channel)				"473 " + myclient + " " + channel + " :Cannot join channel (+i)"
 #define	ERR_BANNEDFROMCHAN(myclient, channel)				"474 " + myclient + " " + channel + " :Cannot join channel (+b)"
 #define	ERR_BADCHANNELKEY(myclient, channel)				"475 " + myclient + " " + channel + " :Cannot join channel (+k)"
+#define ERR_UMODEUNKNOWNFLAG(myclient)						"501 " + myclient + " :Unknown MODE flag"
+#define ERR_USERSDONTMATCH(myclient)						"502 " + myclient + " :Cannot change mode for other users"
 
 #define PING_INTERVAL 20 // seconds
 #define TIMEOUT 20 // seconds

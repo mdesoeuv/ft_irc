@@ -320,16 +320,16 @@ void Channel::delUser(Client user)
 	user.reply(ERR_NOTONCHANNEL(user.getNickname(), this->getName()));
 }
 
-std::string Channel::getUserList(bool show_invisible) const
+std::string Channel::getUserList(bool show_invisible)
 {
 	std::string result;
 
-	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		if (!show_invisible && it->isMode('i'))
+		if (!show_invisible && it->getClientOnServer()->isMode('i'))
 			continue ;
 		result += " ";
-		result += it->getModes();
+		result += it->getChanPrefix();
 		result += it->getNickname();
 	}
 	return result;
@@ -337,11 +337,11 @@ std::string Channel::getUserList(bool show_invisible) const
 
 void		Channel::sendUserList(Client& client, bool show_invisible)
 {
-	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
+	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		if (!show_invisible && it->isMode('i'))
+		if (!show_invisible && it->getClientOnServer()->isMode('i'))
 			continue ;
-		client.reply(RPL_NAMEREPLY(client.getNickname(), getSymbol(), getName(), it->getModes() + it->getNickname()));
+		client.reply(RPL_NAMEREPLY(client.getNickname(), getSymbol(), getName(), it->getChanPrefix() + it->getNickname()));
 	}
 	client.reply(RPL_ENDOFNAMES(client.getNickname(), getName()));
 }

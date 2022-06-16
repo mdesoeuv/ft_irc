@@ -52,10 +52,12 @@ void ModeCommand::execute(Client &client, std::string arguments)
 	{
 		// checks if user exists and execute operation
 		Client *target_client = _server->getClient(target);
-		if (target_client != nullptr)
-			mode_client(target_client, splited_args);
-		else
+		if (target_client == nullptr)
 			client.reply(ERR_NOSUCHNICK(client.getNickname(), target));
+		else if (target_client->getNickname() != client.getNickname())
+			client.reply(ERR_USERSDONTMATCH(client.getNickname()));
+		else
+			mode_client(target_client, splited_args);
 	}
 }
 
@@ -380,16 +382,26 @@ void	ModeCommand::mode_exception(Channel* channel, Client& client, bool active, 
 	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? "+e" : "-e"), splited_args[2]));
 }
 
-
-
-// TODO: user mode invisibility MEHDI
 void ModeCommand::mode_client(Client *client, std::vector<std::string> splited_args)
 {
-	(void)client;
-	std::cout << "Client Modes not supported :";
-	for (std::vector<std::string>::iterator it = splited_args.begin(); it != splited_args.end(); ++it)
+	if (splited_args.size() < 2)
 	{
-		std::cout << *it + " ";
+		std::string modes = client->getClientOnServer()->getModes().empty() ? std::string("") : "+" + client->getClientOnServer()->getModes();
+		client->reply(RPL_UMODEIS(client->getNickname(), modes));
+		return;
 	}
-	std::cout << std::endl;
+	// invisibility mode
+	if (splited_args[1] == "+i")
+	{
+		client->getClientOnServer()->addUserMode('i');
+		client->write(":" + client->getPrefix() + " MODE " + client->getNickname() + " +i");
+	}
+	else if (splited_args[1] == "-i")
+	{
+		client->getClientOnServer()->removeUserMode('i');
+		client->write(":" + client->getPrefix() + " MODE " + client->getNickname() + " -i");
+	}
+	else
+		client->reply(ERR_UMODEUNKNOWNFLAG(client->getNickname()));
+
 }

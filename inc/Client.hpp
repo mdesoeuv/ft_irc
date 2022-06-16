@@ -27,6 +27,8 @@ class Client
 		const std::string&	getHostname() const;
 		const std::string&	getModes() const;
 		const std::string&	getServerPrefix() const;
+		const std::string	getChanPrefix() const;
+		Client*				getClientOnServer();
 		bool 				isAuthentified() const;
 		bool 				isRegistered() const;
 		bool				isMode(char mode) const;
@@ -52,6 +54,7 @@ class Client
 		void				setPtr(Client* client);
 		bool				addUserMode(char mode);
 		bool				removeUserMode(char mode);
+		void				resetUserModes();
 
 	private:
 

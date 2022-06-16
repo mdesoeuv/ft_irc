@@ -132,6 +132,13 @@ const std::string&	Client::getServerPrefix() const {
 	return _serverPrefix;
 }
 
+const std::string	Client::getChanPrefix() const {
+	if (isMode('@'))
+		return ("@");
+	if (isMode('+'))
+		return ("+");
+	return ("");
+}
 
 time_t		Client::getLastPingTime() {
 	return _lastPingTime;
@@ -144,6 +151,11 @@ std::string&		Client::getMessageBuffer() {
 std::string&		Client::getSendQueue() {
 	return _sendQueue;
 }
+
+Client*				Client::getClientOnServer() {
+	return _clientOnServer;
+}
+
 
 
 void				Client::setNickname(const std::string& new_nickname) {
@@ -219,6 +231,11 @@ bool				Client::removeUserMode(char mode) {
 	std::cout << "mode string is now :" << getModes() << std::endl;
 	return true;
 }
+
+void				Client::resetUserModes() {
+	_modes = "";
+}
+
 
 int&				Client::getJoinedChannelNb() {
 	return _joinedChannels;
