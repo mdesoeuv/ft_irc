@@ -18,6 +18,8 @@
         I - set/remove an invitation mask to automatically override the invite-only flag; OK, TO TEST VIC
 
         user invisibility OK MEHDI
-        message size limit TODO MEHDI
+        message size limit OK MEHDI
         argument number limit RPL TODO MEHDI
         err pollfd TODO MEHDI
+
+        hostname max length 63 char => if > 63 use ip address TODO VICTOR ? MEHDI ?
