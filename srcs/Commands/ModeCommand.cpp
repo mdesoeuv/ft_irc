@@ -73,6 +73,7 @@ bool ModeCommand::applyMode(Channel* channel, Client &client, bool active, char 
 		if (!channel->removeMode(c))
 			return false;
 	}
+		std::cout << (active && !arg.empty() ? arg : "") + "=apply mode arg" << std::endl;	
 	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? std::string(1, '+') + c : std::string(1, '+') + c), (active && !arg.empty() ? arg : "")));
 	return true;
 }
@@ -129,13 +130,20 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 
 		case 'k':
 		{
-			if (splited_args[2].empty())
+			if (active && splited_args.size() > 1 && splited_args[2].empty())
 			{
 				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "CHANNEL PASSWORD"));
 				break;
 			}
-			applyMode(channel, client, active, 'k', splited_args[p]);
-			p += active ? 1 : 0;
+			
+			
+			if (applyMode(channel, client, active, 'k', splited_args[2]))
+			{
+				if (active)
+					channel->setPassword(splited_args[2]);
+				else
+					channel->setPassword("");
+			}
 			break;
 		}
 
