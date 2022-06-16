@@ -213,12 +213,17 @@ void	ModeCommand::mode_ban(Channel* channel, Client& client, bool active, std::v
 			}
 			if (active)
 			{
+						std::cout << splited_args[2] + " to ban !" << std::endl;
+
 				if (channel->isBanned(splited_args[2]))
 				{
 					client.reply(ERR_ALREADYBANNED(client.getNickname(), splited_args[2], channel->getName()));
 					return;
 				}
 				channel->addBan(splited_args[2]);
+				std::cout << channel->isBanned(splited_args[2]) << std::endl;
+				std::cout << " is banned ?" << std::endl;
+
 				channel->broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel->getName()));
 			}
 			else

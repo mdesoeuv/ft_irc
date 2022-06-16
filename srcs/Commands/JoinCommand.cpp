@@ -43,8 +43,8 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			client.reply(ERR_BADCHANNELKEY(client.getNickname(), result.second->getName()));
 			return;
 		}
-
-		if (client.isMode('b') && result.second->isBanned(client.getNickname()) && !result.second->isExceptedFromBan(client.getNickname()))
+		
+		if (result.second->isBanned(client.getNickname()) && !result.second->isExceptedFromBan(client.getNickname()))
 		{
 			client.reply(ERR_BANNEDFROMCHAN(client.getNickname(), result.second->getName()));
 			return;

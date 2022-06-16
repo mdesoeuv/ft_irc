@@ -269,8 +269,9 @@ void Channel::addBan(const std::string nickname)
 	Client kicked_user;
 	if (isUser(nickname))
 	{
-		// TODO: reply kick 
 		kicked_user = getChanClient(nickname);
+		std::string	prefix = isMode('a') ? "anonymous!anonymous@anonymous." : kicked_user.getPrefix();
+		broadcastMessage(":" + prefix + " KICK " + kicked_user.getNickname());
 		delUser(kicked_user);
 		_user_nb--;
 	}
