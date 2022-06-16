@@ -42,7 +42,8 @@ void Server::start()
 			
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
-			throw std::runtime_error("Error while polling from fd.");
+			if (g_ServerRunning)
+				throw std::runtime_error("Error while polling from fd.");
 		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
 		for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it)
 		{

@@ -19,7 +19,7 @@
 
         user invisibility OK MEHDI
         message size limit OK MEHDI
-        argument number limit RPL TODO MEHDI
-        err pollfd TODO MEHDI
+        argument number limit RPL PENDING MEHDI
+        err pollfd OK MEHDI
 
         hostname max length 63 char => if > 63 use ip address TODO VICTOR ? MEHDI ?
