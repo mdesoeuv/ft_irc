@@ -171,8 +171,12 @@ void Server::onClientConnect()
 	if (getnameinfo((struct sockaddr *)&s_address, sizeof(s_address), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) != 0)
 		throw std::runtime_error("Error while getting hostname of new client.");
 
+	// Checks hostname size limit of 63 chars
+	std::string host(hostname);
+	if (host.length() > 63)
+		host = inet_ntoa(s_address.sin_addr);
 	// Creates a new Client and store it in Clients map
-	_clients.insert(std::make_pair(fd, Client(fd, hostname, ntohs(s_address.sin_port), getServerPrefix())));
+	_clients.insert(std::make_pair(fd, Client(fd, host, ntohs(s_address.sin_port), getServerPrefix())));
 	_clients[fd].setPtr(&_clients[fd]);
 	std::cout << "Client connnected" << std::endl;
 }
