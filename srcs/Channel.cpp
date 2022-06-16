@@ -256,8 +256,9 @@ void Channel::removeExceptionBan(const std::string nickname)
 	Client to_kick_user;
 	if (isUser(nickname) && isBanned(nickname))
 	{
-		// TODO: reply kick 
-
+		kicked_user = getChanClient(nickname);
+		std::string	prefix = isMode('a') ? "anonymous!anonymous@anonymous." : kicked_user.getPrefix();
+		broadcastMessage(":" + prefix + " KICK " + kicked_user.getNickname());
 		to_kick_user = getChanClient(nickname);
 		delUser(to_kick_user);
 		_user_nb--;
