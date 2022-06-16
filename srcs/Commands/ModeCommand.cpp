@@ -322,7 +322,6 @@ void	ModeCommand::mode_operator(Channel* channel, Client& client, bool active, s
 		{
 			Client &target_client = channel->getChanClient(splited_args[2]);
 			target_client.removeUserMode('@');
-			std::cout << "removed channel op" << std::endl;
 			channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? "+o" : "-o"), splited_args[2]));
 		}
 		catch (std::out_of_range &e)
