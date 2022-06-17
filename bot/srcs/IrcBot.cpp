@@ -214,7 +214,7 @@ void IrcBot::parseExecute(const std::string& message) {
 		return;
 	if (command[1] == "PING")
 		addSendQueue("PONG " + command[0]);
-	else if (command[1] == "PING")
+	else if (command[1] == "PRIVMSG")
 		sendPrivMsg(command[0], response);
 	else
 		std::cout << "Message type unknown : " + command[1] + " sent by " << command[0] << std::endl;
