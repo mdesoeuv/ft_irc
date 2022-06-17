@@ -49,7 +49,7 @@ private:
 	void 		onMessageReceived(const std::string &message);
 	std::string	extractMessage();
 	void 		onServerMessage(int fd);
-	std::string	ParseSender(const std::string& message);
+	void		ParseCommand(std::vector<std::string>& command, std::string message);
 	void		parseExecute(const std::string& message);
 
 };
