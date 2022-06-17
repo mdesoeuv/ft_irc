@@ -63,7 +63,7 @@ void IrcBot::start() {
 		// POLLOUT: le bot peut send
 		if (it->revents & POLLOUT)
 		{
-			sendMessageToServer(_clients[it->fd]);
+			sendMessageToServer();
 		}
 
 		//server POLLERR -> g_BotRunning = false
@@ -85,6 +85,7 @@ void IrcBot::addSendQueue(const std::string& message) {
 		full_message.resize(MSG_SIZE_LIMIT - 2);
 	full_message += "\r\n";
 	_sendQueue += full_message;
+	std::cout << "added to send queue :" + full_message << std::endl;
 }
 
 void IrcBot::sendMessageToServer()
@@ -148,7 +149,7 @@ void IrcBot::onServerMessage(int fd)
 		_messageBuffer.append(buffer);
 		while (_messageBuffer.find("\r\n") < _messageBuffer.size())
 		{
-			parseExecute(_messageBuffer.extractMessage());
+			parseExecute(extractMessage());
 		}
 	}
 }
@@ -169,6 +170,7 @@ std::string	IrcBot::ParseSender(const std::string& message) {
 void IrcBot::parseExecute(const std::string& message) {
 
 	std::string sender = ParseSender(message);
+	std::cout << "sender :" + sender << std::endl;
 	std::string response = "Coucou c'est moi le bot de paille !";
 	if (sender != _serverPrefix)
 		sendPrivMsg(sender, response);

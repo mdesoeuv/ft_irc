@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
+#include <poll.h>
 #include <sys/socket.h> // socket()
 #include <netinet/in.h> // sockaddr_in
 #include <utility> // std::make_pair
@@ -15,6 +16,7 @@
 #include "utils.hpp"
 
 #define MSG_SIZE_LIMIT 450
+#define BUFFER_SIZE 1000
 
 class IrcBot {
 public:
@@ -36,7 +38,7 @@ private:
 	std::vector<pollfd>	_pollfds;
 	std::string			_messageBuffer;
 	std::string			_sendQueue;
-	std::string			_serverPrefix
+	std::string			_serverPrefix;
 
 
 	int			newSocket();
