@@ -31,11 +31,8 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			client.reply(ERR_USERONCHANNEL(client.getNickname(), client.getNickname(), result.second->getName()));
 			return;
 		}
-	std::cout << "blabala" << std::endl;
-	std::cout << result.second->isMode('i') << std::endl;
-	std::cout << !result.second->isInvited(client.getNickname())  << std::endl;
 
-		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()))
+		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname())  && !result.second->isExceptedFromInvite(client.getNickname()))
 		{
 			client.reply(ERR_INVITEONLYCHAN(client.getNickname(), result.second->getName()));
 			return;
