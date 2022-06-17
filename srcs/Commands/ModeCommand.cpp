@@ -322,7 +322,7 @@ void ModeCommand::mode_operator(Channel *channel, Client &client, bool active, s
 
 void ModeCommand::mode_invite(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
-	if (splited_args[2].empty())
+	if (splited_args.size() < 3 || splited_args[2].empty())
 	{
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE INVITE ONLY"));
 		return;
@@ -350,7 +350,7 @@ void ModeCommand::mode_invite(Channel *channel, Client &client, bool active, std
 
 void ModeCommand::mode_exception(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
-	if (splited_args[2].empty())
+	if (splited_args.size() < 3 || splited_args[2].empty())
 	{
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "OVERRIDE BAN"));
 		return;
