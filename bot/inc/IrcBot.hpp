@@ -52,5 +52,7 @@ private:
 	void 		onServerMessage(int fd);
 	void		ParseCommand(std::vector<std::string>& command, std::string message);
 	void		parseExecute(const std::string& message);
+	void		rockPaperScissors(const std::vector<std::string>& command);
+	std::string	whoWins(const std::string& userChoice, const std::string& botChoice);
 
 };
