@@ -5,7 +5,7 @@
         i - toggle the invite-only channel flag; OK VIC
         m - toggle the moderated channel; OK MEHDI
         n - toggle the no messages to channel from clients on the outside; OK MEHDI
-        q - toggle the quiet channel flag; OK, TO TEST VIC
+        q - toggle the quiet channel flag; OK VIC
         p - toggle the private channel flag; OK MEHDI
         s - toggle the secret channel flag; OK MEHDI
         t - toggle the topic settable by channel operator only flag; OK MEHDI
