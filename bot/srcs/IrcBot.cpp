@@ -1,20 +1,22 @@
 #include "../inc/IrcBot.hpp"
 
-IrcBot::IrcBot(const std::string &host, const std::string &port, const std::string &password) :
-		_host(host), _port(port), _password(password), _serverPrefix("ft_irc@127.0.0.1") {
+IrcBot::IrcBot(const std::string &host, const std::string &port, const std::string &password) : _host(host), _port(port), _password(password), _serverPrefix("ft_irc@127.0.0.1")
+{
 	_sock = newSocket();
 }
 
-IrcBot::~IrcBot() {
+IrcBot::~IrcBot()
+{
 }
 
-int IrcBot::newSocket() {
+int IrcBot::newSocket()
+{
 
 	/* creating socket :
 	 * domain : AF_INET -> Socket using IPV4
 	 * type : SOCK_STREAM : Dialogue support guaranteeing integrity, providing a binary data stream, and integrating a mechanism for out-of-band data transmissions.
 	 * protocol : 0 indicates that the caller does not want to specify the protocol and will leave it up to the service provider.
-	*/
+	 */
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
 		throw std::runtime_error("Error while opening socket.");
@@ -23,20 +25,21 @@ int IrcBot::newSocket() {
 	struct sockaddr_in serv_address = {};
 
 	// Clear address structure, should prevent some segmentation fault and artifacts
-	bzero((char *) &serv_address, sizeof(serv_address));
+	bzero((char *)&serv_address, sizeof(serv_address));
 
 	serv_address.sin_family = AF_INET; // Socket using IPV4
 	serv_address.sin_addr.s_addr = inet_addr(_host.c_str());
 	serv_address.sin_port = htons(std::stoi(_port)); // TCP protocol does not read a port int so we use htons() to convert unsigned short int to big-endian network byte order as expected from TCP protocol standards
 
 	// Bind the socket to the current IP address on selected port
-	if (connect(sockfd, (struct sockaddr *) &serv_address, sizeof(serv_address)) < 0)
+	if (connect(sockfd, (struct sockaddr *)&serv_address, sizeof(serv_address)) < 0)
 		throw std::runtime_error("Error while connecting to host.");
 
 	return sockfd;
 }
 
-void IrcBot::start() {
+void IrcBot::start()
+{
 
 	bool g_BotRunning = true;
 	pollfd bot_fd = {_sock, POLLIN | POLLOUT, 0};
@@ -61,14 +64,14 @@ void IrcBot::start() {
 			onServerMessage(it->fd);
 		}
 
-		// POLLOUT: le bot peut send //  TODO: 
+		// POLLOUT: le bot peut send //  TODO:
 		if (it->revents & POLLOUT)
 		// if (!_sendQueue.empty())
 		{
 			sendMessageToServer();
 		}
 
-		//server POLLERR -> g_BotRunning = false
+		// server POLLERR -> g_BotRunning = false
 		if (it->revents & POLLERR)
 		{
 			g_BotRunning = false;
@@ -79,10 +82,9 @@ void IrcBot::start() {
 	close(_sock);
 }
 
+void IrcBot::addSendQueue(const std::string &message)
+{
 
-
-void IrcBot::addSendQueue(const std::string& message) {
-	
 	std::string full_message = message;
 	if (full_message.size() > MSG_SIZE_LIMIT)
 		full_message.resize(MSG_SIZE_LIMIT - 2);
@@ -104,13 +106,14 @@ void IrcBot::sendMessageToServer()
 	_sendQueue.erase(0, sent_bytes);
 }
 
-
-void IrcBot::sendPrivMsg(const std::string &source, const std::string &message) {
+void IrcBot::sendPrivMsg(const std::string &source, const std::string &message)
+{
 	addSendQueue("PRIVMSG " + source + " :" + message);
 	sendMessageToServer();
 }
 
-void IrcBot::onMessageReceived(const std::string &message) {
+void IrcBot::onMessageReceived(const std::string &message)
+{
 
 	std::vector<std::string> splited_args;
 	split_args(message, " ", splited_args);
@@ -122,9 +125,10 @@ void IrcBot::onMessageReceived(const std::string &message) {
 	std::string type = splited_args.at(1);
 }
 
-std::string	IrcBot::extractMessage() {
+std::string IrcBot::extractMessage()
+{
 
-	std::string message; 
+	std::string message;
 
 	size_t pos = _messageBuffer.find("\r\n");
 	message = _messageBuffer.substr(0, pos);
@@ -133,7 +137,6 @@ std::string	IrcBot::extractMessage() {
 	std::cout << "extracted message :" + message << std::endl;
 	return message;
 }
-
 
 // command[0]: sender, command[1]: command, command[2]: argument
 void IrcBot::onServerMessage(int fd)
@@ -159,15 +162,17 @@ void IrcBot::onServerMessage(int fd)
 	}
 }
 
-void IrcBot::authenticate(const std::string &nickname) {
+void IrcBot::authenticate(const std::string &nickname)
+{
 	addSendQueue("PASS " + _password);
 	addSendQueue("NICK " + nickname);
 	addSendQueue("USER botDePaille 0 * :Custom ft_irc's bot");
 }
 
-void	IrcBot::ParseCommand(std::vector<std::string>& command, std::string message) {
-	
-	//parse sender
+void IrcBot::ParseCommand(std::vector<std::string> &command, std::string message)
+{
+
+	// parse sender
 	size_t pos = message.find(" ");
 	std::string sender = message.substr(1, pos - 1);
 	message.erase(0, pos + 1);
@@ -176,7 +181,7 @@ void	IrcBot::ParseCommand(std::vector<std::string>& command, std::string message
 		sender.erase(pos, sender.size());
 	command.push_back(sender);
 
-	//parse command
+	// parse command
 	pos = message.find(" ");
 	if (pos > message.size())
 	{
@@ -185,8 +190,8 @@ void	IrcBot::ParseCommand(std::vector<std::string>& command, std::string message
 	}
 	command.push_back(message.substr(0, pos));
 	message.erase(0, pos + 1);
-	
-	//parse argument
+
+	// parse argument
 	pos = message.find(":");
 	if (pos > message.size())
 	{
@@ -196,14 +201,15 @@ void	IrcBot::ParseCommand(std::vector<std::string>& command, std::string message
 	command.push_back(message.substr(0, pos - 1));
 	command.push_back(message.substr(pos + 1, message.size() - pos - 2));
 
-	//display command
+	// display command
 	std::cout << "parsed command :" << std::endl;
 	for (std::vector<std::string>::iterator it = command.begin(); it != command.end(); ++it)
 	{
 		std::cout << *it << "//" << std::endl;
 	}
 }
-std::string IrcBot::whoWins(const std::string& userChoice, const std::string& botChoice) {
+std::string IrcBot::whoWins(const std::string &userChoice, const std::string &botChoice)
+{
 
 	if (botChoice == userChoice)
 		return "Duce !";
@@ -214,27 +220,26 @@ std::string IrcBot::whoWins(const std::string& userChoice, const std::string& bo
 	if (botChoice == "scissors" && userChoice == "paper")
 		return "Bot de paille wins !";
 	return "You win !";
-
 }
 
-
-void IrcBot::rockPaperScissors(const std::vector<std::string>& command) {
+void IrcBot::rockPaperScissors(const std::vector<std::string> &command)
+{
 	std::string response = "";
-	std::string options [] = { "paper", "rock", "scissors"};
+	std::string options[] = {"paper", "rock", "scissors"};
 	std::string result = options[std::rand() % 3];
-		if ((command[3].find("!paper") < command[3].size()) && !(command[3].find("!rock") < command[3].size()) && !(command[3].find("!scissors") < command[3].size()))
-			response = "You chose paper Bot de Paille chose " + result + ". " + whoWins("paper", result);
-		else if (!(command[3].find("!paper") < command[3].size()) && (command[3].find("!rock") < command[3].size()) && !(command[3].find("!scissors") < command[3].size()))
-			response = "You chose rock Bot de Paille chose " + result + ". " + whoWins("rock", result);
-		else if (!(command[3].find("!paper") < command[3].size()) && !(command[3].find("!rock") < command[3].size()) && (command[3].find("!scissors") < command[3].size()))
-			response = "You chose scissors Bot de Paille chose " + result + ". " + whoWins("scissors", result);
-		else
-			response = "Veuillez envoyer !paper, !rock ou !scissors pour jouer contre Bot De Paille.";
+	if ((command[3].find("!paper") < command[3].size()) && !(command[3].find("!rock") < command[3].size()) && !(command[3].find("!scissors") < command[3].size()))
+		response = "You chose paper Bot de Paille chose " + result + ". " + whoWins("paper", result);
+	else if (!(command[3].find("!paper") < command[3].size()) && (command[3].find("!rock") < command[3].size()) && !(command[3].find("!scissors") < command[3].size()))
+		response = "You chose rock Bot de Paille chose " + result + ". " + whoWins("rock", result);
+	else if (!(command[3].find("!paper") < command[3].size()) && !(command[3].find("!rock") < command[3].size()) && (command[3].find("!scissors") < command[3].size()))
+		response = "You chose scissors Bot de Paille chose " + result + ". " + whoWins("scissors", result);
+	else
+		response = "Veuillez envoyer !paper, !rock ou !scissors pour jouer contre Bot De Paille.";
 	sendPrivMsg(command[0], response);
 }
 
-
-void IrcBot::parseExecute(const std::string& message) {
+void IrcBot::parseExecute(const std::string &message)
+{
 
 	std::vector<std::string> command;
 	ParseCommand(command, message);
