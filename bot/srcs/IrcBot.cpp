@@ -167,7 +167,6 @@ void IrcBot::authenticate(const std::string &nickname) {
 std::string	IrcBot::ParseSender(const std::string& message) {
 	size_t pos = message.find(" ");
 	std::string sender = message.substr(1, pos - 1);
-	// TODO: parse nick!user@host
 	pos = sender.find("!");
 	if (pos < sender.size())
 		sender.erase(pos, sender.size());
