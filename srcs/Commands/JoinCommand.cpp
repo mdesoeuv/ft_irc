@@ -19,7 +19,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 	if (arguments == "0")
 	{
 		_server->allChannelLeave(client, "");
-		return ;
+		return;
 	}
 	// check if Channel exist
 	std::pair<bool, std::vector<Channel>::iterator> result = _server->searchChannel(splited_args[0]);
@@ -32,7 +32,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			return;
 		}
 
-		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname())  && !result.second->isExceptedFromInvite(client.getNickname()))
+		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()) && !result.second->isExceptedFromInvite(client.getNickname()))
 		{
 			client.reply(ERR_INVITEONLYCHAN(client.getNickname(), result.second->getName()));
 			return;
@@ -81,7 +81,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 
 void JoinCommand::sendJoinNotif(Client &client, Channel channel, bool anonymous)
 {
-	std::string	prefix;
+	std::string prefix;
 	if (anonymous)
 		prefix = "anonymous!anonymous@anonymous.";
 	else

@@ -16,7 +16,7 @@ void InviteCommand::execute(Client &client, std::string arguments)
 		return;
 	}
 
-	Channel* channel;
+	Channel *channel;
 	channel = _server->getChannel(splited_args[1]);
 
 	if (!channel)

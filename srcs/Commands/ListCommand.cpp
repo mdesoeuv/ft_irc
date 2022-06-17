@@ -4,7 +4,8 @@ ListCommand::ListCommand(Server *server) : Command(server) {}
 
 ListCommand::~ListCommand() {}
 
-void ListCommand::execute(Client& client, std::string arguments) {
+void ListCommand::execute(Client &client, std::string arguments)
+{
 
   client.reply(RPL_LISTSTART(client.getNickname()));
   if (arguments.empty())
@@ -21,10 +22,8 @@ void ListCommand::execute(Client& client, std::string arguments) {
     {
       if (it->getName() == arguments)
         client.reply(RPL_LIST(client.getNickname(), it->getName(), std::string(it->getUserNbStr()), it->getTopic()));
-      break ;
+      break;
     }
-
   }
   client.reply(RPL_LISTEND(client.getNickname()));
-
 }
