@@ -19,7 +19,6 @@ void ModeCommand::execute(Client &client, std::string arguments)
 
 	std::string target = splited_args[0];
 
-	std::cout << "target of mode command:" + target + "//" << std::endl;
 	// check if target is a channel then if client is op and then execute operation
 	if (target[0] == '#')
 	{
@@ -73,7 +72,6 @@ bool ModeCommand::applyMode(Channel *channel, Client &client, bool active, char 
 		if (!channel->removeMode(c))
 			return false;
 	}
-	std::cout << (active && !arg.empty() ? arg : "") + "=apply mode arg" << std::endl;
 	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? std::string(1, '+') + c : std::string(1, '+') + c), (active && !arg.empty() ? arg : "")));
 	return true;
 }
@@ -227,9 +225,6 @@ void ModeCommand::mode_ban(Channel *channel, Client &client, bool active, std::v
 			return;
 		}
 		channel->addBan(splited_args[2]);
-		std::cout << channel->isBanned(splited_args[2]) << std::endl;
-		std::cout << " is banned ?" << std::endl;
-
 		channel->broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel->getName()));
 	}
 	else
@@ -274,8 +269,6 @@ void ModeCommand::mode_voice(Channel *channel, Client &client, bool active, std:
 			target_client.removeUserMode('+');
 			std::cout << "removed voice mode to " + target_client.getNickname() + " for channel " + channel->getName() << std::endl;
 		}
-		std::cout << "is voice ok ? " << channel->isClientMode(target_client.getNickname(), '+') << std::endl;
-
 		channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? "+v" : "-v"), target_client.getNickname()));
 	}
 	catch (std::out_of_range &e)
@@ -288,7 +281,6 @@ void ModeCommand::mode_voice(Channel *channel, Client &client, bool active, std:
 void ModeCommand::mode_operator(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
 	// operator mode: @ before nickname
-	std::cout << "active :" << active << std::endl;
 	if (splited_args.size() != 3)
 	{
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
@@ -315,7 +307,6 @@ void ModeCommand::mode_operator(Channel *channel, Client &client, bool active, s
 	}
 	else if (!active && channel->isOp(splited_args[2]))
 	{
-		std::cout << "nick :" + splited_args[2] + "//" << std::endl;
 		try
 		{
 			Client &target_client = channel->getChanClient(splited_args[2]);

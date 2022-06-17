@@ -9,8 +9,6 @@ void TopicCommand::execute(Client& client, std::string arguments) {
 	std::string channel_name;
 	std::string new_topic;
 	std::pair<bool, std::vector<Channel>::iterator> result;
-
-	std::cout << "arguments to execute :" + arguments << std::endl;
 	
 	size_t pos = arguments.find(":");
 	if (pos < arguments.size())

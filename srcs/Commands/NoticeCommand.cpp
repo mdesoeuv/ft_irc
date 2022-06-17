@@ -23,9 +23,6 @@ void NoticeCommand::execute(Client &client, std::string arguments) {
 	}
 
 	message = message.at(0) == ':' ? message.substr(1) : message;
-	std::cout << message + "notice message !" << std::endl;
-	std::cout << target + " target" << std::endl;
-
 	if (target.at(0) == '#') {
 
 		Channel* channel;
@@ -35,8 +32,6 @@ void NoticeCommand::execute(Client &client, std::string arguments) {
 			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), splited_args[1]));
 			return;
 		}
-	std::cout << target + " target" << std::endl;
-
 		if (channel->isMode('n'))
 		{
 			if (!(channel->isUser(client.getNickname())))

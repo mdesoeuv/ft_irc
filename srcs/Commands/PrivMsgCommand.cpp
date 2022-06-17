@@ -48,7 +48,6 @@ void PrivMsgCommand::execute(Client &client, std::string arguments)
 		// checks if 'moderated mode' is enabled
 		if (channel->isMode('m') && (!channel->isOp(client.getNickname()) && !channel->isClientMode(client.getNickname(), '+')))
 		{
-			std::cout << "channel +m :" << channel->isMode('m') << std::endl << "is op :" << channel->isOp(client.getNickname()) << std::endl << "has voice :" << channel->isClientMode(client.getNickname(), '+') << std::endl;
 			client.reply(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
 			return;
 		}

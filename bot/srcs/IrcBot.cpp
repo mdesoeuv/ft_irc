@@ -119,8 +119,6 @@ void IrcBot::onMessageReceived(const std::string &message) {
 
 	std::string source = splited_args.at(0);
 	std::string type = splited_args.at(1);
-
-	//replyToCommand(source, type, std::vector<std::string>(splited_args.begin() + 2, splited_args.end())); TODO
 }
 
 std::string	IrcBot::extractMessage() {

@@ -194,7 +194,6 @@ void Server::onClientDisconnect(int fd)
 
 void Server::onClientMessage(int fd)
 {
-	std::cout << "Client message !" << std::endl;
 	readMessage(fd);
 }
 
@@ -211,9 +210,7 @@ void Server::readMessage(int fd)
 		read_bytes = recv(fd, buffer, BUFFER_SIZE, 0);
 		if (read_bytes < 0)
 			break;
-		std::cout << "bytes read :" << read_bytes << std::endl;
 		buffer[read_bytes] = '\0';
-		std::cout << "packet received :" + std::string(buffer) + "//" << std::endl;
 		_clients[fd].getMessageBuffer().append(buffer);
 		while (_clients[fd].getMessageBuffer().find("\r\n") < _clients[fd].getMessageBuffer().size())
 		{
@@ -230,7 +227,7 @@ void Server::sendMessage(Client &client)
 	int sent_bytes = send(client.getSocketfd(), client.getSendQueue().c_str(), client.getSendQueue().length(), 0);
 	if (sent_bytes < 0)
 		std::cout << "Error while sending message to client." << std::endl;
-	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes) << std::endl;
+	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes);
 	client.getSendQueue().erase(0, sent_bytes);
 }
 
