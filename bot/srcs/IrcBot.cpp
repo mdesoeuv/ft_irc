@@ -206,14 +206,16 @@ void	IrcBot::ParseCommand(std::vector<std::string>& command, std::string message
 
 void IrcBot::parseExecute(const std::string& message) {
 
-
 	std::vector<std::string> command;
 	ParseCommand(command, message);
+		std::string response = "Coucou c'est moi le bot de paille !";
+
 	if (command.size() == 0)
 		return;
-	
-	std::string response = "Coucou c'est moi le bot de paille !";
-	if (command[0] != _serverPrefix)
+	if (command[1] == "PING")
+		addSendQueue("PONG " + command[0]);
+	else if (command[1] == "PRIVMSG")
 		sendPrivMsg(command[0], response);
-		// rockPaperScissors(sender);
+	else
+		std::cout << "Message type unknown : " + command[1] + " sent by " << command[0] << std::endl;
 }
