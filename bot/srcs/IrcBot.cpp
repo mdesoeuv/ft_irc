@@ -44,8 +44,9 @@ void IrcBot::start() {
 	authenticate("BotDePaille");
 	while (g_BotRunning)
 	{
+		std::cout << "send queue :" << _sendQueue << std::endl;
 		// poll loop
-		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
+		if (poll(_pollfds.data(), _pollfds.size(), -1) < 0)
 			if (g_BotRunning)
 				throw std::runtime_error("Error while polling from fd.");
 		pollfds_iterator it = _pollfds.begin();
@@ -60,8 +61,9 @@ void IrcBot::start() {
 			onServerMessage(it->fd);
 		}
 
-		// POLLOUT: le bot peut send
+		// POLLOUT: le bot peut send //  TODO: 
 		if (it->revents & POLLOUT)
+		// if (!_sendQueue.empty())
 		{
 			sendMessageToServer();
 		}
@@ -72,6 +74,7 @@ void IrcBot::start() {
 			g_BotRunning = false;
 		}
 	}
+	std::cout << "Terminating Bot !" << std::endl;
 	// addSendQueue("QUIT :Bye !");
 	close(_sock);
 }
@@ -90,7 +93,7 @@ void IrcBot::addSendQueue(const std::string& message) {
 
 void IrcBot::sendMessageToServer()
 {
-
+	std::cout << "Trying to send message" << std::endl;
 	if (_sendQueue.empty())
 		return;
 	int sent_bytes = send(_sock, _sendQueue.c_str(), _sendQueue.length(), 0);
@@ -103,6 +106,7 @@ void IrcBot::sendMessageToServer()
 
 void IrcBot::sendPrivMsg(const std::string &source, const std::string &message) {
 	addSendQueue("PRIVMSG " + source + " :" + message);
+	sendMessageToServer();
 }
 
 void IrcBot::onMessageReceived(const std::string &message) {
@@ -162,8 +166,11 @@ void IrcBot::authenticate(const std::string &nickname) {
 
 std::string	IrcBot::ParseSender(const std::string& message) {
 	size_t pos = message.find(" ");
-	std::string sender = message.substr(1, pos);
-
+	std::string sender = message.substr(1, pos - 1);
+	// TODO: parse nick!user@host
+	pos = sender.find("!");
+	if (pos < sender.size())
+		sender.erase(pos, sender.size());
 	return sender;
 }
 
