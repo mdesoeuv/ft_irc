@@ -72,7 +72,7 @@ bool ModeCommand::applyMode(Channel *channel, Client &client, bool active, char 
 		if (!channel->removeMode(c))
 			return false;
 	}
-	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? std::string(1, '+') + c : std::string(1, '+') + c), (active && !arg.empty() ? arg : "")));
+	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? std::string(1, '+') + c : std::string(1, '-') + c), (active && !arg.empty() ? arg : "")));
 	return true;
 }
 

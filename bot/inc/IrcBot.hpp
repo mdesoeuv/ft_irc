@@ -17,7 +17,7 @@
 #include "utils.hpp"
 
 #define MSG_SIZE_LIMIT 450
-#define BUFFER_SIZE 1000
+#define BUFFER_SIZE 10000
 
 class IrcBot {
 public:
