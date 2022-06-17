@@ -211,6 +211,7 @@ void IrcBot::parseExecute(const std::string& message) {
 	ParseCommand(command, message);
 	if (command.size() == 0)
 		return;
+	
 	std::string response = "Coucou c'est moi le bot de paille !";
 	if (command[0] != _serverPrefix)
 		sendPrivMsg(command[0], response);
