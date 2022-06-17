@@ -89,6 +89,7 @@ void IrcBot::addSendQueue(const std::string& message) {
 	full_message += "\r\n";
 	_sendQueue += full_message;
 	std::cout << "added to send queue :" + full_message << std::endl;
+	sendMessageToServer();
 }
 
 void IrcBot::sendMessageToServer()
@@ -201,21 +202,49 @@ void	IrcBot::ParseCommand(std::vector<std::string>& command, std::string message
 	{
 		std::cout << *it << "//" << std::endl;
 	}
+}
+std::string IrcBot::whoWins(const std::string& userChoice, const std::string& botChoice) {
+
+	if (botChoice == userChoice)
+		return "Duce !";
+	if (botChoice == "paper" && userChoice == "rock")
+		return "Bot de paille wins !";
+	if (botChoice == "rock" && userChoice == "scissors")
+		return "Bot de paille wins !";
+	if (botChoice == "scissors" && userChoice == "paper")
+		return "Bot de paille wins !";
+	return "You win !";
 
 }
+
+
+void IrcBot::rockPaperScissors(const std::vector<std::string>& command) {
+	std::string response = "";
+	std::string options [] = { "paper", "rock", "scissors"};
+	std::string result = options[std::rand() % 3];
+		if ((command[3].find("!paper") < command[3].size()) && !(command[3].find("!rock") < command[3].size()) && !(command[3].find("!scissors") < command[3].size()))
+			response = "You chose paper Bot de Paille chose " + result + ". " + whoWins("paper", result);
+		else if (!(command[3].find("!paper") < command[3].size()) && (command[3].find("!rock") < command[3].size()) && !(command[3].find("!scissors") < command[3].size()))
+			response = "You chose rock Bot de Paille chose " + result + ". " + whoWins("rock", result);
+		else if (!(command[3].find("!paper") < command[3].size()) && !(command[3].find("!rock") < command[3].size()) && (command[3].find("!scissors") < command[3].size()))
+			response = "You chose scissors Bot de Paille chose " + result + ". " + whoWins("scissors", result);
+		else
+			response = "Veuillez envoyer !paper, !rock ou !scissors pour jouer contre Bot De Paille.";
+	sendPrivMsg(command[0], response);
+}
+
 
 void IrcBot::parseExecute(const std::string& message) {
 
 	std::vector<std::string> command;
 	ParseCommand(command, message);
-		std::string response = "Coucou c'est moi le bot de paille !";
 
 	if (command.size() == 0)
 		return;
 	if (command[1] == "PING")
 		addSendQueue("PONG :" + command[0]);
 	else if (command[1] == "PRIVMSG")
-		sendPrivMsg(command[0], response);
+		rockPaperScissors(command);
 	else
 		std::cout << "Message type unknown : " + command[1] + " sent by " << command[0] << std::endl;
 }
