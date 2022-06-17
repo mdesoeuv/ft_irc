@@ -2,10 +2,10 @@
         v - give/take the voice privilege; OK MEHDI
 
         a - toggle the anonymous channel flag; OK MEHDI
-        i - toggle the invite-only channel flag; OK, TO TEST VIC
+        i - toggle the invite-only channel flag; OK VIC
         m - toggle the moderated channel; OK MEHDI
         n - toggle the no messages to channel from clients on the outside; OK MEHDI
-        q - toggle the quiet channel flag; OK, TO TEST VIC
+        q - toggle the quiet channel flag; OK VIC
         p - toggle the private channel flag; OK MEHDI
         s - toggle the secret channel flag; OK MEHDI
         t - toggle the topic settable by channel operator only flag; OK MEHDI
@@ -14,8 +14,8 @@
         l - set/remove the user limit to channel; OK VIC
 
         b - set/remove ban mask to keep users out; OK MEHDI
-        e - set/remove an exception mask to override a ban mask; OK, TO TEST VIC
-        I - set/remove an invitation mask to automatically override the invite-only flag; OK, TO TEST VIC
+        e - set/remove an exception mask to override a ban mask; OK VIC
+        I - set/remove an invitation mask to automatically override the invite-only flag; OK VIC
 
         user invisibility OK MEHDI
         message size limit OK MEHDI

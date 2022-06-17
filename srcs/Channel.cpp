@@ -165,8 +165,13 @@ bool	Channel::isClientMode(const std::string nick, char mode) const {
 }
 
 bool	Channel::isInvited(const std::string nickname) const {
+		std::cout << _user_invited_list.size() << std::endl;
+		std::cout << nickname << std::endl;
+
 	for (std::vector<std::string>::const_iterator it = _user_invited_list.begin(); it != _user_invited_list.end(); ++it)
 	{
+				std::cout << *it << std::endl;
+
 		if (*it == nickname)
 			return true;
 	}
@@ -176,6 +181,25 @@ bool	Channel::isInvited(const std::string nickname) const {
 void Channel::addInvitation(const std::string nickname)
 {
 	_user_invited_list.push_back(nickname);
+}
+
+void Channel::removeInvitation(const std::string nickname)
+{
+	for (std::vector<std::string>::const_iterator it = _user_invited_list.begin(); it != _user_invited_list.end(); ++it)
+	{
+		if (*it == nickname)
+		{
+			_user_invited_list.erase(it);
+			return;
+		}
+	}
+	Client to_kick_user;
+	if (isUser(nickname) && !isInvited(nickname))
+	{
+		to_kick_user = getChanClient(nickname);
+		delUser(to_kick_user);
+		_user_nb--;
+	}
 }
 
 bool	Channel::isMode(char mode) const {
