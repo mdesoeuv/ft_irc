@@ -23,7 +23,7 @@ void ModeCommand::execute(Client &client, std::string arguments)
 	// check if target is a channel then if client is op and then execute operation
 	if (target[0] == '#')
 	{
-		Channel* channel = _server->getChannel(target);
+		Channel *channel = _server->getChannel(target);
 		if (!channel)
 		{
 			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), target));
@@ -61,7 +61,7 @@ void ModeCommand::execute(Client &client, std::string arguments)
 	}
 }
 
-bool ModeCommand::applyMode(Channel* channel, Client &client, bool active, char c, std::string arg)
+bool ModeCommand::applyMode(Channel *channel, Client &client, bool active, char c, std::string arg)
 {
 	if (active)
 	{
@@ -73,16 +73,16 @@ bool ModeCommand::applyMode(Channel* channel, Client &client, bool active, char 
 		if (!channel->removeMode(c))
 			return false;
 	}
-		std::cout << (active && !arg.empty() ? arg : "") + "=apply mode arg" << std::endl;	
+	std::cout << (active && !arg.empty() ? arg : "") + "=apply mode arg" << std::endl;
 	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? std::string(1, '+') + c : std::string(1, '+') + c), (active && !arg.empty() ? arg : "")));
 	return true;
 }
 
-void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std::string> splited_args)
+void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std::string> splited_args)
 {
 
 	int i = 0;
-	//int p = 2;
+	// int p = 2;
 	char c;
 
 	while ((c = splited_args[1][i]))
@@ -135,7 +135,7 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "CHANNEL PASSWORD"));
 				break;
 			}
-			
+
 			if (applyMode(channel, client, active, 'k', splited_args[2]))
 				channel->setPassword(active ? splited_args[2] : "");
 			break;
@@ -150,6 +150,10 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 		case 'i':
 		{
 			applyMode(channel, client, active, 'i', "");
+			if (active && splited_args.size() > 2 && !splited_args[2].empty())
+				channel->addInvitation(splited_args[2]);
+			else if (splited_args.size() > 2 && !splited_args[2].empty())
+				channel->removeInvitation(splited_args[2]);
 			break;
 		}
 
@@ -194,7 +198,7 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 		case 'v':
 		{
 			mode_voice(channel, client, active, splited_args);
-			//p += active ? 1 : 0;
+			// p += active ? 1 : 0;
 			break;
 		}
 
@@ -206,42 +210,42 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 	}
 }
 
-void	ModeCommand::mode_ban(Channel* channel, Client& client, bool active, std::vector<std::string> splited_args)
+void ModeCommand::mode_ban(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
 	if (splited_args[2].empty())
-			{
-				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "BAN"));
-				return;
-			}
-			if (active)
-			{
-						std::cout << splited_args[2] + " to ban !" << std::endl;
+	{
+		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "BAN"));
+		return;
+	}
+	if (active)
+	{
+		std::cout << splited_args[2] + " to ban !" << std::endl;
 
-				if (channel->isBanned(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYBANNED(client.getNickname(), splited_args[2], channel->getName()));
-					return;
-				}
-				channel->addBan(splited_args[2]);
-				std::cout << channel->isBanned(splited_args[2]) << std::endl;
-				std::cout << " is banned ?" << std::endl;
+		if (channel->isBanned(splited_args[2]))
+		{
+			client.reply(ERR_ALREADYBANNED(client.getNickname(), splited_args[2], channel->getName()));
+			return;
+		}
+		channel->addBan(splited_args[2]);
+		std::cout << channel->isBanned(splited_args[2]) << std::endl;
+		std::cout << " is banned ?" << std::endl;
 
-				channel->broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel->getName()));
-			}
-			else
-			{
-				if (!channel->isBanned(splited_args[2]))
-				{
-					client.reply(ERR_ALREADYUNBANNED(client.getNickname(), splited_args[2], channel->getName()));
-					return;
-				}
-				channel->removeBan(splited_args[2]);
-				channel->broadcastMessage(RPL_UNBANNED(client.getNickname(), splited_args[0], channel->getName()));
-			}
-			channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? "+b" : "-b"), splited_args[2]));
+		channel->broadcastMessage(RPL_BANNED(client.getNickname(), splited_args[2], channel->getName()));
+	}
+	else
+	{
+		if (!channel->isBanned(splited_args[2]))
+		{
+			client.reply(ERR_ALREADYUNBANNED(client.getNickname(), splited_args[2], channel->getName()));
+			return;
+		}
+		channel->removeBan(splited_args[2]);
+		channel->broadcastMessage(RPL_UNBANNED(client.getNickname(), splited_args[0], channel->getName()));
+	}
+	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? "+b" : "-b"), splited_args[2]));
 }
 
-void	ModeCommand::mode_voice(Channel* channel, Client& client, bool active, std::vector<std::string> splited_args)
+void ModeCommand::mode_voice(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
 	// voice mode on channel: '+' before nick
 
@@ -281,7 +285,7 @@ void	ModeCommand::mode_voice(Channel* channel, Client& client, bool active, std:
 	}
 }
 
-void	ModeCommand::mode_operator(Channel* channel, Client& client, bool active, std::vector<std::string> splited_args)
+void ModeCommand::mode_operator(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
 	// operator mode: @ before nickname
 	std::cout << "active :" << active << std::endl;
@@ -325,7 +329,7 @@ void	ModeCommand::mode_operator(Channel* channel, Client& client, bool active, s
 	}
 }
 
-void	ModeCommand::mode_invite(Channel* channel, Client& client, bool active, std::vector<std::string> splited_args)
+void ModeCommand::mode_invite(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
 	if (splited_args[2].empty())
 	{
@@ -353,7 +357,7 @@ void	ModeCommand::mode_invite(Channel* channel, Client& client, bool active, std
 	channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? "+I" : "-I"), splited_args[2]));
 }
 
-void	ModeCommand::mode_exception(Channel* channel, Client& client, bool active, std::vector<std::string> splited_args)
+void ModeCommand::mode_exception(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
 	if (splited_args[2].empty())
 	{
@@ -406,5 +410,4 @@ void ModeCommand::mode_client(Client *client, std::vector<std::string> splited_a
 	// unrecognized mode
 	else
 		client->reply(ERR_UMODEUNKNOWNFLAG(client->getNickname()));
-
 }

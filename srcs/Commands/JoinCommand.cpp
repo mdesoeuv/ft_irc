@@ -31,6 +31,9 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			client.reply(ERR_USERONCHANNEL(client.getNickname(), client.getNickname(), result.second->getName()));
 			return;
 		}
+	std::cout << "blabala" << std::endl;
+	std::cout << result.second->isMode('i') << std::endl;
+	std::cout << !result.second->isInvited(client.getNickname())  << std::endl;
 
 		if (result.second->isMode('i') && !result.second->isInvited(client.getNickname()))
 		{
@@ -49,7 +52,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			client.reply(ERR_BANNEDFROMCHAN(client.getNickname(), result.second->getName()));
 			return;
 		}
-		
+
 		if (result.second->isMode('l') && result.second->hasReachedClientsLimit())
 		{
 			client.reply(ERR_CHANNELISFULL(client.getNickname(), result.second->getName()));

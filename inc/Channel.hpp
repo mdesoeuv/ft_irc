@@ -62,6 +62,7 @@ class Channel
 		void		broadcastExceptSource(std::string message, const std::string& source_nick);
 		bool		isInvited(const std::string nickname) const;
 		void		addInvitation(const std::string nickname);
+		void		removeInvitation(const std::string nickname);
 		bool		isBanned(const std::string nickname) const;
 		void		addBan(const std::string nickname);
 		void		removeBan(const std::string nickname);
