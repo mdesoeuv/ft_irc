@@ -82,7 +82,7 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 {
 
 	int i = 0;
-	int p = 2;
+	//int p = 2;
 	char c;
 
 	while ((c = splited_args[1][i]))
@@ -136,14 +136,8 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 				break;
 			}
 			
-			
 			if (applyMode(channel, client, active, 'k', splited_args[2]))
-			{
-				if (active)
-					channel->setPassword(splited_args[2]);
-				else
-					channel->setPassword("");
-			}
+				channel->setPassword(active ? splited_args[2] : "");
 			break;
 		}
 
@@ -167,9 +161,14 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 
 		case 'l':
 		{
-			channel->setChannelLimit(active ? std::stol(splited_args[p]) : 0);
-			channel->broadcastMessage(RPL_MODE(client.getPrefix(), channel->getName(), (active ? "+l" : "-l"), (active ? splited_args[p] : "")));
-			p += active ? 1 : 0;
+			if (active && splited_args.size() > 1 && splited_args[2].empty())
+			{
+				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "CHANNEL USER LIMIT"));
+				break;
+			}
+
+			if (applyMode(channel, client, active, 'l', splited_args[2]))
+				channel->setChannelLimit(active ? std::stol(splited_args[2]) : 0);
 			break;
 		}
 
@@ -182,12 +181,7 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 		case 's':
 		{
 			if (applyMode(channel, client, active, 's', ""))
-			{
-				if (active)
-					channel->setSymbol("@");
-				else
-					channel->setSymbol("=");
-			}
+				channel->setSymbol(active ? "@" : "=");
 			break;
 		}
 
@@ -200,7 +194,7 @@ void ModeCommand::mode_channel(Channel* channel, Client &client, std::vector<std
 		case 'v':
 		{
 			mode_voice(channel, client, active, splited_args);
-			p += active ? 1 : 0;
+			//p += active ? 1 : 0;
 			break;
 		}
 

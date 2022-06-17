@@ -49,7 +49,7 @@ void JoinCommand::execute(Client &client, std::string arguments)
 			client.reply(ERR_BANNEDFROMCHAN(client.getNickname(), result.second->getName()));
 			return;
 		}
-
+		
 		if (result.second->isMode('l') && result.second->hasReachedClientsLimit())
 		{
 			client.reply(ERR_CHANNELISFULL(client.getNickname(), result.second->getName()));

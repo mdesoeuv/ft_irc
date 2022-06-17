@@ -139,8 +139,6 @@ bool Channel::isUser(const std::string nick) const
 
 bool Channel::isPassword(const std::string password) const
 {
-	std::cout << password + "=password" << std::endl;
-	std::cout << _password + "=_password" << std::endl;
 	return (password == _password);
 }
 
@@ -294,7 +292,7 @@ void Channel::removeBan(const std::string nickname)
 
 bool Channel::hasReachedClientsLimit() const
 {
-	return (_user_nb > _user_limit);
+	return (_user_nb >= _user_limit);
 }
 
 void Channel::addUser(Client user)
