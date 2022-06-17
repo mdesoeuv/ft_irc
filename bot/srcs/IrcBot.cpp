@@ -21,6 +21,11 @@ int IrcBot::newSocket()
 	if (sockfd < 0)
 		throw std::runtime_error("Error while opening socket.");
 
+	// if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1)
+	// {
+	// 	throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
+	// }
+
 	// Creating serv_address, giving the parameters to the struct then biding it to the socket
 	struct sockaddr_in serv_address = {};
 
@@ -109,7 +114,7 @@ void IrcBot::sendMessageToServer()
 void IrcBot::sendPrivMsg(const std::string &source, const std::string &message)
 {
 	addSendQueue("PRIVMSG " + source + " :" + message);
-	sendMessageToServer();
+	// sendMessageToServer();
 }
 
 void IrcBot::onMessageReceived(const std::string &message)

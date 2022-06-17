@@ -80,7 +80,6 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 {
 
 	int i = 0;
-	// int p = 2;
 	char c;
 
 	while ((c = splited_args[1][i]))
@@ -128,7 +127,7 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 
 		case 'k':
 		{
-			if (active && splited_args.size() > 1 && splited_args[2].empty())
+			if (splited_args.size() < 3 || (active && splited_args.size() > 1 && splited_args[2].empty()))
 			{
 				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "CHANNEL PASSWORD"));
 				break;
@@ -163,7 +162,7 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 
 		case 'l':
 		{
-			if (active && splited_args.size() > 1 && splited_args[2].empty())
+			if (splited_args.size() < 3 || (active && splited_args.size() > 1 && splited_args[2].empty()))
 			{
 				client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "CHANNEL USER LIMIT"));
 				break;
@@ -196,7 +195,6 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 		case 'v':
 		{
 			mode_voice(channel, client, active, splited_args);
-			// p += active ? 1 : 0;
 			break;
 		}
 
@@ -210,7 +208,7 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 
 void ModeCommand::mode_ban(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
-	if (splited_args[2].empty())
+	if (splited_args.size() < 3 || splited_args[2].empty())
 	{
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "BAN"));
 		return;
