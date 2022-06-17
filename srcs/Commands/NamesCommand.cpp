@@ -6,9 +6,6 @@ NamesCommand::~NamesCommand() {}
 
 void NamesCommand::execute(Client& client, std::string arguments) {
 
-  std::cout << "arguments to parse :" + arguments << std::endl;
-
-
   // no argument : lists all channel and their users
   if (arguments.empty())
   {
@@ -24,7 +21,6 @@ void NamesCommand::execute(Client& client, std::string arguments) {
   Channel* channel = _server->getChannel(arguments);
   if (!channel)
   {
-    std::cout << "this channel does not exist" << std::endl;
     client.reply(RPL_ENDOFNAMES(client.getNickname(), arguments));
   }
 

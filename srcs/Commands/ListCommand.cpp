@@ -6,8 +6,6 @@ ListCommand::~ListCommand() {}
 
 void ListCommand::execute(Client& client, std::string arguments) {
 
-  std::cout << "arguments to parse :" + arguments << std::endl;
-
   client.reply(RPL_LISTSTART(client.getNickname()));
   if (arguments.empty())
   {

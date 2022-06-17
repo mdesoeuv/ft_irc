@@ -57,15 +57,15 @@ size_t Channel::getUserNb() const
 
 std::string Channel::getUserNbStr() const
 {
-	std::string 		result;
-	std::stringstream	out;
+	std::string result;
+	std::stringstream out;
 
 	out << _user_nb;
 	result = out.str();
 	return std::string(result);
 }
 
-std::string	Channel::getSymbol() const
+std::string Channel::getSymbol() const
 {
 	return _symbol;
 }
@@ -100,7 +100,7 @@ void Channel::setChannelLimit(const size_t new_channel_limit)
 	_user_limit = new_channel_limit;
 }
 
-void Channel::setSymbol(const std::string& new_symbol)
+void Channel::setSymbol(const std::string &new_symbol)
 {
 	_symbol = new_symbol;
 }
@@ -152,26 +152,20 @@ bool Channel::isOp(const std::string op) const
 	return false;
 }
 
-bool	Channel::isClientMode(const std::string nick, char mode) const {
+bool Channel::isClientMode(const std::string nick, char mode) const
+{
 	for (std::vector<Client>::const_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
-		std::cout << it->getNickname() + "is mode " << mode << " ? " << it->isMode(mode) << std::endl;
-		std::cout << "client modes string :" + it->getModes() << std::endl;
-
 		if (it->getNickname() == nick)
 			return (it->isMode(mode));
 	}
 	return false;
 }
 
-bool	Channel::isInvited(const std::string nickname) const {
-		std::cout << _user_invited_list.size() << std::endl;
-		std::cout << nickname << std::endl;
-
+bool Channel::isInvited(const std::string nickname) const
+{
 	for (std::vector<std::string>::const_iterator it = _user_invited_list.begin(); it != _user_invited_list.end(); ++it)
 	{
-				std::cout << *it << std::endl;
-
 		if (*it == nickname)
 			return true;
 	}
@@ -202,16 +196,15 @@ void Channel::removeInvitation(const std::string nickname)
 	}
 }
 
-bool	Channel::isMode(char mode) const {
+bool Channel::isMode(char mode) const
+{
 	return (getModes().find(mode) < getModes().size());
 }
 
 bool Channel::isBanned(const std::string nickname) const
 {
-	std::cout << "user ban list size :" << _user_banned_list.size() << std::endl;
 	for (std::vector<std::string>::const_iterator it = _user_banned_list.begin(); it != _user_banned_list.end(); ++it)
 	{
-		std::cout << "banned :" + *it << std::endl;
 		if (*it == nickname)
 			return true;
 	}
@@ -281,7 +274,7 @@ void Channel::removeExceptionBan(const std::string nickname)
 	if (isUser(nickname) && isBanned(nickname))
 	{
 		to_kick_user = getChanClient(nickname);
-		std::string	prefix = isMode('a') ? "anonymous!anonymous@anonymous." : to_kick_user.getPrefix();
+		std::string prefix = isMode('a') ? "anonymous!anonymous@anonymous." : to_kick_user.getPrefix();
 		broadcastMessage(":" + prefix + " KICK " + to_kick_user.getNickname());
 		delUser(to_kick_user);
 		_user_nb--;
@@ -294,7 +287,7 @@ void Channel::addBan(const std::string nickname)
 	if (isUser(nickname))
 	{
 		kicked_user = getChanClient(nickname);
-		std::string	prefix = isMode('a') ? "anonymous!anonymous@anonymous." : kicked_user.getPrefix();
+		std::string prefix = isMode('a') ? "anonymous!anonymous@anonymous." : kicked_user.getPrefix();
 		broadcastMessage(":" + prefix + " KICK " + kicked_user.getNickname());
 		delUser(kicked_user);
 		_user_nb--;
@@ -352,7 +345,7 @@ std::string Channel::getUserList(bool show_invisible)
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (!show_invisible && it->getClientOnServer()->isMode('i'))
-			continue ;
+			continue;
 		result += " ";
 		result += it->getChanPrefix();
 		result += it->getNickname();
@@ -360,17 +353,16 @@ std::string Channel::getUserList(bool show_invisible)
 	return result;
 }
 
-void		Channel::sendUserList(Client& client, bool show_invisible)
+void Channel::sendUserList(Client &client, bool show_invisible)
 {
 	for (std::vector<Client>::iterator it = _user_list.begin(); it != _user_list.end(); ++it)
 	{
 		if (!show_invisible && it->getClientOnServer()->isMode('i'))
-			continue ;
+			continue;
 		client.reply(RPL_NAMEREPLY(client.getNickname(), getSymbol(), getName(), it->getChanPrefix() + it->getNickname()));
 	}
 	client.reply(RPL_ENDOFNAMES(client.getNickname(), getName()));
 }
-
 
 void Channel::broadcastMessage(std::string message)
 {

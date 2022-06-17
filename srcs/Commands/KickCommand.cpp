@@ -6,7 +6,6 @@ KickCommand::~KickCommand() {}
 
 void KickCommand::execute(Client& client, std::string arguments) {
 
-	std::cout << "arguments to parse :" + arguments << std::endl;
 	// checks if channel exists and get a ref to it
 	size_t pos = arguments.find(" ");
 	std::string channel_name = arguments.substr(0, pos);
