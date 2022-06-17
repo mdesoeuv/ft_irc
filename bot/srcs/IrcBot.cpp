@@ -21,10 +21,15 @@ int IrcBot::newSocket()
 	if (sockfd < 0)
 		throw std::runtime_error("Error while opening socket.");
 
-	// if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1)
-	// {
-	// 	throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
-	// }
+	/* Setting the socket to NON-BLOCKING mode allowing it to return any data that the system has in it's read buffer
+	 * for that socket even if the fd is still in use. It won't wait for that data to be terminated and will send an error.
+	 * command : F_SETFL : setting for state attribute of fd
+	 * arg : O_NONBLOCK meaning described previously
+	 */
+	if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1)
+	{
+		throw std::runtime_error("Error while setting socket to NON-BLOCKING.");
+	}
 
 	// Creating serv_address, giving the parameters to the struct then biding it to the socket
 	struct sockaddr_in serv_address = {};
@@ -36,9 +41,12 @@ int IrcBot::newSocket()
 	serv_address.sin_addr.s_addr = inet_addr(_host.c_str());
 	serv_address.sin_port = htons(std::stoi(_port)); // TCP protocol does not read a port int so we use htons() to convert unsigned short int to big-endian network byte order as expected from TCP protocol standards
 
-	// Bind the socket to the current IP address on selected port
-	if (connect(sockfd, (struct sockaddr *)&serv_address, sizeof(serv_address)) < 0)
+	// // Bind the socket to the current IP address on selected port // EINPROGRESS while pop on a non-blocking socket
+	if (connect(sockfd, (struct sockaddr *)&serv_address, sizeof(serv_address)) < 0 && errno != EINPROGRESS) 
+	{
+		perror("IrcBot");
 		throw std::runtime_error("Error while connecting to host.");
+	}
 
 	return sockfd;
 }
@@ -71,7 +79,6 @@ void IrcBot::start()
 
 		// POLLOUT: le bot peut send //  TODO:
 		if (it->revents & POLLOUT)
-		// if (!_sendQueue.empty())
 		{
 			sendMessageToServer();
 		}
@@ -96,7 +103,6 @@ void IrcBot::addSendQueue(const std::string &message)
 	full_message += "\r\n";
 	_sendQueue += full_message;
 	std::cout << "added to send queue :" + full_message << std::endl;
-	sendMessageToServer();
 }
 
 void IrcBot::sendMessageToServer()
@@ -114,7 +120,6 @@ void IrcBot::sendMessageToServer()
 void IrcBot::sendPrivMsg(const std::string &source, const std::string &message)
 {
 	addSendQueue("PRIVMSG " + source + " :" + message);
-	// sendMessageToServer();
 }
 
 void IrcBot::onMessageReceived(const std::string &message)
