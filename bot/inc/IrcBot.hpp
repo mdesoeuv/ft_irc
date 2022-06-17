@@ -8,6 +8,7 @@
 #include <string.h>
 #include <vector>
 #include <poll.h>
+#include <fcntl.h>
 #include <sys/socket.h> // socket()
 #include <netinet/in.h> // sockaddr_in
 #include <utility> // std::make_pair
