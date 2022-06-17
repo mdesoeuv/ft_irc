@@ -23,18 +23,25 @@ void NoticeCommand::execute(Client &client, std::string arguments) {
 	}
 
 	message = message.at(0) == ':' ? message.substr(1) : message;
+	std::cout << message + "notice message !" << std::endl;
+	std::cout << target + " target" << std::endl;
 
 	if (target.at(0) == '#') {
 
 		Channel* channel;
-		channel = _server->getChannel(target.substr(1));
+		channel = _server->getChannel(target);
 		if (!channel)
+		{
+			client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), splited_args[1]));
 			return;
+		}
+	std::cout << target + " target" << std::endl;
 
-		if (channel->getModes().find("n") < channel->getModes().size())
-		{ // external msg option == false
+		if (channel->isMode('n'))
+		{
 			if (!(channel->isUser(client.getNickname())))
 			{
+				client.reply(ERR_CANNOTSENDTOCHAN(client.getNickname(), target));
 				return;
 			}
 		}
