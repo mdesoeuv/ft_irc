@@ -227,7 +227,7 @@ void Server::sendMessage(Client &client)
 	int sent_bytes = send(client.getSocketfd(), client.getSendQueue().c_str(), client.getSendQueue().length(), 0);
 	if (sent_bytes < 0)
 		std::cout << "Error while sending message to client." << std::endl;
-	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes) << std::endl;
+	std::cout << "message sent :" + client.getSendQueue().substr(0, sent_bytes);
 	client.getSendQueue().erase(0, sent_bytes);
 }
 
