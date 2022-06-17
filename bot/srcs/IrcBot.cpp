@@ -133,6 +133,8 @@ std::string	IrcBot::extractMessage() {
 	return message;
 }
 
+
+// command[0]: sender, command[1]: command, command[2]: argument
 void IrcBot::onServerMessage(int fd)
 {
 	int read_bytes = -10;
@@ -162,20 +164,55 @@ void IrcBot::authenticate(const std::string &nickname) {
 	addSendQueue("USER botDePaille 0 * :Custom ft_irc's bot");
 }
 
-std::string	IrcBot::ParseSender(const std::string& message) {
+void	IrcBot::ParseCommand(std::vector<std::string>& command, std::string message) {
+	
+	//parse sender
 	size_t pos = message.find(" ");
 	std::string sender = message.substr(1, pos - 1);
+	message.erase(0, pos + 1);
 	pos = sender.find("!");
 	if (pos < sender.size())
 		sender.erase(pos, sender.size());
-	return sender;
+	command.push_back(sender);
+
+	//parse command
+	pos = message.find(" ");
+	if (pos > message.size())
+	{
+		command.push_back(message);
+		return;
+	}
+	command.push_back(message.substr(0, pos));
+	message.erase(0, pos + 1);
+	
+	//parse argument
+	pos = message.find(":");
+	if (pos > message.size())
+	{
+		command.push_back(message);
+		return;
+	}
+	command.push_back(message.substr(0, pos - 1));
+	command.push_back(message.substr(pos + 1, message.size() - pos - 2));
+
+	//display command
+	std::cout << "parsed command :" << std::endl;
+	for (std::vector<std::string>::iterator it = command.begin(); it != command.end(); ++it)
+	{
+		std::cout << *it << "//" << std::endl;
+	}
+
 }
 
 void IrcBot::parseExecute(const std::string& message) {
 
-	std::string sender = ParseSender(message);
-	std::cout << "sender :" + sender << std::endl;
+
+	std::vector<std::string> command;
+	ParseCommand(command, message);
+	if (command.size() == 0)
+		return;
 	std::string response = "Coucou c'est moi le bot de paille !";
-	if (sender != _serverPrefix)
-		sendPrivMsg(sender, response);
+	if (command[0] != _serverPrefix)
+		sendPrivMsg(command[0], response);
+		// rockPaperScissors(sender);
 }
