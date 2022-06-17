@@ -7,8 +7,8 @@ int main(int argc, char **argv) {
 		if (argc < 3) {
 			throw std::runtime_error("Usage: ./ircbot <host> <port> [password]");
 		}
-
 		IrcBot bot(argv[1], argv[2], argc == 4 ? argv[3] : "");
+		
 		bot.start();
 		return 0;
 	}

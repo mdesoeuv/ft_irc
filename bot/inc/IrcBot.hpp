@@ -14,6 +14,8 @@
 #include <arpa/inet.h> /* htons et inet_aton */
 #include "utils.hpp"
 
+#define MSG_SIZE_LIMIT 450
+
 class IrcBot {
 public:
 	IrcBot(const std::string &host, const std::string &port, const std::string &password);
@@ -23,15 +25,29 @@ public:
 	void start();
 
 private:
-	int _sock;
-	std::string _host;
-	std::string _port;
-	std::string _password;
-	std::string _buffer;
+
+	typedef std::vector<pollfd>::iterator 	pollfds_iterator;
+
+	int 				_sock;
+	std::string 		_host;
+	std::string 		_port;
+	std::string 		_password;
+	std::string 		_buffer;
+	std::vector<pollfd>	_pollfds;
+	std::string			_messageBuffer;
+	std::string			_sendQueue;
+	std::string			_serverPrefix
+
 
 	int			newSocket();
-	void 		sendMessageToServer(const std::string &message);
+	void 		addSendQueue(const std::string& message);
+	void 		sendMessageToServer();
 	void 		sendPrivMsg(const std::string &source, const std::string &message);
 	void 		authenticate(const std::string &nickname);
 	void 		onMessageReceived(const std::string &message);
+	std::string	extractMessage();
+	void 		onServerMessage(int fd);
+	std::string	ParseSender(const std::string& message);
+	void		parseExecute(const std::string& message);
+
 };
