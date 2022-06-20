@@ -5,16 +5,17 @@
 
 CommandHandler::CommandHandler(Server *server) : _server(server)
 {
-	_commands["NICK"] = new NickCommand(_server);
-	_commands["USER"] = new UserCommand(_server);
+	_commands["NICK"] = new NickCommand(_server, false);
+	_commands["USER"] = new UserCommand(_server, false);
+	_commands["PASS"] = new PassCommand(_server, false);
+	_commands["QUIT"] = new QuitCommand(_server, false);
+
 	_commands["CAP"] = new CapCommand(_server);
-	_commands["QUIT"] = new QuitCommand(_server);
 	_commands["NAMES"] = new NamesCommand(_server);
 	_commands["LIST"] = new ListCommand(_server);
 
 	_commands["PING"] = new PingCommand(_server);
 	_commands["PONG"] = new PongCommand(_server);
-	_commands["PASS"] = new PassCommand(_server);
 
 	_commands["JOIN"] = new JoinCommand(_server);
 	_commands["MODE"] = new ModeCommand(_server);
@@ -31,30 +32,37 @@ CommandHandler::~CommandHandler()
 		delete it->second;
 }
 
-void	CommandHandler::parseExecute(Client& client, std::string message)
+void CommandHandler::parseExecute(Client &client, std::string message)
 {
 	// split of the first word of message to get command
-	std::vector<std::string>	arguments;
+	std::vector<std::string> arguments;
 	splitCommand(arguments, message);
-	
+
 	client.setLastPingTime(time(NULL));
 	try
 	{
 		Command *command = _commands.at(arguments[0]);
+
+		if (!client.isRegistered() && command->authRequired())
+		{
+			client.reply(ERR_NOTREGISTERED(client.getNickname()));
+			return;
+		}
+
 		command->execute(client, arguments[1]);
 	}
 	catch (const std::out_of_range &e)
 	{
-		std::cout <<"Command unknown :" << std::endl;
+		std::cout << "Command unknown :" << std::endl;
 		std::cout << message << std::endl;
 		client.reply(ERR_UNKNOWNCOMMAND(client.getNickname(), message));
 	}
 }
 
-void	CommandHandler::splitCommand(std::vector<std::string> &arguments, const std::string& message)
+void CommandHandler::splitCommand(std::vector<std::string> &arguments, const std::string &message)
 {
 
-	size_t	pos = 0;
+	size_t pos = 0;
 
 	pos = message.find(" ");
 	if (pos < message.size())

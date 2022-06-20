@@ -11,7 +11,6 @@ IrcBot::~IrcBot()
 
 int IrcBot::newSocket()
 {
-
 	/* creating socket :
 	 * domain : AF_INET -> Socket using IPV4
 	 * type : SOCK_STREAM : Dialogue support guaranteeing integrity, providing a binary data stream, and integrating a mechanism for out-of-band data transmissions.
@@ -42,7 +41,7 @@ int IrcBot::newSocket()
 	serv_address.sin_port = htons(std::stoi(_port)); // TCP protocol does not read a port int so we use htons() to convert unsigned short int to big-endian network byte order as expected from TCP protocol standards
 
 	// // Bind the socket to the current IP address on selected port // EINPROGRESS while pop on a non-blocking socket
-	if (connect(sockfd, (struct sockaddr *)&serv_address, sizeof(serv_address)) < 0 && errno != EINPROGRESS) 
+	if (connect(sockfd, (struct sockaddr *)&serv_address, sizeof(serv_address)) < 0 && errno != EINPROGRESS)
 	{
 		perror("IrcBot");
 		throw std::runtime_error("Error while connecting to host.");
@@ -53,8 +52,6 @@ int IrcBot::newSocket()
 
 void IrcBot::start()
 {
-
-	bool g_BotRunning = true;
 	pollfd bot_fd = {_sock, POLLIN | POLLOUT, 0};
 	_pollfds.push_back(bot_fd);
 	authenticate("BotDePaille");
@@ -90,7 +87,6 @@ void IrcBot::start()
 		}
 	}
 	std::cout << "Terminating Bot !" << std::endl;
-	// addSendQueue("QUIT :Bye !");
 	close(_sock);
 }
 
@@ -102,12 +98,10 @@ void IrcBot::addSendQueue(const std::string &message)
 		full_message.resize(MSG_SIZE_LIMIT - 2);
 	full_message += "\r\n";
 	_sendQueue += full_message;
-	std::cout << "added to send queue :" + full_message << std::endl;
 }
 
 void IrcBot::sendMessageToServer()
 {
-	std::cout << "Trying to send message" << std::endl;
 	if (_sendQueue.empty())
 		return;
 	int sent_bytes = send(_sock, _sendQueue.c_str(), _sendQueue.length(), 0);
@@ -143,8 +137,6 @@ std::string IrcBot::extractMessage()
 	size_t pos = _messageBuffer.find("\r\n");
 	message = _messageBuffer.substr(0, pos);
 	_messageBuffer.erase(0, pos + 2);
-
-	std::cout << "extracted message :" + message << std::endl;
 	return message;
 }
 
@@ -161,9 +153,7 @@ void IrcBot::onServerMessage(int fd)
 		read_bytes = recv(fd, buffer, BUFFER_SIZE, 0);
 		if (read_bytes < 0)
 			break;
-		std::cout << "bytes read :" << read_bytes << std::endl;
 		buffer[read_bytes] = '\0';
-		std::cout << "packet received :" + std::string(buffer) + "//" << std::endl;
 		_messageBuffer.append(buffer);
 		while (_messageBuffer.find("\r\n") < _messageBuffer.size())
 		{
@@ -211,12 +201,6 @@ void IrcBot::ParseCommand(std::vector<std::string> &command, std::string message
 	command.push_back(message.substr(0, pos - 1));
 	command.push_back(message.substr(pos + 1, message.size() - pos - 2));
 
-	// display command
-	std::cout << "parsed command :" << std::endl;
-	for (std::vector<std::string>::iterator it = command.begin(); it != command.end(); ++it)
-	{
-		std::cout << *it << "//" << std::endl;
-	}
 }
 std::string IrcBot::whoWins(const std::string &userChoice, const std::string &botChoice)
 {

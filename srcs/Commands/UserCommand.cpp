@@ -1,6 +1,6 @@
 #include "../../inc/Command.hpp"
 
-UserCommand::UserCommand(Server *server) : Command(server) {}
+UserCommand::UserCommand(Server *server, bool auth) : Command(server, auth) {}
 
 UserCommand::~UserCommand() {}
 
