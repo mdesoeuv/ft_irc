@@ -17,10 +17,10 @@ protected:
 	bool _authRequired;
 
 public:
-	explicit Command(Server *server, bool authRequired = true) : _server(server), _authRequired(authRequired){};
-	virtual ~Command(){};
+	explicit Command(Server *server, bool authRequired = true);
+	virtual ~Command();
 
-	bool authRequired() const { return _authRequired; };
+	bool authRequired() const;
 	virtual void execute(Client& client, std::string arguments) = 0;
 };
 
