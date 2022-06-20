@@ -17,8 +17,8 @@
 #include <netdb.h>
 #include "Channel.hpp"
 
-#define BUFFER_SIZE 100
-#define MAX_CONNECTIONS 1000
+#define BUFFER_SIZE 10000
+#define MAX_CONNECTIONS 100
 
 extern bool g_ServerRunning;
 

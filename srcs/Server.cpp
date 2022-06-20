@@ -31,7 +31,7 @@ void Server::start()
 			if (it->second.getLastPingTime() + PING_INTERVAL + TIMEOUT < actualTime)
 			{
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user : timeout"));
-				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kick beacause he did not relply to Ping check"));
+				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kicked because he did not reply to Ping"));
 				std::cout << "Client has Timeout " << std::endl;
 				_fdToDelete.push_back(it->second.getSocketfd());
 			}

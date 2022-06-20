@@ -90,41 +90,50 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 
 		switch (c)
 		{
+
+		// anonymous mode
 		case 'a':
 		{
 			applyMode(channel, client, active, 'a', "");
 			break;
 		}
+
+		// ban mode
 		case 'b':
 		{
 			mode_ban(channel, client, active, splited_args);
 			break;
 		}
 
+		// ban exception mask list
 		case 'e':
 		{
 			mode_exception(channel, client, active, splited_args);
 			break;
 		}
 
+		// invite mask list
 		case 'I':
 		{
 			mode_invite(channel, client, active, splited_args);
 			break;
 		}
 
+		// moderated mode : only operators + voiced clients can speak
 		case 'm':
 		{
 			applyMode(channel, client, active, 'm', "");
 			break;
 		}
 
+		// silence JOIN/PART/CHANNELBROADCAST of other clients
 		case 'q':
 		{
 			applyMode(channel, client, active, 'q', "");
 			break;
 		}
 
+		// channel join with key
 		case 'k':
 		{
 			if (splited_args.size() < 3 || (active && splited_args.size() > 1 && splited_args[2].empty()))
@@ -138,12 +147,14 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 			break;
 		}
 
+		// no external messages
 		case 'n':
 		{
 			applyMode(channel, client, active, 'n', "");
 			break;
 		}
 
+		// invite only mode
 		case 'i':
 		{
 			applyMode(channel, client, active, 'i', "");
@@ -154,12 +165,14 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 			break;
 		}
 
+		// operator mode
 		case 'o':
 		{
 			mode_operator(channel, client, active, splited_args);
 			break;
 		}
 
+		// client limit on channel
 		case 'l':
 		{
 			if (splited_args.size() < 3 || (active && splited_args.size() > 1 && splited_args[2].empty()))
@@ -173,12 +186,14 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 			break;
 		}
 
+		// private mode (channel not listed by /list unless user on channel)
 		case 'p':
 		{
 			applyMode(channel, client, active, 'p', "");
 			break;
 		}
 
+		// secret mode 
 		case 's':
 		{
 			if (applyMode(channel, client, active, 's', ""))
@@ -186,12 +201,14 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 			break;
 		}
 
+		// topic can only be changed by operators
 		case 't':
 		{
 			applyMode(channel, client, active, 't', "");
 			break;
 		}
 
+		// voice mode
 		case 'v':
 		{
 			mode_voice(channel, client, active, splited_args);
@@ -241,7 +258,6 @@ void ModeCommand::mode_ban(Channel *channel, Client &client, bool active, std::v
 void ModeCommand::mode_voice(Channel *channel, Client &client, bool active, std::vector<std::string> splited_args)
 {
 	// voice mode on channel: '+' before nick
-
 	if (splited_args.size() < 3)
 	{
 		client.reply(ERR_CMDNEEDMOREPARAMS(client.getNickname(), "MODE"));
