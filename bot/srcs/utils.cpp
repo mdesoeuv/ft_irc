@@ -1,7 +1,5 @@
 #include "../inc/utils.hpp"
-
-#include <string>
-#include <vector>
+#include "../inc/IrcBot.hpp"
 
 void	split_args(const std::string str, const std::string sep, std::vector<std::string>& result)
 {
@@ -19,5 +17,11 @@ void	split_args(const std::string str, const std::string sep, std::vector<std::s
 		result.push_back(message.substr(0, pos));
 		message.erase(0, pos + sep.size());
 	}
+}
 
+void	sig_quit(int code)
+{
+	(void)code;
+	std::cout << "Bot is being turned down. Please wait." << std::endl;
+	g_BotRunning = false;
 }

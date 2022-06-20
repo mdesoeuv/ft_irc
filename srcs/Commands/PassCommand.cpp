@@ -1,6 +1,6 @@
 #include "../../inc/Command.hpp"
 
-PassCommand::PassCommand(Server *server) : Command(server) {}
+PassCommand::PassCommand(Server *server, bool auth) : Command(server, auth) {}
 
 PassCommand::~PassCommand() {}
 

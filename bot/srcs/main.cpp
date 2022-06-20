@@ -1,9 +1,11 @@
 #include "../inc/IrcBot.hpp"
 
+bool g_BotRunning = true;
+
 int main(int argc, char **argv) {
 
+	signal(SIGINT, &sig_quit);
 	try {
-
 		if (argc < 3) {
 			throw std::runtime_error("Usage: ./ircbot <host> <port> [password]");
 		}

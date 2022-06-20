@@ -1,6 +1,6 @@
 #include "../../inc/Command.hpp"
 
-NickCommand::NickCommand(Server *server) : Command(server) {}
+NickCommand::NickCommand(Server *server, bool auth) : Command(server, auth) {}
 
 NickCommand::~NickCommand() {}
 
@@ -17,7 +17,7 @@ void NickCommand::execute(Client& client, std::string arguments) {
 	//Check non conform Nicknames
 	if (arguments.find(' ') != std::string::npos || arguments.find('.') != std::string::npos || arguments.find(',') != std::string::npos 
 	|| arguments.find('*') != std::string::npos || arguments.find('?') != std::string::npos || arguments.find('!') != std::string::npos 
-	|| arguments.find('@') != std::string::npos || arguments[0] == '$' || arguments[0] == ':' || arguments[0] == '+' || arguments[0] == '='|| !arguments.compare("anonymous") )
+	|| arguments.find('@') != std::string::npos || arguments[0] == '$' || arguments[0] == ':' || arguments[0] == '+' || arguments[0] == '=' || !arguments.compare("anonymous") )
 	{
 		client.reply(ERR_ERRONEUSNICKNAME(client.getNickname(), arguments));
 		return;

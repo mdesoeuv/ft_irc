@@ -14,18 +14,20 @@ class Command
 
 protected:
 	Server *_server;
+	bool _authRequired;
 
 public:
-	explicit Command(Server *server) : _server(server){};
+	explicit Command(Server *server, bool authRequired = true) : _server(server), _authRequired(authRequired){};
 	virtual ~Command(){};
 
+	bool authRequired() const { return _authRequired; };
 	virtual void execute(Client& client, std::string arguments) = 0;
 };
 
 class UserCommand : public Command
 {
 public:
-	UserCommand(Server *server);
+	UserCommand(Server *server, bool authRequired);
 	~UserCommand();
 
 	void execute(Client& client, std::string arguments);
@@ -102,7 +104,7 @@ public:
 class NickCommand : public Command
 {
 public:
-	NickCommand(Server *server);
+	NickCommand(Server *server, bool authRequired);
 	~NickCommand();
 
 	void execute(Client& client, std::string arguments);
@@ -111,7 +113,7 @@ public:
 class QuitCommand : public Command
 {
 public:
-	QuitCommand(Server *server);
+	QuitCommand(Server *server, bool authRequired);
 	~QuitCommand();
 
 	void execute(Client& client, std::string arguments);
@@ -147,7 +149,7 @@ public:
 class PassCommand : public Command
 {
 public:
-	PassCommand(Server *server);
+	PassCommand(Server *server, bool authRequired);
 	~PassCommand();
 
 	void execute(Client& client, std::string arguments);
