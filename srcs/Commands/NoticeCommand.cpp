@@ -40,7 +40,7 @@ void NoticeCommand::execute(Client &client, std::string arguments) {
 				return;
 			}
 		}
-		channel->broadcastMessage(RPL_NOTICE(client.getPrefix(), target, message));
+		channel->broadcastExceptSource(RPL_NOTICE(client.getPrefix(), target, message));
 		return;
 	}
 
