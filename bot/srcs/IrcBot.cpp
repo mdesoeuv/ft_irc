@@ -57,7 +57,6 @@ void IrcBot::start()
 	authenticate("BotDePaille");
 	while (g_BotRunning)
 	{
-		std::cout << "send queue :" << _sendQueue << std::endl;
 		// poll loop
 		if (poll(_pollfds.data(), _pollfds.size(), -1) < 0)
 			if (g_BotRunning)
@@ -242,6 +241,8 @@ void IrcBot::parseExecute(const std::string &message)
 		return;
 	if (command[1] == "PING")
 		addSendQueue("PONG :" + command[0]);
+	else if (command[1] == "001")
+		std::cout << "Connection established with " + command[0] << std::endl;
 	else if (command[1] == "PRIVMSG")
 		rockPaperScissors(command);
 	else
