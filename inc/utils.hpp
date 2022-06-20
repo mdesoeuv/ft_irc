@@ -46,7 +46,7 @@
 #define ERR_ALREADYAUTHENTIFIED(myclient)					"462 " + myclient + " :Already authentified"
 #define ERR_WRONGPASSWORD(myclient)							"464 " + myclient + " :Password incorrect"
 #define ERR_ALREADYREGISTERED(myclient)						"462 " + myclient + " :You may not reregister"
-#define ERR_NOTREGISTERED(myclient)							"451 " + myclient + " :You have not registered"
+#define ERR_NOTAUTHENTIFIED(myclient)							"451 " + myclient + " :You are not authentified"
 #define ERR_CHANOPRIVSNEEDED(myclient, mychannel)			"482 " + myclient + " " + mychannel + " :You're not channel operator"
 #define ERR_USERONCHANNEL(myclient, nickToInvite, mychannel) "443 " + myclient + " " + mychannel + " :" + nickToInvite + " is already on channel"
 #define	ERR_ALREADYBANNED(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already banned"

@@ -4,7 +4,6 @@
 Server::Server(const std::string port, const std::string password)
 	: _host("127.0.0.1"), _name("ft_irc"), _port(port), _password(password), _commandHandler(this)
 {
-
 	_sock = newSocket();
 }
 

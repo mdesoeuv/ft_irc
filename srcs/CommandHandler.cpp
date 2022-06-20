@@ -43,9 +43,9 @@ void CommandHandler::parseExecute(Client &client, std::string message)
 	{
 		Command *command = _commands.at(arguments[0]);
 
-		if (!client.isRegistered() && command->authRequired())
+		if (!client.isAuthentified() && command->authRequired())
 		{
-			client.reply(ERR_NOTREGISTERED(client.getNickname()));
+			client.reply(ERR_NOTAUTHENTIFIED(client.getNickname()));
 			return;
 		}
 
