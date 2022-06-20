@@ -181,8 +181,8 @@ void ModeCommand::mode_channel(Channel *channel, Client &client, std::vector<std
 				break;
 			}
 
-			if (applyMode(channel, client, active, 'l', splited_args[2]))
-				channel->setChannelLimit(active ? std::stol(splited_args[2]) : 0);
+			applyMode(channel, client, active, 'l', splited_args[2]);
+			channel->setChannelLimit(active ? std::stol(splited_args[2]) : 0);
 			break;
 		}
 
