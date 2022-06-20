@@ -20,4 +20,5 @@ weechat -d [subfolder]
 add ft_irc in weechat's server list :
 /server add ft_irc 127.0.0.1/6697
 
-
+connection to server with password :
+/connect ft_irc -password=****
