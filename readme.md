@@ -13,3 +13,11 @@ see options in weechat :
 change username in weechat :
 /set irc.server.ft_irc.nicks "john"
 /set irc.server.ft_irc.username "john"
+
+open another weechat in subfolder :
+weechat -d [subfolder]
+
+add ft_irc in weechat's server list :
+/server add ft_irc 127.0.0.1/6697
+
+
