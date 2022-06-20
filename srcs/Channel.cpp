@@ -281,14 +281,14 @@ void Channel::removeExceptionBan(const std::string nickname)
 	}
 }
 
-void Channel::addBan(const std::string nickname)
+void Channel::addBan(Client& client, const std::string nickname)
 {
 	Client kicked_user;
 	if (isUser(nickname))
 	{
 		kicked_user = getChanClient(nickname);
-		std::string prefix = isMode('a') ? "anonymous!anonymous@anonymous." : kicked_user.getPrefix();
-		broadcastMessage(":" + prefix + " KICK " + kicked_user.getNickname());
+		std::string prefix = isMode('a') ? "anonymous!anonymous@anonymous." : client.getPrefix();
+		broadcastMessage(":" + prefix + " KICK " + getName() + " " + kicked_user.getNickname() + " :banned from channel");
 		delUser(kicked_user);
 		_user_nb--;
 	}

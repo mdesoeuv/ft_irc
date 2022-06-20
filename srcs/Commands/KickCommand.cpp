@@ -54,7 +54,7 @@ void KickCommand::execute(Client &client, std::string arguments)
 		channel->delUser(kicked_user);
 		if (channel->getUserList(true).empty())
 			_server->removeChannel(_server->searchChannel(channel_name).second);
-		std::cout << kicked_user.getNickname() + " kicked !!!" << std::endl;
+		// std::cout << kicked_user.getNickname() + " kicked !!!" << std::endl;
 	}
 	catch (const std::out_of_range &e)
 	{

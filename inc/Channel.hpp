@@ -64,7 +64,7 @@ class Channel
 		void		addInvitation(const std::string nickname);
 		void		removeInvitation(const std::string nickname);
 		bool		isBanned(const std::string nickname) const;
-		void		addBan(const std::string nickname);
+		void		addBan(Client& client, const std::string nickname);
 		void		removeBan(const std::string nickname);
 		bool		hasReachedClientsLimit() const;
 		bool		isPassword(const std::string password) const;

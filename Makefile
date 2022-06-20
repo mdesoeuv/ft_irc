@@ -22,6 +22,7 @@ SRCS			:=	main.cpp \
 					Client.cpp \
 					Server.cpp \
 					CommandHandler.cpp \
+					Command.cpp \
 					Commands/UserCommand.cpp \
 					Commands/JoinCommand.cpp \
 					Commands/NickCommand.cpp \
