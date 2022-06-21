@@ -20,7 +20,7 @@ void UserCommand::execute(Client& client, std::string arguments) {
 	}
 
 	if (!client.isAuthentified()) {
-		client.reply("ERROR : Please connect to server with password.");
+		client.reply("ERROR :Please connect to server with password.");
 		return;
 	}
 	

@@ -21,7 +21,8 @@ void PassCommand::execute(Client &client, std::string arguments)
 
 	if (_server->getPassword() != arguments.substr(arguments[0] == ':' ? 1 : 0))
 	{
-		client.reply(ERR_WRONGPASSWORD(client.getNickname()));
+		std::string nick = client.getNickname().empty() ? "default_nickname" : client.getNickname();
+		client.reply(ERR_WRONGPASSWORD(nick));
 		return;
 	}
 

@@ -45,7 +45,8 @@ void CommandHandler::parseExecute(Client &client, std::string message)
 
 		if (!client.isAuthentified() && command->authRequired())
 		{
-			client.reply(ERR_NOTAUTHENTIFIED(client.getNickname()));
+			std::string nick = client.getNickname().empty() ? "default_nickname" : client.getNickname();
+			client.reply(ERR_NOTAUTHENTIFIED(nick));
 			return;
 		}
 

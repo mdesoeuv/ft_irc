@@ -22,3 +22,14 @@ add ft_irc in weechat's server list :
 
 connection to server with password :
 /connect ft_irc -password=****
+
+give operator status
+/mode #channel +o #nick
+
+weechat buffer navigation :
+Alt+Down / Alt+Up
+
+Sending files with DCC protocol :
+/dcc send nickname filepath 
+then press 'a' to accept the request in the xfer buffer on the target client
+the file is downloaded in the xfer subfolder
