@@ -376,3 +376,7 @@ void							Server::sendUnjoinedUserList(Client& client) {
 	}
 	client.reply(RPL_ENDOFNAMES(client.getNickname(), std::string("channel")));
 }
+
+std::string	Server::getPassword() const {
+	return _password;
+}

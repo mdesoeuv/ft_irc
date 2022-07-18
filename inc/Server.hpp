@@ -51,7 +51,7 @@ public:
 	~Server();
 
 	void 				start();
-	std::string 		getPassword() const { return _password; };
+	std::string 		getPassword() const;
 	Client*				getClient(const std::string nickname);
 	Client*				getClientByUsername(const std::string username);
 	Channel*			getChannel(const std::string& channel_name);
