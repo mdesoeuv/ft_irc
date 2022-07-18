@@ -307,7 +307,7 @@ void Server::allChannelLeave(Client& client, std::string broadcast_message)
 	std::vector<std::string>	channels_to_remove;
 	std::string					message = broadcast_message;
 
-	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
+	for (channel_iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
 		if (chan_iter->isUser(client.getNickname()))
 		{
@@ -328,7 +328,7 @@ void Server::allChannelLeave(Client& client, std::string broadcast_message)
 
 void Server::allChannelBroadcast(const std::string& nick, const std::string& message)
 {
-	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
+	for (channel_iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
 		if (chan_iter->isUser(nick) && !chan_iter->isMode('q'))
 		{
@@ -339,7 +339,7 @@ void Server::allChannelBroadcast(const std::string& nick, const std::string& mes
 
 void Server::allChannelChangeNickname(const std::string& old_nick, const std::string& new_nick)
 {
-	for (std::vector<Channel>::iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
+	for (channel_iterator chan_iter = _channels.begin(); chan_iter != _channels.end(); ++chan_iter)
 	{
 		if (chan_iter->isUser(old_nick))
 		{

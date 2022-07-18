@@ -62,7 +62,6 @@ void CommandHandler::parseExecute(Client &client, std::string message)
 
 void CommandHandler::splitCommand(std::vector<std::string> &arguments, const std::string &message)
 {
-
 	size_t pos = 0;
 
 	pos = message.find(" ");
