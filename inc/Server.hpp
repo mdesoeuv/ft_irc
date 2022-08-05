@@ -20,8 +20,6 @@
 #define BUFFER_SIZE 10000
 #define MAX_CONNECTIONS 100
 
-extern bool g_ServerRunning;
-
 class Server;
 class Client;
 class CommandHandler;
@@ -46,9 +44,12 @@ public:
 	typedef std::map<int, Client>::iterator 				clients_iterator;
 	typedef std::vector<Channel>::iterator					channel_iterator;
 	typedef std::pair<bool, std::vector<Channel>::iterator> chan_it_pair;
+
 	
 	Server(const std::string port, const std::string password);
 	~Server();
+
+	static bool 		running;
 
 	void 				start();
 	std::string 		getPassword() const;

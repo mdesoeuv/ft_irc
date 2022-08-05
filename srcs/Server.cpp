@@ -18,7 +18,7 @@ void Server::start()
 	_pollfds.push_back(server_fd);
 
 	// Le server écoute désormais les POLL IN
-	while (g_ServerRunning)
+	while (Server::running)
 	{
 		time_t actualTime = time(NULL);
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
@@ -41,7 +41,7 @@ void Server::start()
 			
 		// poll est une fonction qui boucle jusqu'à l'arrivée de nouvelles data
 		if (poll(_pollfds.begin().base(), _pollfds.size(), -1) < 0)
-			if (g_ServerRunning)
+			if (Server::running)
 				throw std::runtime_error("Error while polling from fd.");
 		//  Un des fd a un nouveau message, on les parcourt pour savoir lequel
 		for (pollfds_iterator it = _pollfds.begin(); it != _pollfds.end(); ++it)
@@ -80,7 +80,7 @@ void Server::start()
 			//server POLLERR -> g_runningServer = false
 			if ((it->fd == _sock) && (it->revents & POLLERR))
 			{
-				g_ServerRunning = false;
+				Server::running = false;
 			}
 
 		}
@@ -133,7 +133,7 @@ int Server::newSocket()
 	// Creating serv_address, giving the parameters to the struct then biding it to the socket
 	struct sockaddr_in serv_address = {};
 
-	// Clear address structure, should prevent some segmentation fault and artifacts
+	// Clear address structure
 	bzero((char *)&serv_address, sizeof(serv_address));
 
 	serv_address.sin_family = AF_INET;				 // Socket using IPV4
@@ -174,6 +174,7 @@ void Server::onClientConnect()
 	std::string host(hostname);
 	if (host.length() > 63)
 		host = inet_ntoa(s_address.sin_addr);
+
 	// Creates a new Client and store it in Clients map
 	_clients.insert(std::make_pair(fd, Client(fd, host, ntohs(s_address.sin_port), getServerPrefix())));
 	_clients[fd].setPtr(&_clients[fd]);
@@ -380,3 +381,5 @@ void							Server::sendUnjoinedUserList(Client& client) {
 std::string	Server::getPassword() const {
 	return _password;
 }
+
+bool Server::running = true;

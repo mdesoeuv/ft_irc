@@ -23,9 +23,8 @@ void	split_args(const std::string str, const std::string sep, std::vector<std::s
 
 }
 
-void	sig_quit(int code)
+void	sig_quit(int)
 {
-	(void)code;
 	std::cout << "Server is being turned down. Please wait." << std::endl;
-	g_ServerRunning = false;
+	Server::running = false;
 }

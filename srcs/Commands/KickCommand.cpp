@@ -18,7 +18,8 @@ void KickCommand::execute(Client &client, std::string arguments)
 		client.reply(ERR_NOSUCHCHANNEL(client.getNickname(), channel_name));
 		return;
 	}
-	// checks if user has privileges to kick
+
+	// check if user has privileges to kick
 	Client user;
 	try
 	{
@@ -35,7 +36,7 @@ void KickCommand::execute(Client &client, std::string arguments)
 		return;
 	}
 
-	// parseExecute user_to_kick nickname
+	// parse user_to_kick nickname
 	size_t colon_pos = arguments.find(":");
 	if (colon_pos >= arguments.size())
 	{
@@ -54,7 +55,6 @@ void KickCommand::execute(Client &client, std::string arguments)
 		channel->delUser(kicked_user);
 		if (channel->getUserList(true).empty())
 			_server->removeChannel(_server->searchChannel(channel_name).second);
-		// std::cout << kicked_user.getNickname() + " kicked !!!" << std::endl;
 	}
 	catch (const std::out_of_range &e)
 	{
