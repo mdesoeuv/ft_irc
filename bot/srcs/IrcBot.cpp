@@ -40,7 +40,7 @@ int IrcBot::newSocket()
 	serv_address.sin_addr.s_addr = inet_addr(_host.c_str());
 	serv_address.sin_port = htons(std::stoi(_port)); // TCP protocol does not read a port int so we use htons() to convert unsigned short int to big-endian network byte order as expected from TCP protocol standards
 
-	// // Bind the socket to the current IP address on selected port // EINPROGRESS while pop on a non-blocking socket
+	// Bind the socket to the current IP address on selected port // EINPROGRESS while pop on a non-blocking socket
 	if (connect(sockfd, (struct sockaddr *)&serv_address, sizeof(serv_address)) < 0 && errno != EINPROGRESS)
 	{
 		perror("IrcBot");
@@ -62,24 +62,27 @@ void IrcBot::start()
 			if (g_BotRunning)
 				throw std::runtime_error("Error while polling from fd.");
 		pollfds_iterator it = _pollfds.begin();
+		
+		// server disconnect -> shutdown
 		if (it->revents & POLLHUP)
 		{
-			g_BotRunning = false; // server disconnect -> shutdown du bot
+			g_BotRunning = false;
 			break;
 		}
 
-		if (it->revents & POLLIN) // POLLIN: le bot reçoit un message
+		// POLLIN: bot receives a message
+		if (it->revents & POLLIN)
 		{
 			onServerMessage(it->fd);
 		}
 
-		// POLLOUT: le bot peut send //  TODO:
+		// POLLOUT: bot is ready to send message
 		if (it->revents & POLLOUT)
 		{
 			sendMessageToServer();
 		}
 
-		// server POLLERR -> g_BotRunning = false
+		// POLLERR -> bot shutdown
 		if (it->revents & POLLERR)
 		{
 			g_BotRunning = false;
