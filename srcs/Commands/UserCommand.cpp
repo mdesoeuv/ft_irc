@@ -15,7 +15,10 @@ void UserCommand::execute(Client& client, std::string arguments) {
 	}
 	 
 	if (client.isRegistered() || _server->getClientByUsername(splited_args[0])) {
-		client.reply(ERR_ALREADYREGISTERED(client.getNickname()));
+		if (!client.getNickname().empty())
+			client.reply(ERR_ALREADYREGISTERED(client.getNickname()));
+		else
+			client.reply(ERR_ALREADYREGISTERED(splited_args[0]));
 		return;
 	}
 

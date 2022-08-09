@@ -34,19 +34,19 @@
 
 /* Error Messages */
 
-#define ERR_INVALIDCHANNELNAME(myclient, mychannel)		"476 " + myclient + " :Invalid channel name: " + mychannel
+#define ERR_INVALIDCHANNELNAME(myclient, mychannel)			"476 " + myclient + " :Invalid channel name: " + mychannel
 #define ERR_NOSUCHCHANNEL(myclient, mychannel)				"403 " + myclient + " " + mychannel + " :No such channel"
 #define ERR_USERNOTINCHANNEL(myclient, target, mychannel) 	"441 " + myclient + " " + target + " " + mychannel + " :They aren't on that channel"
 #define ERR_NOTONCHANNEL(myclient, mychannel)				"442 " + myclient + " " + mychannel + " :You're not on that channel"
 #define ERR_NONICKNAMEGIVEN(myclient)						"431 " + myclient + " :Nickname not given"
-#define ERR_NICKNAMEALREADYUSED(myclient, nickname)			"433 " + myclient + " " + nickname  + " :Nickname is already in use"
+#define ERR_NICKNAMEALREADYUSED(nickname)					"433 " + nickname  + " :Nickname is already in use"
 #define ERR_ERRONEUSNICKNAME(myclient, nickname)			"432 " + myclient + " " + nickname  + " :Erroneus nickname"
 #define ERR_CMDNEEDMOREPARAMS(myclient, command)			"461 " + myclient + " " + command + "  :Not enough parameters"
 #define ERR_UNKNOWNCOMMAND(myclient, command)				"421 " + myclient + " " + command + " :Unknown command"
 #define ERR_ALREADYAUTHENTIFIED(myclient)					"462 " + myclient + " :Already authentified"
 #define ERR_WRONGPASSWORD(myclient)							"464 " + myclient + " :Password incorrect"
 #define ERR_ALREADYREGISTERED(myclient)						"462 " + myclient + " :You may not reregister"
-#define ERR_NOTAUTHENTIFIED(myclient)							"451 " + myclient + " :You are not authentified"
+#define ERR_NOTAUTHENTIFIED(myclient)						"451 " + myclient + " :You are not authentified"
 #define ERR_CHANOPRIVSNEEDED(myclient, mychannel)			"482 " + myclient + " " + mychannel + " :You're not channel operator"
 #define ERR_USERONCHANNEL(myclient, nickToInvite, mychannel) "443 " + myclient + " " + mychannel + " :" + nickToInvite + " is already on channel"
 #define	ERR_ALREADYBANNED(myclient, nickToBan, mychannel)	"475 " + myclient + " " + mychannel + " :"+ nickToBan + " Already banned"

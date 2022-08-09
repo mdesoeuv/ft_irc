@@ -11,7 +11,7 @@ void NickCommand::execute(Client& client, std::string arguments) {
 	}
 
 	if (_server->getClient(arguments)) {
-		client.reply(ERR_NICKNAMEALREADYUSED(client.getNickname(), arguments));
+		client.reply(ERR_NICKNAMEALREADYUSED(arguments));
 		return;
 	}
 	//Check non conform Nicknames
