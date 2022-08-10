@@ -1,7 +1,5 @@
 #include "../inc/IrcBot.hpp"
 
-bool g_BotRunning = true;
-
 int main(int argc, char **argv) {
 
 	signal(SIGINT, &sig_quit);

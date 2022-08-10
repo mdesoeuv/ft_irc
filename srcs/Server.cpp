@@ -77,7 +77,7 @@ void Server::start()
 				onClientDisconnect(it->fd);
 			}
 
-			//server POLLERR -> g_runningServer = false
+			//server POLLERR -> Server::running = false
 			if ((it->fd == _sock) && (it->revents & POLLERR))
 			{
 				Server::running = false;

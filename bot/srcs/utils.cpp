@@ -19,9 +19,8 @@ void	split_args(const std::string str, const std::string sep, std::vector<std::s
 	}
 }
 
-void	sig_quit(int code)
+void	sig_quit(int)
 {
-	(void)code;
 	std::cout << "Bot is being turned down. Please wait." << std::endl;
-	g_BotRunning = false;
+	IrcBot::running = false;
 }

@@ -55,18 +55,18 @@ void IrcBot::start()
 	pollfd bot_fd = {_sock, POLLIN | POLLOUT, 0};
 	_pollfds.push_back(bot_fd);
 	authenticate("BotDePaille");
-	while (g_BotRunning)
+	while (IrcBot::running)
 	{
 		// poll loop
 		if (poll(_pollfds.data(), _pollfds.size(), -1) < 0)
-			if (g_BotRunning)
+			if (IrcBot::running)
 				throw std::runtime_error("Error while polling from fd.");
 		pollfds_iterator it = _pollfds.begin();
 		
 		// server disconnect -> shutdown
 		if (it->revents & POLLHUP)
 		{
-			g_BotRunning = false;
+			IrcBot::running = false;
 			break;
 		}
 
@@ -85,7 +85,7 @@ void IrcBot::start()
 		// POLLERR -> bot shutdown
 		if (it->revents & POLLERR)
 		{
-			g_BotRunning = false;
+			IrcBot::running = false;
 		}
 	}
 	std::cout << "Terminating Bot !" << std::endl;
@@ -251,3 +251,5 @@ void IrcBot::parseExecute(const std::string &message)
 	else
 		std::cout << "Message type unknown : " + command[1] + " sent by " << command[0] << std::endl;
 }
+
+bool IrcBot::running = true;
