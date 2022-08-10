@@ -1,9 +1,10 @@
 ft_irc
 objs
-ft_irc.dSYM/Contents
+ft_irc.dSYM/
 ircserv
 ircserv.dSYM
-bot/ircbot.dSYM/Contents
+bot/ircbot.dSYM/
 weechat
 bot/ircbot
 ircbot
+.DS_Store

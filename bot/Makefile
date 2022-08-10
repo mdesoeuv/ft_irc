@@ -3,7 +3,7 @@ NAME			:= ircbot
 
 CXXFLAGS		:= -Wall -Werror -Wextra -g3 -std=c++98
 
-DEBUG			:= -fsanitize=address
+#DEBUG			:= -fsanitize=address
 
 OPTI			:= -O3
 
