@@ -248,7 +248,9 @@ void IrcBot::parseExecute(const std::string &message)
 		std::cout << "Connection established with " + command[0] << std::endl;
 	else if (command[1] == "PRIVMSG")
 		rockPaperScissors(command);
-	else
+	else if (command[1] == "ERROR")
+		IrcBot::running = false;
+	else 
 		std::cout << "Message type unknown : " + command[1] + " sent by " << command[0] << std::endl;
 }
 
