@@ -21,7 +21,7 @@ void Server::start()
 	while (Server::running)
 	{
 		time_t actualTime = time(NULL);
-		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end();)
 		{
 			// ping all clients at interval PING_INTERVAL
 			if (actualTime > (lastPingTime + PING_INTERVAL))
@@ -32,8 +32,11 @@ void Server::start()
 				it->second.write(RPL_QUIT(it->second.getPrefix(), "Can't reach user : timeout"));
 				allChannelLeave(it->second, RPL_QUIT(it->second.getPrefix(), "Client has been kicked because he did not reply to Ping"));
 				std::cout << "Client has Timeout " << std::endl;
-				_fdToDelete.push_back(it->second.getSocketfd());
+				// _fdToDelete.push_back(it->second.getSocketfd()); // TODO utiliser erase
+				it = _clients.erase(it);
+				continue;
 			}
+			it++;
 		}
 
 		if (actualTime > (lastPingTime + PING_INTERVAL))
@@ -84,12 +87,12 @@ void Server::start()
 			}
 
 		}
-		for (std::vector<int>::iterator it = _fdToDelete.begin(); it != _fdToDelete.end(); ++it)
-		{
-			deleteClient(*it);
-			std::cout << "Client deleted" << std::endl;
-		}
-		_fdToDelete.clear();
+		// for (std::vector<int>::iterator it = _fdToDelete.begin(); it != _fdToDelete.end(); ++it)
+		// {
+		// 	deleteClient(*it);
+		// 	std::cout << "Client deleted" << std::endl;
+		// }
+		// _fdToDelete.clear();
 	}
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
