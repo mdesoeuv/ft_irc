@@ -1,6 +1,7 @@
 # ft_irc
 
 ## Code an irc server in C++, compatible with a commercial client (weechat) with user operators and channel management (ban, private channels, invite only, etc...)
+## This project was made with [victor-chevillotte](https://github.com/victor-chevillotte)
 
 
 Skills:
