@@ -1,5 +1,18 @@
+# ft_irc
+
+## Code an irc server in C++, compatible with a commercial client (weechat) with user operators and channel management (ban, private channels, invite only, etc...)
+
+
+Skills:
+* sockets
+* client/server communication
+* understanding RFC
+
+
+
 useful commands to test this project :
 
+```
 nc -c (ends line with /r/n) 127.0.0.1  (server address) 6697 (port)
 nc -c 127.0.0.1 6697
 
@@ -33,3 +46,4 @@ Sending files with DCC protocol :
 /dcc send nickname filepath 
 then press 'a' to accept the request in the xfer buffer on the target client
 the file is downloaded in the xfer subfolder
+```
